@@ -1,0 +1,20 @@
+{
+    "name": "jp.penguin.liltoonmore",
+    "displayName": "lilToonMore",
+    "version": "1.0.0",
+    "author": 
+    {
+        "name": "Penguin"
+    },
+    "unity" : "2022.3",
+    "description" : "Customized lilToon.",
+    "vpmDependencies" : 
+    {
+        "jp.lilxyzw.liltoon" : "2.3.2"
+    },
+    "url" : "https://packages.example.com/com.example.tool-1.0.0.zip?",
+    "legacyFolders" : 
+        {
+        "Assets\\lilToonMore" : "2d67ded333893654ca23a5a37c59dfb2"
+    }
+}

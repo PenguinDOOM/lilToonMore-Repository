@@ -1,0 +1,180 @@
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Custom Properties
+        //_CustomVariable ("Custom Variable", Float) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Main4th
+        [lilToggleLeft] _UseMain4thTex                           ("MainColor 4th", Int) = 0
+        [lilHDR]        _Color4th                                ("sColor", Color) = (1,1,1,1)
+                        _Main4thTex                              ("Texture", 2D) = "white" {}
+        [lilAngle]      _Main4thTexAngle                         ("sAngle", Float) = 0
+        [lilUVAnim]     _Main4thTex_ScrollRotate                 ("sScrollRotates", Vector) = (0,0,0,0)
+        [lilEnum]       _Main4thTex_UVMode                       ("UV Mode|UV0|UV1|UV2|UV3|MatCap", Int) = 0
+        [lilEnum]       _Main4thTex_Cull                         ("sCullModes", Int) = 0
+        [lilDecalAnim]  _Main4thTexDecalAnimation                ("sDecalAnimations", Vector) = (1,1,1,30)
+        [lilDecalSub]   _Main4thTexDecalSubParam                 ("sDecalSubParams", Vector) = (1,1,0,1)
+        [lilToggle]     _Main4thTexIsDecal                       ("sAsDecal", Int) = 0
+        [lilToggle]     _Main4thTexIsLeftOnly                    ("Left Only", Int) = 0
+        [lilToggle]     _Main4thTexIsRightOnly                   ("Right Only", Int) = 0
+        [lilToggle]     _Main4thTexShouldCopy                    ("Copy", Int) = 0
+        [lilToggle]     _Main4thTexShouldFlipMirror              ("Flip Mirror", Int) = 0
+        [lilToggle]     _Main4thTexShouldFlipCopy                ("Flip Copy", Int) = 0
+        [lilToggle]     _Main4thTexIsMSDF                        ("sAsMSDF", Int) = 0
+        [NoScaleOffset] _Main4thBlendMask                        ("Mask", 2D) = "white" {}
+        [lilEnum]       _Main4thTexBlendMode                     ("sBlendModes", Int) = 0
+        [lilEnum]       _Main4thTexAlphaMode                     ("sAlphaModes", Int) = 0
+                        _Main4thEnableLighting                   ("sEnableLighting", Range(0, 1)) = 1
+        //                 _Main4thDissolveMask                     ("Dissolve Mask", 2D) = "white" {}
+        //                 _Main4thDissolveNoiseMask                ("Dissolve Noise Mask", 2D) = "gray" {}
+        // [lilUVAnim]     _Main4thDissolveNoiseMask_ScrollRotate   ("Scroll", Vector) = (0,0,0,0)
+        //                 _Main4thDissolveNoiseStrength            ("Dissolve Noise Strength", float) = 0.1
+        // [lilHDR]        _Main4thDissolveColor                    ("sColor", Color) = (1,1,1,1)
+        // [lilDissolve]   _Main4thDissolveParams                   ("sDissolveParams", Vector) = (0,0,0.5,0.1)
+        // [lilDissolveP]  _Main4thDissolvePos                      ("Dissolve Position", Vector) = (0,0,0,0)
+        [lilFFFB]       _Main4thDistanceFade                     ("sDistanceFadeSettings", Vector) = (0.1,0.01,0,0)
+        [lilToggle]     _AudioLink2Main4th                       ("Use AudioLink", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Main5th
+        [lilToggleLeft] _UseMain5thTex                           ("MainColor 5th", Int) = 0
+        [lilHDR]        _Color5th                                ("sColor", Color) = (1,1,1,1)
+                        _Main5thTex                              ("Texture", 2D) = "white" {}
+        [lilAngle]      _Main5thTexAngle                         ("sAngle", Float) = 0
+        [lilUVAnim]     _Main5thTex_ScrollRotate                 ("sScrollRotates", Vector) = (0,0,0,0)
+        [lilEnum]       _Main5thTex_UVMode                       ("UV Mode|UV0|UV1|UV2|UV3|MatCap", Int) = 0
+        [lilEnum]       _Main5thTex_Cull                         ("sCullModes", Int) = 0
+        [lilDecalAnim]  _Main5thTexDecalAnimation                ("sDecalAnimations", Vector) = (1,1,1,30)
+        [lilDecalSub]   _Main5thTexDecalSubParam                 ("sDecalSubParams", Vector) = (1,1,0,1)
+        [lilToggle]     _Main5thTexIsDecal                       ("sAsDecal", Int) = 0
+        [lilToggle]     _Main5thTexIsLeftOnly                    ("Left Only", Int) = 0
+        [lilToggle]     _Main5thTexIsRightOnly                   ("Right Only", Int) = 0
+        [lilToggle]     _Main5thTexShouldCopy                    ("Copy", Int) = 0
+        [lilToggle]     _Main5thTexShouldFlipMirror              ("Flip Mirror", Int) = 0
+        [lilToggle]     _Main5thTexShouldFlipCopy                ("Flip Copy", Int) = 0
+        [lilToggle]     _Main5thTexIsMSDF                        ("sAsMSDF", Int) = 0
+        [NoScaleOffset] _Main5thBlendMask                        ("Mask", 2D) = "white" {}
+        [lilEnum]       _Main5thTexBlendMode                     ("sBlendModes", Int) = 0
+        [lilEnum]       _Main5thTexAlphaMode                     ("sAlphaModes", Int) = 0
+                        _Main5thEnableLighting                   ("sEnableLighting", Range(0, 1)) = 1
+        //                 _Main5thDissolveMask                     ("Dissolve Mask", 2D) = "white" {}
+        //                 _Main5thDissolveNoiseMask                ("Dissolve Noise Mask", 2D) = "gray" {}
+        // [lilUVAnim]     _Main5thDissolveNoiseMask_ScrollRotate   ("Scroll", Vector) = (0,0,0,0)
+        //                 _Main5thDissolveNoiseStrength            ("Dissolve Noise Strength", float) = 0.1
+        // [lilHDR]        _Main5thDissolveColor                    ("sColor", Color) = (1,1,1,1)
+        // [lilDissolve]   _Main5thDissolveParams                   ("sDissolveParams", Vector) = (0,0,0.5,0.1)
+        // [lilDissolveP]  _Main5thDissolvePos                      ("Dissolve Position", Vector) = (0,0,0,0)
+        [lilFFFB]       _Main5thDistanceFade                     ("sDistanceFadeSettings", Vector) = (0.1,0.01,0,0)
+        [lilToggle]     _AudioLink2Main5th                       ("Use AudioLink", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Main6th
+        [lilToggleLeft] _UseMain6thTex                           ("MainColor 6th", Int) = 0
+        [lilHDR]        _Color6th                                ("sColor", Color) = (1,1,1,1)
+                        _Main6thTex                              ("Texture", 2D) = "white" {}
+        [lilAngle]      _Main6thTexAngle                         ("sAngle", Float) = 0
+        [lilUVAnim]     _Main6thTex_ScrollRotate                 ("sScrollRotates", Vector) = (0,0,0,0)
+        [lilEnum]       _Main6thTex_UVMode                       ("UV Mode|UV0|UV1|UV2|UV3|MatCap", Int) = 0
+        [lilEnum]       _Main6thTex_Cull                         ("sCullModes", Int) = 0
+        [lilDecalAnim]  _Main6thTexDecalAnimation                ("sDecalAnimations", Vector) = (1,1,1,30)
+        [lilDecalSub]   _Main6thTexDecalSubParam                 ("sDecalSubParams", Vector) = (1,1,0,1)
+        [lilToggle]     _Main6thTexIsDecal                       ("sAsDecal", Int) = 0
+        [lilToggle]     _Main6thTexIsLeftOnly                    ("Left Only", Int) = 0
+        [lilToggle]     _Main6thTexIsRightOnly                   ("Right Only", Int) = 0
+        [lilToggle]     _Main6thTexShouldCopy                    ("Copy", Int) = 0
+        [lilToggle]     _Main6thTexShouldFlipMirror              ("Flip Mirror", Int) = 0
+        [lilToggle]     _Main6thTexShouldFlipCopy                ("Flip Copy", Int) = 0
+        [lilToggle]     _Main6thTexIsMSDF                        ("sAsMSDF", Int) = 0
+        [NoScaleOffset] _Main6thBlendMask                        ("Mask", 2D) = "white" {}
+        [lilEnum]       _Main6thTexBlendMode                     ("sBlendModes", Int) = 0
+        [lilEnum]       _Main6thTexAlphaMode                     ("sAlphaModes", Int) = 0
+                        _Main6thEnableLighting                   ("sEnableLighting", Range(0, 1)) = 1
+        //                 _Main6thDissolveMask                     ("Dissolve Mask", 2D) = "white" {}
+        //                 _Main6thDissolveNoiseMask                ("Dissolve Noise Mask", 2D) = "gray" {}
+        // [lilUVAnim]     _Main6thDissolveNoiseMask_ScrollRotate   ("Scroll", Vector) = (0,0,0,0)
+        //                 _Main6thDissolveNoiseStrength            ("Dissolve Noise Strength", float) = 0.1
+        // [lilHDR]        _Main6thDissolveColor                    ("sColor", Color) = (1,1,1,1)
+        // [lilDissolve]   _Main6thDissolveParams                   ("sDissolveParams", Vector) = (0,0,0.5,0.1)
+        // [lilDissolveP]  _Main6thDissolvePos                      ("Dissolve Position", Vector) = (0,0,0,0)
+        [lilFFFB]       _Main6thDistanceFade                     ("sDistanceFadeSettings", Vector) = (0.1,0.01,0,0)
+        [lilToggle]     _AudioLink2Main6th                       ("Use AudioLink", Int) = 0
+        
+        //----------------------------------------------------------------------------------------------------------------------
+        // NormalMap3rd
+        [lilToggleLeft] _UseBump3rdMap                           ("NormalMap3rd", Int) = 0
+        [Normal]        _Bump3rdMap                              ("Normal Map", 2D) = "bump" {}
+        [lilEnum]       _Bump3rdMap_UVMode                       ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
+                        _Bump3rdScale                            ("Scale", Range(-10,10)) = 1
+        [NoScaleOffset] _Bump3rdScaleMask                        ("Mask", 2D) = "white" {}
+        
+        //----------------------------------------------------------------------------------------------------------------------
+        // MatCap3rd
+        [lilToggleLeft] _UseMatCap3rd                            ("MatCap 3rd", Int) = 0
+        [lilHDR]        _MatCap3rdColor                          ("sColor", Color) = (1,1,1,1)
+                        _MatCap3rdTex                            ("Texture", 2D) = "white" {}
+                        _MatCap3rdMainStrength                   ("sMainColorPower", Range(0, 1)) = 0
+        [lilVec2R]      _MatCap3rdBlendUV1                       ("sBlendUV1", Vector) = (0,0,0,0)
+        [lilToggle]     _MatCap3rdZRotCancel                     ("sMatCapZRotCancel", Int) = 1
+        [lilToggle]     _MatCap3rdPerspective                    ("sFixPerspective", Int) = 1
+                        _MatCap3rdVRParallaxStrength             ("sVRParallaxStrength", Range(0, 1)) = 1
+                        _MatCap3rdBlend                          ("Blend", Range(0, 1)) = 1
+        [NoScaleOffset] _MatCap3rdBlendMask                      ("Mask", 2D) = "white" {}
+                        _MatCap3rdEnableLighting                 ("sEnableLighting", Range(0, 1)) = 1
+                        _MatCap3rdShadowMask                     ("sShadowMask", Range(0, 1)) = 0
+        [lilToggle]     _MatCap3rdBackfaceMask                   ("sBackfaceMask", Int) = 0
+                        _MatCap3rdLod                            ("sBlur", Range(0, 10)) = 0
+        [lilEnum]       _MatCap3rdBlendMode                      ("sBlendModes", Int) = 1
+        [lilToggle]     _MatCap3rdApplyTransparency              ("sApplyTransparency", Int) = 1
+                        _MatCap3rdNormalStrength                 ("sNormalStrength", Range(0, 1)) = 1.0
+        [lilToggle]     _MatCap3rdCustomNormal                   ("sMatCapCustomNormal", Int) = 0
+        [Normal]        _MatCap3rdBumpMap                        ("Normal Map", 2D) = "bump" {}
+                        _MatCap3rdBumpScale                      ("Scale", Range(-10,10)) = 1
+        
+        //----------------------------------------------------------------------------------------------------------------------
+        // MatCap4th
+        [lilToggleLeft] _UseMatCap4th                            ("MatCap 4th", Int) = 0
+        [lilHDR]        _MatCap4thColor                          ("sColor", Color) = (1,1,1,1)
+                        _MatCap4thTex                            ("Texture", 2D) = "white" {}
+                        _MatCap4thMainStrength                   ("sMainColorPower", Range(0, 1)) = 0
+        [lilVec2R]      _MatCap4thBlendUV1                       ("sBlendUV1", Vector) = (0,0,0,0)
+        [lilToggle]     _MatCap4thZRotCancel                     ("sMatCapZRotCancel", Int) = 1
+        [lilToggle]     _MatCap4thPerspective                    ("sFixPerspective", Int) = 1
+                        _MatCap4thVRParallaxStrength             ("sVRParallaxStrength", Range(0, 1)) = 1
+                        _MatCap4thBlend                          ("Blend", Range(0, 1)) = 1
+        [NoScaleOffset] _MatCap4thBlendMask                      ("Mask", 2D) = "white" {}
+                        _MatCap4thEnableLighting                 ("sEnableLighting", Range(0, 1)) = 1
+                        _MatCap4thShadowMask                     ("sShadowMask", Range(0, 1)) = 0
+        [lilToggle]     _MatCap4thBackfaceMask                   ("sBackfaceMask", Int) = 0
+                        _MatCap4thLod                            ("sBlur", Range(0, 10)) = 0
+        [lilEnum]       _MatCap4thBlendMode                      ("sBlendModes", Int) = 1
+        [lilToggle]     _MatCap4thApplyTransparency              ("sApplyTransparency", Int) = 1
+                        _MatCap4thNormalStrength                 ("sNormalStrength", Range(0, 1)) = 1.0
+        [lilToggle]     _MatCap4thCustomNormal                   ("sMatCapCustomNormal", Int) = 0
+        [Normal]        _MatCap4thBumpMap                        ("Normal Map", 2D) = "bump" {}
+                        _MatCap4thBumpScale                      ("Scale", Range(-10,10)) = 1
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Glitter2nd
+        [lilToggleLeft] _UseGlitter2nd                              ("Glitter 2nd", Int) = 0
+        [lilEnum]       _Glitter2ndUVMode                           ("UV Mode|UV0|UV1", Int) = 0
+        [lilHDR]        _Glitter2ndColor                            ("sColor", Color) = (1,1,1,1)
+                        _Glitter2ndColorTex                         ("Texture", 2D) = "white" {}
+        [lilEnum]       _Glitter2ndColorTex_UVMode                  ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
+                        _Glitter2ndMainStrength                     ("sMainColorPower", Range(0, 1)) = 0
+                        _Glitter2ndNormalStrength                   ("sNormalStrength", Range(0, 1)) = 1.0
+                        _Glitter2ndScaleRandomize                   ("sRandomize+ (Size)", Range(0, 1)) = 0
+        [lilToggle]     _Glitter2ndApplyShape                       ("Shape", Int) = 0
+                        _Glitter2ndShapeTex                         ("Texture", 2D) = "white" {}
+        [lilVec2]       _Glitter2ndAtras                            ("Atras", Vector) = (1,1,0,0)
+        [lilToggle]     _Glitter2ndAngleRandomize                   ("sRandomize+ (+sAngle+)", Int) = 0
+        [lilGlitParam1] _Glitter2ndParams1                          ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
+        [lilGlitParam2] _Glitter2ndParams2                          ("sGlitterParams2", Vector) = (0.25,0,0,0)
+                        _Glitter2ndPostContrast                     ("sPostContrast", Float) = 1
+                        _Glitter2ndSensitivity                      ("Sensitivity", Float) = 0.25
+                        _Glitter2ndEnableLighting                   ("sEnableLighting", Range(0, 1)) = 1
+                        _Glitter2ndShadowMask                       ("sShadowMask", Range(0, 1)) = 0
+        [lilToggle]     _Glitter2ndBackfaceMask                     ("sBackfaceMask", Int) = 0
+        [lilToggle]     _Glitter2ndApplyTransparency                ("sApplyTransparency", Int) = 1
+                        _Glitter2ndVRParallaxStrength               ("sVRParallaxStrength", Range(0, 1)) = 0
+        
+        
