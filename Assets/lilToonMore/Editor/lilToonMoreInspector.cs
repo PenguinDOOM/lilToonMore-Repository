@@ -20,6 +20,162 @@ namespace lilToon
         private const string shaderName = "lilToonMore";
         private static bool isShowCustomProperties;
         public static lilToonMoreEditorSetting ltmedSet { get { return lilToonMoreEditorSetting.instance; } }
+        
+
+        readonly string[] mainColor4thCategory = new string[]
+        {
+            "_Color4th",
+            "_Main4thTex",
+            "_Main4thTexAngle",
+            "_Main4thTex_ScrollRotate",
+            "_Main4thTex_UVMode",
+            "_Main4thTex_Cull",
+            "_Main4thTexDecalAnimation",
+            "_Main4thTexDecalSubParam",
+            "_Main4thTexIsDecal",
+            "_Main4thTexIsLeftOnly",
+            "_Main4thTexIsRightOnly",
+            "_Main4thTexShouldCopy",
+            "_Main4thTexShouldFlipMirror",
+            "_Main4thTexShouldFlipCopy",
+            "_Main4thTexIsMSDF",
+            "_Main4thBlendMask",
+            "_Main4thTexBlendMode",
+            "_Main4thTexAlphaMode",
+            "_Main4thEnableLighting",
+            "_Main4thDistanceFade",
+            "_AudioLink2Main4th",
+        };
+        
+        readonly string[] mainColor5thCategory = new string[]
+        {
+            "_Color5th",
+            "_Main5thTex",
+            "_Main5thTexAngle",
+            "_Main5thTex_ScrollRotate",
+            "_Main5thTex_UVMode",
+            "_Main5thTex_Cull",
+            "_Main5thTexDecalAnimation",
+            "_Main5thTexDecalSubParam",
+            "_Main5thTexIsDecal",
+            "_Main5thTexIsLeftOnly",
+            "_Main5thTexIsRightOnly",
+            "_Main5thTexShouldCopy",
+            "_Main5thTexShouldFlipMirror",
+            "_Main5thTexShouldFlipCopy",
+            "_Main5thTexIsMSDF",
+            "_Main5thBlendMask",
+            "_Main5thTexBlendMode",
+            "_Main5thTexAlphaMode",
+            "_Main5thEnableLighting",
+            "_Main5thDistanceFade",
+            "_AudioLink2Main5th"
+        };
+        
+        readonly string[] mainColor6thCategory = new string[]
+        {
+            "_Color6th",
+            "_Main6thTex",
+            "_Main6thTexAngle",
+            "_Main6thTex_ScrollRotate",
+            "_Main6thTex_UVMode",
+            "_Main6thTex_Cull",
+            "_Main6thTexDecalAnimation",
+            "_Main6thTexDecalSubParam",
+            "_Main6thTexIsDecal",
+            "_Main6thTexIsLeftOnly",
+            "_Main6thTexIsRightOnly",
+            "_Main6thTexShouldCopy",
+            "_Main6thTexShouldFlipMirror",
+            "_Main6thTexShouldFlipCopy",
+            "_Main6thTexIsMSDF",
+            "_Main6thBlendMask",
+            "_Main6thTexBlendMode",
+            "_Main6thTexAlphaMode",
+            "_Main6thEnableLighting",
+            "_Main6thDistanceFade",
+            "_AudioLink2Main6th"
+        };
+        
+        readonly string[] bump3rdMapCategory = new string[]
+        {
+            "_Bump3rdMap",
+            "_Bump3rdMap_UVMode",
+            "_Bump3rdScale",
+            "_Bump3rdScaleMask"
+        };
+        
+        readonly string[] matCap3rdCategory = new string[]
+        {
+            "_MatCap3rdColor",
+            "_MatCap3rdTex",
+            "_MatCap3rdMainStrength",
+            "_MatCap3rdBlendUV1",
+            "_MatCap3rdZRotCancel",
+            "_MatCap3rdPerspective",
+            "_MatCap3rdVRParallaxStrength",
+            "_MatCap3rdBlend",
+            "_MatCap3rdBlendMask",
+            "_MatCap3rdEnableLighting",
+            "_MatCap3rdShadowMask",
+            "_MatCap3rdBackfaceMask",
+            "_MatCap3rdLod",
+            "_MatCap3rdBlendMode",
+            "_MatCap3rdApplyTransparency",
+            "_MatCap3rdNormalStrength",
+            "_MatCap3rdCustomNormal",
+            "_MatCap3rdBumpMap",
+            "_MatCap3rdBumpScale",
+            "_Anisotropy2MatCap3rd"
+        };
+        
+        readonly string[] matCap4thCategory = new string[]
+        {
+            "_MatCap4thColor",
+            "_MatCap4thTex",
+            "_MatCap4thMainStrength",
+            "_MatCap4thBlendUV1",
+            "_MatCap4thZRotCancel",
+            "_MatCap4thPerspective",
+            "_MatCap4thVRParallaxStrength",
+            "_MatCap4thBlend",
+            "_MatCap4thBlendMask",
+            "_MatCap4thEnableLighting",
+            "_MatCap4thShadowMask",
+            "_MatCap4thBackfaceMask",
+            "_MatCap4thLod",
+            "_MatCap4thBlendMode",
+            "_MatCap4thApplyTransparency",
+            "_MatCap4thNormalStrength",
+            "_MatCap4thCustomNormal",
+            "_MatCap4thBumpMap",
+            "_MatCap4thBumpScale",
+            "_Anisotropy2MatCap4th"
+        };
+        
+        readonly string[] glitter2ndCategory = new string[]
+        {
+            "_Glitter2ndUVMode",
+            "_Glitter2ndColor",
+            "_Glitter2ndColorTex",
+            "_Glitter2ndColorTex_UVMode",
+            "_Glitter2ndMainStrength",
+            "_Glitter2ndNormalStrength",
+            "_Glitter2ndScaleRandomize",
+            "_Glitter2ndApplyShape",
+            "_Glitter2ndShapeTex",
+            "_Glitter2ndAtras",
+            "_Glitter2ndAngleRandomize",
+            "_Glitter2ndParams1",
+            "_Glitter2ndParams2",
+            "_Glitter2ndPostContrast",
+            "_Glitter2ndSensitivity",
+            "_Glitter2ndEnableLighting",
+            "_Glitter2ndShadowMask",
+            "_Glitter2ndBackfaceMask",
+            "_Glitter2ndApplyTransparency",
+            "_Glitter2ndVRParallaxStrength"
+        };
 
 
         private MaterialProperty useMain4thTex;
@@ -117,6 +273,7 @@ namespace lilToon
         private MaterialProperty matCap3rdCustomNormal;
         private MaterialProperty matCap3rdBumpMap;
         private MaterialProperty matCap3rdBumpScale;
+        private MaterialProperty anisotropy2MatCap3rd;
 
         private MaterialProperty useMatCap4th;
         private MaterialProperty matCap4thColor;
@@ -138,6 +295,7 @@ namespace lilToon
         private MaterialProperty matCap4thCustomNormal;
         private MaterialProperty matCap4thBumpMap;
         private MaterialProperty matCap4thBumpScale;
+        private MaterialProperty anisotropy2MatCap4th;
 
         private MaterialProperty useGlitter2nd;
         private MaterialProperty glitter2ndUVMode;
@@ -160,6 +318,165 @@ namespace lilToon
         private MaterialProperty glitter2ndBackfaceMask;
         private MaterialProperty glitter2ndApplyTransparency;
         private MaterialProperty glitter2ndVRParallaxStrength;
+        
+        // ▼ コピー／ペースト用バッファ
+        Dictionary<string, object> copyBuffer = new Dictionary<string, object>();
+        
+        void CopyCategory(string[] props, Material material)
+        {
+            copyBuffer.Clear();
+
+            foreach (var prop in props)
+            {
+                if (!material.HasProperty(prop)) continue;
+                int idx = material.shader.FindPropertyIndex(prop);
+                if (idx < 0) continue;
+
+                var type = material.shader.GetPropertyType(idx);
+
+                switch (type)
+                {
+                    case ShaderPropertyType.Color:
+                        copyBuffer[prop] = material.GetColor(prop);
+                        break;
+
+                    case ShaderPropertyType.Float:
+                    case ShaderPropertyType.Range:
+                        copyBuffer[prop] = material.GetFloat(prop);
+                        break;
+
+                    case ShaderPropertyType.Vector:
+                        copyBuffer[prop] = material.GetVector(prop);
+                        break;
+
+                    case ShaderPropertyType.Texture:
+                        copyBuffer[prop] = new TexturePack(
+                            material.GetTexture(prop),
+                            material.GetTextureOffset(prop),
+                            material.GetTextureScale(prop)
+                        );
+                        break;
+                }
+            }
+
+            EditorUtility.DisplayDialog(
+                "Copy Custom Property",
+                "Properties copied.",
+                "OK"
+            );
+        }
+
+        class TexturePack
+        {
+            public Texture tex;
+            public Vector2 offset;
+            public Vector2 scale;
+
+            public TexturePack(Texture t, Vector2 o, Vector2 s)
+            {
+                tex = t;
+                offset = o;
+                scale = s;
+            }
+        }
+        
+        void PasteCategory(string[] props, Material material)
+        {
+            if (copyBuffer.Count == 0)
+            {
+                EditorUtility.DisplayDialog("Paste Custom Property", "Please copy it first.", "OK");
+                return;
+            }
+
+            if (!EditorUtility.DisplayDialog(
+                "Paste Confirmation",
+                "Overwrite with the copied content.\n\nよろしいですか？",
+                "Paste",
+                "Cancel"))
+            {
+                return;
+            }
+
+            Undo.RecordObject(material, "Paste Custom Property");
+
+            foreach (var prop in props)
+            {
+                if (!material.HasProperty(prop)) continue;
+                if (!copyBuffer.ContainsKey(prop)) continue;
+
+                var value = copyBuffer[prop];
+
+                if (value is Color col)
+                    material.SetColor(prop, col);
+
+                else if (value is float f)
+                    material.SetFloat(prop, f);
+
+                else if (value is Vector4 v)
+                    material.SetVector(prop, v);
+
+                else if (value is TexturePack pack)
+                {
+                    material.SetTexture(prop, pack.tex);
+                    material.SetTextureOffset(prop, pack.offset);
+                    material.SetTextureScale(prop, pack.scale);
+                }
+            }
+
+            EditorUtility.SetDirty(material);
+        }
+
+
+        
+        void ResetCategory(string[] props, Material material)
+        {
+            // Undo 対応
+            Undo.RecordObject(material, "Reset Custom Property");
+
+            // Shader デフォルト値を取得
+            Material defaultMat = material.shader != null
+                ? new Material(material.shader)
+                : null;
+
+            if (defaultMat == null) return;
+
+            foreach (var prop in props)
+            {
+                if (!material.HasProperty(prop)) continue;
+                int idx = material.shader.FindPropertyIndex(prop);
+                if (idx < 0) continue;
+
+                var type = material.shader.GetPropertyType(idx);
+
+                switch (type)
+                {
+                    case ShaderPropertyType.Color:
+                        material.SetColor(prop, defaultMat.GetColor(prop));
+                        break;
+
+                    case ShaderPropertyType.Float:
+                    case ShaderPropertyType.Range:
+                        material.SetFloat(prop, defaultMat.GetFloat(prop));
+                        break;
+
+                    case ShaderPropertyType.Vector:
+                        material.SetVector(prop, defaultMat.GetVector(prop));
+                        break;
+
+                    case ShaderPropertyType.Texture:
+                        material.SetTexture(prop, defaultMat.GetTexture(prop));
+                        material.SetTextureOffset(prop, defaultMat.GetTextureOffset(prop));
+                        material.SetTextureScale(prop, defaultMat.GetTextureScale(prop));
+                        break;
+                }
+            }
+
+            // Editor の Inspector を更新させる
+            EditorUtility.SetDirty(material);
+            UnityEngine.Object.DestroyImmediate(defaultMat);
+        }
+
+
         
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
@@ -269,6 +586,7 @@ namespace lilToon
             matCap3rdCustomNormal = FindProperty("_MatCap3rdCustomNormal", props);
             matCap3rdBumpMap = FindProperty("_MatCap3rdBumpMap", props);
             matCap3rdBumpScale = FindProperty("_MatCap3rdBumpScale", props);
+            anisotropy2MatCap3rd = FindProperty("_Anisotropy2MatCap3rd", props);
 
             useMatCap4th = FindProperty("_UseMatCap4th", props);
             matCap4thColor = FindProperty("_MatCap4thColor", props);
@@ -290,6 +608,7 @@ namespace lilToon
             matCap4thCustomNormal = FindProperty("_MatCap4thCustomNormal", props);
             matCap4thBumpMap = FindProperty("_MatCap4thBumpMap", props);
             matCap4thBumpScale = FindProperty("_MatCap4thBumpScale", props);
+            anisotropy2MatCap4th = FindProperty("_Anisotropy2MatCap4th", props);
 
             useGlitter2nd = FindProperty("_UseGlitter2nd", props);
             glitter2ndUVMode = FindProperty("_Glitter2ndUVMode", props);
@@ -333,38 +652,60 @@ namespace lilToon
                     if(useMain4thTex.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                            LocalizedPropertyTexture(colorRGBAContent, main4thTex, color4th);
-                        EditorGUI.indentLevel += 2;
-                            lilEditorGUI.LocalizedPropertyAlpha(color4th);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexIsMSDF);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTex_Cull);
-                        EditorGUI.indentLevel -= 2;
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thEnableLighting);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexBlendMode);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexAlphaMode);
-                            lilEditorGUI.DrawLine();
-                            lilEditorGUI.UV4Decal(m_MaterialEditor, main4thTexIsDecal, main4thTexIsLeftOnly, main4thTexIsRightOnly, main4thTexShouldCopy, main4thTexShouldFlipMirror, main4thTexShouldFlipCopy, main4thTex, main4thTex_ScrollRotate, main4thTexAngle, main4thTexDecalAnimation, main4thTexDecalSubParam, main4thTex_UVMode);
-                            lilEditorGUI.DrawLine();
-                            LocalizedPropertyTexture(maskBlendContent, main4thBlendMask);
-                        EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
-                        EditorGUI.indentLevel++;
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDistanceFade);
-                        EditorGUI.indentLevel--;
-                            /*lilEditorGUI.DrawLine();
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolveParams);
-                            if(main4thDissolveParams.vectorValue.x == 1.0f)                                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain4thDissolveMask, maskBlendContent, main4thDissolveMask);
-                            if(main4thDissolveParams.vectorValue.x == 2.0f && main4thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sPosition|2");
-                            if(main4thDissolveParams.vectorValue.x == 2.0f && main4thDissolveParams.vectorValue.y == 1.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sVector|2");
-                            if(main4thDissolveParams.vectorValue.x == 3.0f && main4thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sPosition|3");
-                            if(main4thDissolveParams.vectorValue.x == 3.0f && main4thDissolveParams.vectorValue.y == 1.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sVector|3");
-                            if(main4thDissolveParams.vectorValue.x != 0.0f)
-                            {
-                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain4thDissolveNoiseMask, noiseMaskContent, main4thDissolveNoiseMask, main4thDissolveNoiseStrength, main4thDissolveNoiseMask_ScrollRotate);
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolveColor);
-                            }*/
-                            lilEditorGUI.DrawLine();
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main4th);
-                            lilEditorGUI.DrawLine();
+                            lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, colorRGBAContent, main4thTex, color4th);
+                            EditorGUI.indentLevel += 2;
+                                lilEditorGUI.LocalizedPropertyAlpha(color4th);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexIsMSDF);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTex_Cull);
+                            EditorGUI.indentLevel -= 2;
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thEnableLighting);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexBlendMode);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thTexAlphaMode);
+                                lilEditorGUI.DrawLine();
+                                lilEditorGUI.UV4Decal(m_MaterialEditor, main4thTexIsDecal, main4thTexIsLeftOnly, main4thTexIsRightOnly, main4thTexShouldCopy, main4thTexShouldFlipMirror, main4thTexShouldFlipCopy, main4thTex, main4thTex_ScrollRotate, main4thTexAngle, main4thTexDecalAnimation, main4thTexDecalSubParam, main4thTex_UVMode);
+                                lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, maskBlendContent, main4thBlendMask);
+                                EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
+                            EditorGUI.indentLevel++;
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDistanceFade);
+                            EditorGUI.indentLevel--;
+                                /*lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolveParams);
+                                if(main4thDissolveParams.vectorValue.x == 1.0f)                                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain4thDissolveMask, maskBlendContent, main4thDissolveMask);
+                                if(main4thDissolveParams.vectorValue.x == 2.0f && main4thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sPosition|2");
+                                if(main4thDissolveParams.vectorValue.x == 2.0f && main4thDissolveParams.vectorValue.y == 1.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sVector|2");
+                                if(main4thDissolveParams.vectorValue.x == 3.0f && main4thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sPosition|3");
+                                if(main4thDissolveParams.vectorValue.x == 3.0f && main4thDissolveParams.vectorValue.y == 1.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolvePos, "sVector|3");
+                                if(main4thDissolveParams.vectorValue.x != 0.0f)
+                                {
+                                    lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain4thDissolveNoiseMask, noiseMaskContent, main4thDissolveNoiseMask, main4thDissolveNoiseStrength, main4thDissolveNoiseMask_ScrollRotate);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main4thDissolveColor);
+                                }*/
+                                lilEditorGUI.DrawLine();
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main4th);
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Copy MainColor 4th"))
+                                    {
+                                        CopyCategory(mainColor4thCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Paste MainColor 4th"))
+                                    {
+                                        PasteCategory(mainColor4thCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Reset MainColor 4th"))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                            "Reset Confirmation",
+                                            "MainColor 4th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                            "Reset",
+                                            "Cancel"))
+                                        {
+                                            ResetCategory(mainColor4thCategory, material);
+                                        }
+                                    }
+                                lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
@@ -374,7 +715,7 @@ namespace lilToon
                     if(useMain5thTex.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                            LocalizedPropertyTexture(colorRGBAContent, main5thTex, color5th);
+                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, colorRGBAContent, main5thTex, color5th);
                             EditorGUI.indentLevel += 2;
                                 lilEditorGUI.LocalizedPropertyAlpha(color5th);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thTexIsMSDF);
@@ -383,15 +724,15 @@ namespace lilToon
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thEnableLighting);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thTexBlendMode);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thTexAlphaMode);
-                                lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
                                 lilEditorGUI.UV4Decal(m_MaterialEditor, main5thTexIsDecal, main5thTexIsLeftOnly, main5thTexIsRightOnly, main5thTexShouldCopy, main5thTexShouldFlipMirror, main5thTexShouldFlipCopy, main5thTex, main5thTex_ScrollRotate, main5thTexAngle, main5thTexDecalAnimation, main5thTexDecalSubParam, main5thTex_UVMode);
-                                lilEditorGUI.DrawLine();
-                                LocalizedPropertyTexture(maskBlendContent, main5thBlendMask);
+                            lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, maskBlendContent, main5thBlendMask);
                             EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
                             EditorGUI.indentLevel++;
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thDistanceFade);
                             EditorGUI.indentLevel--;
-                                /*lilEditorGUI.DrawLine();
+                            /*lilEditorGUI.DrawLine();
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thDissolveParams);
                                 if(main5thDissolveParams.vectorValue.x == 1.0f)                                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain5thDissolveMask, maskBlendContent, main5thDissolveMask);
                                 if(main5thDissolveParams.vectorValue.x == 2.0f && main5thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thDissolvePos, "sPosition|2");
@@ -403,9 +744,31 @@ namespace lilToon
                                     lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain5thDissolveNoiseMask, noiseMaskContent, main5thDissolveNoiseMask, main5thDissolveNoiseStrength, main5thDissolveNoiseMask_ScrollRotate);
                                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, main5thDissolveColor);
                                 }*/
-                                lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main5th);
-                                lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Copy MainColor 5th"))
+                                {
+                                    CopyCategory(mainColor5thCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Paste MainColor 5th"))
+                                {
+                                    PasteCategory(mainColor5thCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Reset MainColor 5th"))
+                                {
+                                    if (EditorUtility.DisplayDialog(
+                                        "Reset Confirmation",
+                                        "MainColor 5th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "Reset",
+                                        "Cancel"))
+                                    {
+                                        ResetCategory(mainColor5thCategory, material);
+                                    }
+                                }
+                            lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
@@ -415,7 +778,7 @@ namespace lilToon
                     if(useMain6thTex.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                            LocalizedPropertyTexture(colorRGBAContent, main6thTex, color6th);
+                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, colorRGBAContent, main6thTex, color6th);
                             EditorGUI.indentLevel += 2;
                                 lilEditorGUI.LocalizedPropertyAlpha(color6th);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexIsMSDF);
@@ -424,15 +787,15 @@ namespace lilToon
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thEnableLighting);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexBlendMode);
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexAlphaMode);
-                                lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
                                 lilEditorGUI.UV4Decal(m_MaterialEditor, main6thTexIsDecal, main6thTexIsLeftOnly, main6thTexIsRightOnly, main6thTexShouldCopy, main6thTexShouldFlipMirror, main6thTexShouldFlipCopy, main6thTex, main6thTex_ScrollRotate, main6thTexAngle, main6thTexDecalAnimation, main6thTexDecalSubParam, main6thTex_UVMode);
-                                lilEditorGUI.DrawLine();
-                                LocalizedPropertyTexture(maskBlendContent, main6thBlendMask);
+                            lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, maskBlendContent, main6thBlendMask);
                             EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
                             EditorGUI.indentLevel++;
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDistanceFade);
                             EditorGUI.indentLevel--;
-                                /*lilEditorGUI.DrawLine();
+                            /*lilEditorGUI.DrawLine();
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDissolveParams);
                                 if(main6thDissolveParams.vectorValue.x == 1.0f)                                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain6thDissolveMask, maskBlendContent, main6thDissolveMask);
                                 if(main6thDissolveParams.vectorValue.x == 2.0f && main6thDissolveParams.vectorValue.y == 0.0f) lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDissolvePos, "sPosition|2");
@@ -444,8 +807,30 @@ namespace lilToon
                                     lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMain6thDissolveNoiseMask, noiseMaskContent, main6thDissolveNoiseMask, main6thDissolveNoiseStrength, main6thDissolveNoiseMask_ScrollRotate);
                                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDissolveColor);
                                 }*/
-                                lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
                                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main6th);
+                            lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Copy MainColor 6th"))
+                                    {
+                                        CopyCategory(mainColor6thCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Paste MainColor 6th"))
+                                    {
+                                        PasteCategory(mainColor6thCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Reset MainColor 6th"))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                            "Reset Confirmation",
+                                            "MainColor 6th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                            "Reset",
+                                            "Cancel"))
+                                        {
+                                            ResetCategory(mainColor6thCategory, material);
+                                        }
+                                    }
                                 lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
@@ -459,6 +844,29 @@ namespace lilToon
                             lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowBump3rdMap, normalMapContent, bump3rdMap, bump3rdScale, bump3rdMap_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                         lilEditorGUI.DrawLine();
                             lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowBump3rdScaleMask, maskStrengthContent, bump3rdScaleMask);
+                        lilEditorGUI.DrawLine();
+                            if (GUILayout.Button("Copy NormalMap 3rd"))
+                            {
+                                CopyCategory(bump3rdMapCategory, material);
+                            }
+                        lilEditorGUI.DrawLine();
+                            if (GUILayout.Button("Paste NormalMap 3rd"))
+                            {
+                                PasteCategory(bump3rdMapCategory, material);
+                            }
+                        lilEditorGUI.DrawLine();
+                            if (GUILayout.Button("Reset NormalMap 3rd"))
+                            {
+                                if (EditorUtility.DisplayDialog(
+                                    "Reset Confirmation",
+                                    "NormalMap 3rd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                    "Reset",
+                                    "Cancel"))
+                                {
+                                    ResetCategory(bump3rdMapCategory, material);
+                                }
+                            }
+                        lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
@@ -468,28 +876,53 @@ namespace lilToon
                     if(useMatCap3rd.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                            lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdUV, matcapContent, matCap3rdTex, matCap3rdColor, matCap3rdBlendUV1, matCap3rdZRotCancel, matCap3rdPerspective, matCap3rdVRParallaxStrength);
-                            lilEditorGUI.LocalizedPropertyAlpha(matCap3rdColor);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdMainStrength);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdNormalStrength);
+                                lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdUV, matcapContent, matCap3rdTex, matCap3rdColor, matCap3rdBlendUV1, matCap3rdZRotCancel, matCap3rdPerspective, matCap3rdVRParallaxStrength);
+                                lilEditorGUI.LocalizedPropertyAlpha(matCap3rdColor);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdMainStrength);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdNormalStrength);
+                                lilEditorGUI.DrawLine();
+                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdBlendMask, maskBlendRGBContent, matCap3rdBlendMask, matCap3rdBlend);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdEnableLighting);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdShadowMask);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdBackfaceMask);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdLod);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdBlendMode);
+                                if(matCap3rdEnableLighting.floatValue != 0.0f && matCap3rdBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCap3rdBlending")))
+                                {
+                                    matCap3rdEnableLighting.floatValue = 0.0f;
+                                }
+                                if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdApplyTransparency);
                             lilEditorGUI.DrawLine();
-                            lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdBlendMask, maskBlendRGBContent, matCap3rdBlendMask, matCap3rdBlend);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdEnableLighting);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdShadowMask);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdBackfaceMask);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdLod);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdBlendMode);
-                            if(matCap3rdEnableLighting.floatValue != 0.0f && matCap3rdBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCap3rdBlending")))
-                            {
-                                matCap3rdEnableLighting.floatValue = 0.0f;
-                            }
-                            if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdApplyTransparency);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdCustomNormal);
+                                if(matCap3rdCustomNormal.floatValue == 1)
+                                {
+                                    lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdBumpMap, normalMapContent, matCap3rdBumpMap, matCap3rdBumpScale);
+                                }
                             lilEditorGUI.DrawLine();
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap3rdCustomNormal);
-                            if(matCap3rdCustomNormal.floatValue == 1)
-                            {
-                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap3rdBumpMap, normalMapContent, matCap3rdBumpMap, matCap3rdBumpScale);
-                            }
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, anisotropy2MatCap3rd);
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Copy MatCap 3rd"))
+                                {
+                                    CopyCategory(matCap3rdCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Paste MatCap 3rd"))
+                                {
+                                    PasteCategory(matCap3rdCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Reset MatCap 3rd"))
+                                {
+                                    if (EditorUtility.DisplayDialog(
+                                        "Reset Confirmation",
+                                        "MatCap 3rd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "Reset",
+                                        "Cancel"))
+                                    {
+                                        ResetCategory(matCap3rdCategory, material);
+                                    }
+                                }
+                            lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
@@ -499,28 +932,53 @@ namespace lilToon
                     if(useMatCap4th.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                            lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thUV, matcapContent, matCap4thTex, matCap4thColor, matCap4thBlendUV1, matCap4thZRotCancel, matCap4thPerspective, matCap4thVRParallaxStrength);
-                            lilEditorGUI.LocalizedPropertyAlpha(matCap4thColor);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thMainStrength);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thNormalStrength);
+                                lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thUV, matcapContent, matCap4thTex, matCap4thColor, matCap4thBlendUV1, matCap4thZRotCancel, matCap4thPerspective, matCap4thVRParallaxStrength);
+                                lilEditorGUI.LocalizedPropertyAlpha(matCap4thColor);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thMainStrength);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thNormalStrength);
                             lilEditorGUI.DrawLine();
-                            lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thBlendMask, maskBlendRGBContent, matCap4thBlendMask, matCap4thBlend);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thEnableLighting);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thShadowMask);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thBackfaceMask);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thLod);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thBlendMode);
-                            if(matCap4thEnableLighting.floatValue != 0.0f && matCap4thBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCap4thBlending")))
-                            {
-                                matCap4thEnableLighting.floatValue = 0.0f;
-                            }
-                            if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thApplyTransparency);
+                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thBlendMask, maskBlendRGBContent, matCap4thBlendMask, matCap4thBlend);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thEnableLighting);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thShadowMask);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thBackfaceMask);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thLod);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thBlendMode);
+                                if(matCap4thEnableLighting.floatValue != 0.0f && matCap4thBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCap4thBlending")))
+                                {
+                                    matCap4thEnableLighting.floatValue = 0.0f;
+                                }
+                                if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thApplyTransparency);
                             lilEditorGUI.DrawLine();
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thCustomNormal);
-                            if(matCap4thCustomNormal.floatValue == 1)
-                            {
-                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thBumpMap, normalMapContent, matCap4thBumpMap, matCap4thBumpScale);
-                            }
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, matCap4thCustomNormal);
+                                if(matCap4thCustomNormal.floatValue == 1)
+                                {
+                                    lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowMatCap4thBumpMap, normalMapContent, matCap4thBumpMap, matCap4thBumpScale);
+                                }
+                            lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, anisotropy2MatCap4th);
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Copy MatCap 4th"))
+                                {
+                                    CopyCategory(matCap4thCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Paste MatCap 4th"))
+                                {
+                                    PasteCategory(matCap4thCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Reset MatCap 4th"))
+                                {
+                                    if (EditorUtility.DisplayDialog(
+                                        "Reset Confirmation",
+                                        "MatCap 4th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "Reset",
+                                        "Cancel"))
+                                    {
+                                        ResetCategory(matCap4thCategory, material);
+                                    }
+                                }
+                            lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
@@ -530,65 +988,88 @@ namespace lilToon
                     if(useGlitter2nd.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndUVMode);
-                        lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowGlitter2ndColorTex, colorMaskRGBAContent, glitter2ndColorTex, glitter2ndColor, glitter2ndColorTex_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
-                        EditorGUI.indentLevel++;
-                        lilEditorGUI.LocalizedPropertyAlpha(glitter2ndColor);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndMainStrength);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndEnableLighting);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndShadowMask);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndBackfaceMask);
-                        if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndApplyTransparency);
-                        EditorGUI.indentLevel--;
-                        lilEditorGUI.DrawLine();
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndApplyShape);
-                        if(glitter2ndApplyShape.floatValue > 0.5f)
-                        {
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndUVMode);
+                                lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowGlitter2ndColorTex, colorMaskRGBAContent, glitter2ndColorTex, glitter2ndColor, glitter2ndColorTex_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                             EditorGUI.indentLevel++;
-                            lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowGlitter2ndShapeTex, customMaskContent, glitter2ndShapeTex);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndAtras);
-                            lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndAngleRandomize);
+                                lilEditorGUI.LocalizedPropertyAlpha(glitter2ndColor);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndMainStrength);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndEnableLighting);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndShadowMask);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndBackfaceMask);
+                                if(isTransparent) lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndApplyTransparency);
                             EditorGUI.indentLevel--;
-                        }
-                        lilEditorGUI.DrawLine();
+                            lilEditorGUI.DrawLine();
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndApplyShape);
+                                if(glitter2ndApplyShape.floatValue > 0.5f)
+                                {
+                                    EditorGUI.indentLevel++;
+                                        lilEditorGUI.TextureGUI(m_MaterialEditor, false, ref ltmedSet.isShowGlitter2ndShapeTex, customMaskContent, glitter2ndShapeTex);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndAtras);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndAngleRandomize);
+                                    EditorGUI.indentLevel--;
+                                }
+                            lilEditorGUI.DrawLine();
 
-                        // Param1
-                        var scale = new Vector2(256.0f/glitter2ndParams1.vectorValue.x, 256.0f/glitter2ndParams1.vectorValue.y);
-                        float size = glitter2ndParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitter2ndParams1.vectorValue.z);
-                        float density = Mathf.Sqrt(1.0f / glitter2ndParams1.vectorValue.w) / 1.5f;
-                        float sensitivity = lilEditorGUI.RoundFloat1000000(glitter2ndSensitivity.floatValue / density);
-                        density = lilEditorGUI.RoundFloat1000000(density);
-                        EditorGUIUtility.wideMode = true;
+                                // Param1
+                                var scale = new Vector2(256.0f/glitter2ndParams1.vectorValue.x, 256.0f/glitter2ndParams1.vectorValue.y);
+                                float size = glitter2ndParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitter2ndParams1.vectorValue.z);
+                                float density = Mathf.Sqrt(1.0f / glitter2ndParams1.vectorValue.w) / 1.5f;
+                                float sensitivity = lilEditorGUI.RoundFloat1000000(glitter2ndSensitivity.floatValue / density);
+                                density = lilEditorGUI.RoundFloat1000000(density);
+                            EditorGUIUtility.wideMode = true;
 
-                        EditorGUI.BeginChangeCheck();
-                        EditorGUI.showMixedValue = glitter2ndParams1.hasMixedValue || glitter2ndSensitivity.hasMixedValue;
-                        scale = lilEditorGUI.Vector2Field(Event.current.alt ? glitter2ndParams1.name + ".xy" : GetLoc("sScale"), scale);
-                        size = lilEditorGUI.Slider(Event.current.alt ? glitter2ndParams1.name + ".z" : GetLoc("sParticleSize"), size, 0.0f, 2.0f);
-                        EditorGUI.showMixedValue = false;
+                            EditorGUI.BeginChangeCheck();
+                            EditorGUI.showMixedValue = glitter2ndParams1.hasMixedValue || glitter2ndSensitivity.hasMixedValue;
+                                scale = lilEditorGUI.Vector2Field(Event.current.alt ? glitter2ndParams1.name + ".xy" : GetLoc("sScale"), scale);
+                                size = lilEditorGUI.Slider(Event.current.alt ? glitter2ndParams1.name + ".z" : GetLoc("sParticleSize"), size, 0.0f, 2.0f);
+                            EditorGUI.showMixedValue = false;
 
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndScaleRandomize);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndScaleRandomize);
 
-                        EditorGUI.showMixedValue = glitter2ndParams1.hasMixedValue || glitter2ndSensitivity.hasMixedValue;
-                        density = lilEditorGUI.Slider(Event.current.alt ? glitter2ndParams1.name + ".w" : GetLoc("sDensity"), density, 0.001f, 1.0f);
-                        sensitivity = lilEditorGUI.FloatField(Event.current.alt ? glitter2ndSensitivity.name : GetLoc("sSensitivity"), sensitivity);
-                        EditorGUI.showMixedValue = false;
+                            EditorGUI.showMixedValue = glitter2ndParams1.hasMixedValue || glitter2ndSensitivity.hasMixedValue;
+                                density = lilEditorGUI.Slider(Event.current.alt ? glitter2ndParams1.name + ".w" : GetLoc("sDensity"), density, 0.001f, 1.0f);
+                                sensitivity = lilEditorGUI.FloatField(Event.current.alt ? glitter2ndSensitivity.name : GetLoc("sSensitivity"), sensitivity);
+                            EditorGUI.showMixedValue = false;
 
-                        if(EditorGUI.EndChangeCheck())
-                        {
-                            scale.x = Mathf.Max(scale.x, 0.0000001f);
-                            scale.y = Mathf.Max(scale.y, 0.0000001f);
-                            glitter2ndParams1.vectorValue = new Vector4(256.0f/scale.x, 256.0f/scale.y, size * size, 1.0f / (density * density * 1.5f * 1.5f));
-                            glitter2ndSensitivity.floatValue = Mathf.Max(sensitivity * density, 0.25f);
-                        }
+                            if(EditorGUI.EndChangeCheck())
+                            {
+                                scale.x = Mathf.Max(scale.x, 0.0000001f);
+                                scale.y = Mathf.Max(scale.y, 0.0000001f);
+                                glitter2ndParams1.vectorValue = new Vector4(256.0f/scale.x, 256.0f/scale.y, size * size, 1.0f / (density * density * 1.5f * 1.5f));
+                                glitter2ndSensitivity.floatValue = Mathf.Max(sensitivity * density, 0.25f);
+                            }
 
-                        // Other
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndParams2);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndVRParallaxStrength);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndNormalStrength);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndPostContrast);
+                                // Other
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndParams2);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndVRParallaxStrength);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndNormalStrength);
+                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, glitter2ndPostContrast);
+                                lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Copy Glitter 2nd"))
+                                {
+                                    CopyCategory(glitter2ndCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Paste Glitter 2nd"))
+                                {
+                                    PasteCategory(glitter2ndCategory, material);
+                                }
+                            lilEditorGUI.DrawLine();
+                                if (GUILayout.Button("Reset Glitter 2nd"))
+                                {
+                                    if (EditorUtility.DisplayDialog(
+                                        "Reset Confirmation",
+                                        "Glitter 2nd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "Reset",
+                                        "Cancel"))
+                                    {
+                                        ResetCategory(glitter2ndCategory, material);
+                                    }
+                                }
+                            lilEditorGUI.DrawLine();
                         EditorGUILayout.EndVertical();
                     }
-                    EditorGUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
             }
         }
 
