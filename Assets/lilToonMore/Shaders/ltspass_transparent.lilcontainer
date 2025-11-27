@@ -10,7 +10,6 @@ Shader "Hidden/*LIL_SHADER_NAME*/ltspass_transparent"
         // 2 : Transparent
         #define LIL_RENDER 2
 
-        #include "custom_macro.hlsl"
         #include "custom.hlsl"
     ENDHLSL
 
