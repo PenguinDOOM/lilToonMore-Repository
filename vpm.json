@@ -29,7 +29,7 @@
                     "license": "MIT",
                     "keywords": ["Toon", "Shader", "Material"],
                     "url" : "https://github.com/PenguinDOOM/lilToonMore/releases/download/1.0.0/jp.penguin.liltoonmore-1.0.0.zip?",
-                    "repo": "https://github.com/PenguinDOOM/lilToonMore/blob/master/vpm.json",
+                    "repo": "https://raw.githubusercontent.com/PenguinDOOM/lilToonMore/refs/heads/master/vpm.json",
                     "legacyFolders" : 
                     {
                         "Assets\\lilToonMore" : "2d67ded333893654ca23a5a37c59dfb2"
