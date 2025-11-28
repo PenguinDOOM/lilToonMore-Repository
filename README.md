@@ -1,4 +1,4 @@
-# LilToonMore
+# lilToonMore
 
 ### VCCへの追加方法  
 ブラウザのURLに`vcc://vpm/addRepo?url=https://raw.githubusercontent.com/PenguinDOOM/lilToonMore/refs/heads/master/vpm.json`を貼り付ける  
