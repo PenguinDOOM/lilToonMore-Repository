@@ -686,7 +686,7 @@ namespace lilToon
                                     {
                                         if (EditorUtility.DisplayDialog(
                                             "Reset Confirmation",
-                                            "MainColor 4th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                            "MainColor 4th will be reset to their default values. \nAre you sure?",
                                             "Reset",
                                             "Cancel"))
                                         {
@@ -737,7 +737,7 @@ namespace lilToon
                                 {
                                     if (EditorUtility.DisplayDialog(
                                         "Reset Confirmation",
-                                        "MainColor 5th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "MainColor 5th will be reset to their default values. \nAre you sure?",
                                         "Reset",
                                         "Cancel"))
                                     {
@@ -788,7 +788,7 @@ namespace lilToon
                                     {
                                         if (EditorUtility.DisplayDialog(
                                             "Reset Confirmation",
-                                            "MainColor 6th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                            "MainColor 6th will be reset to their default values. \nAre you sure?",
                                             "Reset",
                                             "Cancel"))
                                         {
@@ -823,7 +823,7 @@ namespace lilToon
                             {
                                 if (EditorUtility.DisplayDialog(
                                     "Reset Confirmation",
-                                    "NormalMap 3rd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                    "NormalMap 3rd will be reset to their default values. \nAre you sure?",
                                     "Reset",
                                     "Cancel"))
                                 {
@@ -879,7 +879,7 @@ namespace lilToon
                                 {
                                     if (EditorUtility.DisplayDialog(
                                         "Reset Confirmation",
-                                        "MatCap 3rd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "MatCap 3rd will be reset to their default values. \nAre you sure?",
                                         "Reset",
                                         "Cancel"))
                                     {
@@ -935,7 +935,7 @@ namespace lilToon
                                 {
                                     if (EditorUtility.DisplayDialog(
                                         "Reset Confirmation",
-                                        "MatCap 4th will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "MatCap 4th will be reset to their default values. \nAre you sure?",
                                         "Reset",
                                         "Cancel"))
                                     {
@@ -1023,7 +1023,7 @@ namespace lilToon
                                 {
                                     if (EditorUtility.DisplayDialog(
                                         "Reset Confirmation",
-                                        "Glitter 2nd will be reset to their default values. \nCannot be undone. Are you sure?",
+                                        "Glitter 2nd will be reset to their default values. \nAre you sure?",
                                         "Reset",
                                         "Cancel"))
                                     {
