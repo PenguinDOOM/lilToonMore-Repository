@@ -1226,20 +1226,6 @@ namespace lilToon
         
         public class lilToonMoreEditorSetting : ScriptableSingleton<lilToonMoreEditorSetting>
         {
-            /*public bool isShowMain4thDissolveMask       = false;
-            public bool isShowMain4thDissolveNoiseMask  = false;
-            public bool isShowMain5thDissolveMask       = false;
-            public bool isShowMain5thDissolveNoiseMask  = false;
-            public bool isShowMain6thDissolveMask       = false;
-            public bool isShowMain6thDissolveNoiseMask  = false;
-            public bool isShowMain7thDissolveMask       = false;
-            public bool isShowMain7thDissolveNoiseMask  = false;
-            public bool isShowMain8thDissolveMask       = false;
-            public bool isShowMain8thDissolveNoiseMask  = false;
-            public bool isShowMain9thDissolveMask       = false;
-            public bool isShowMain9thDissolveNoiseMask  = false;
-            public bool isShowMain10thDissolveMask      = false;
-            public bool isShowMain10thDissolveNoiseMask = false;*/
             public bool isShowBump3rdMap                = false;
             public bool isShowBump3rdScaleMask          = false;
             public bool isShowMatCap3rdUV               = false;
