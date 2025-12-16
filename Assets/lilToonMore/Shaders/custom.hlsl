@@ -145,8 +145,8 @@
     float   _Glitter2ndBackfaceMask; \
     float   _Glitter2ndScaleRandomize; \
     uint    _Glitter2ndUVMode; \
+    uint    _Glitter2ndColorTex_UVMode; \
     bool    _UseGlitter2nd; \
-    bool    _Glitter2ndColorTex_UVMode; \
     bool    _Glitter2ndApplyTransparency; \
     bool    _Glitter2ndApplyShape; \
     bool    _Glitter2ndAngleRandomize;\
