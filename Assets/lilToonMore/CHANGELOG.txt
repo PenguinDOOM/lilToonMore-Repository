@@ -1,3 +1,13 @@
+2025/12/17
+Ver. 1.3.0
+Added Mole Drawer
+Added Emission 3rd
+Fixed an issue where warp could not be used with MainColor 3rd
+Fixed wrong data type for _Glitter2ndColorTex_UVMode
+Fixed inspector visual
+Changed to display MatCap 4th only when rendering mode is opaque
+Deleted MatCap 3rd/4th custom normal map for Emission 3rd
+
 2025/12/03
 Ver. 1.2.1
 Added Warp for each UV
