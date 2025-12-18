@@ -55,7 +55,7 @@
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main6th
-        [lilToggleLeft] _UseMain6thTex                           ("MainColor 6th", Int) = 0
+        [lilToggleLeft] _UseMain6thTex                           ("MainColor 6th Opaque only", Int) = 0
         [lilHDR]        _Color6th                                ("sColor", Color) = (1,1,1,1)
                         _Main6thTex                              ("Texture", 2D) = "white" {}
         [lilAngle]      _Main6thTexAngle                         ("sAngle", Float) = 0
@@ -80,7 +80,7 @@
         
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap3rd
-        [lilToggleLeft] _UseBump3rdMap                           ("NormalMap3rd", Int) = 0
+        [lilToggleLeft] _UseBump3rdMap                           ("NormalMap 3rd", Int) = 0
         [Normal]        _Bump3rdMap                              ("Normal Map", 2D) = "bump" {}
         [lilEnum]       _Bump3rdMap_UVMode                       ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
                         _Bump3rdScale                            ("Scale", Range(-10,10)) = 1

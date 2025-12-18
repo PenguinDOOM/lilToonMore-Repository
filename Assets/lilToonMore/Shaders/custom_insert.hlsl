@@ -96,28 +96,50 @@
 #endif
 
 #if !defined(OVERRIDE_MAIN3RD)
-    #define OVERRIDE_MAIN3RD \
-        float4 color4th = 1.0; \
-        float4 color5th = 1.0; \
-        float4 color6th = 1.0; \
-        lilGetMain3rdMore(fd, color3rd, main3rdDissolveAlpha LIL_SAMP_IN(sampler_MainTex)); \
-        lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
-        lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
-        lilGetMain6th(fd, color6th LIL_SAMP_IN(sampler_MainTex)); \
-        lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+    #if LIL_RENDER != 0
+        #define OVERRIDE_MAIN3RD \
+            float4 color4th = 1.0; \
+            float4 color5th = 1.0; \
+            lilGetMain3rdMore(fd, color3rd, main3rdDissolveAlpha LIL_SAMP_IN(sampler_MainTex)); \
+            lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
+            lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
+            lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+    #else
+        #define OVERRIDE_MAIN3RD \
+            float4 color4th = 1.0; \
+            float4 color5th = 1.0; \
+            float4 color6th = 1.0; \
+            lilGetMain3rdMore(fd, color3rd, main3rdDissolveAlpha LIL_SAMP_IN(sampler_MainTex)); \
+            lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
+            lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
+            lilGetMain6th(fd, color6th LIL_SAMP_IN(sampler_MainTex)); \
+            lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+    #endif
 #endif
 
 #if !defined(LIL_OUTLINE)
     #if !defined(LIL_PASS_FORWARDADD)
-        #define BEFORE_RIMSHADE \
-            if(_UseMain4thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color4th.rgb, color4th.a - color4th.a * _Main4thEnableLighting, _Main4thTexBlendMode); \
-            if(_UseMain5thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color5th.rgb, color5th.a - color5th.a * _Main5thEnableLighting, _Main5thTexBlendMode); \
-            if(_UseMain6thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color6th.rgb, color6th.a - color6th.a * _Main6thEnableLighting, _Main6thTexBlendMode);
+        #if LIL_RENDER != 0
+            #define BEFORE_RIMSHADE \
+                if(_UseMain4thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color4th.rgb, color4th.a - color4th.a * _Main4thEnableLighting, _Main4thTexBlendMode); \
+                if(_UseMain5thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color5th.rgb, color5th.a - color5th.a * _Main5thEnableLighting, _Main5thTexBlendMode); 
+        #else
+            #define BEFORE_RIMSHADE \
+                if(_UseMain4thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color4th.rgb, color4th.a - color4th.a * _Main4thEnableLighting, _Main4thTexBlendMode); \
+                if(_UseMain5thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color5th.rgb, color5th.a - color5th.a * _Main5thEnableLighting, _Main5thTexBlendMode); \
+                if(_UseMain6thTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color6th.rgb, color6th.a - color6th.a * _Main6thEnableLighting, _Main6thTexBlendMode);
+        #endif
     #else
-        #define BEFORE_RIMSHADE \
-            if(_UseMain4thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color4th.a - color4th.a * _Main4thEnableLighting); \
-            if(_UseMain5thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color5th.a - color5th.a * _Main5thEnableLighting); \
-            if(_UseMain6thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color6th.a - color6th.a * _Main6thEnableLighting);
+        #if LIL_RENDER != 0
+            #define BEFORE_RIMSHADE \
+                if(_UseMain4thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color4th.a - color4th.a * _Main4thEnableLighting); \
+                if(_UseMain5thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color5th.a - color5th.a * _Main5thEnableLighting);
+        #else
+            #define BEFORE_RIMSHADE \
+                if(_UseMain4thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color4th.a - color4th.a * _Main4thEnableLighting); \
+                if(_UseMain5thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color5th.a - color5th.a * _Main5thEnableLighting); \
+                if(_UseMain6thTex) fd.col.rgb = lerp(fd.col.rgb, 0, color6th.a - color6th.a * _Main6thEnableLighting);
+        #endif
     #endif
 #endif
 

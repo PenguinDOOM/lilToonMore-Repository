@@ -1003,55 +1003,62 @@ namespace lilToon
                     }
                 EditorGUILayout.EndVertical();
                 
-                EditorGUILayout.BeginVertical(boxOuter);
-                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMain6thTex, false);
-                    if(useMain6thTex.floatValue == 1)
-                    {
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, colorRGBAContent, main6thTex, color6th);
-                            EditorGUI.indentLevel += 2;
-                                lilEditorGUI.LocalizedPropertyAlpha(color6th);
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexIsMSDF);
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTex_Cull);
-                            EditorGUI.indentLevel -= 2;
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thEnableLighting);
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexBlendMode);
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexAlphaMode);
-                            lilEditorGUI.DrawLine();
-                                lilEditorGUI.UV4Decal(m_MaterialEditor, main6thTexIsDecal, main6thTexIsLeftOnly, main6thTexIsRightOnly, main6thTexShouldCopy, main6thTexShouldFlipMirror, main6thTexShouldFlipCopy, main6thTex, main6thTex_ScrollRotate, main6thTexAngle, main6thTexDecalAnimation, main6thTexDecalSubParam, main6thTex_UVMode);
-                            lilEditorGUI.DrawLine();
-                                lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, maskBlendContent, main6thBlendMask);
-                            EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
-                            EditorGUI.indentLevel++;
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDistanceFade);
-                            EditorGUI.indentLevel--;
-                            lilEditorGUI.DrawLine();
-                                lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main6th);
-                            lilEditorGUI.DrawLine();
-                                if (GUILayout.Button("Copy MainColor 6th"))
-                                {
-                                    CopyCategory(mainColor6thCategory, material);
-                                }
-                            lilEditorGUI.DrawLine();
-                                if (GUILayout.Button("Paste MainColor 6th"))
-                                {
-                                    PasteCategory(mainColor6thCategory, material);
-                                }
-                            lilEditorGUI.DrawLine();
-                                if (GUILayout.Button("Reset MainColor 6th"))
-                                {
-                                    if (EditorUtility.DisplayDialog(
-                                        "Reset Confirmation",
-                                        "MainColor 6th will be reset to their default values. \nAre you sure?",
-                                        "Reset",
-                                        "Cancel"))
+                if(renderingModeBuf != RenderingMode.Opaque)
+                {
+                    GUILayout.Label(GetLoc("When using MainColor 6th, the rendering mode must be opaque"), wrapLabel);
+                }
+                else
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMain6thTex, false);
+                        if(useMain6thTex.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, colorRGBAContent, main6thTex, color6th);
+                                EditorGUI.indentLevel += 2;
+                                    lilEditorGUI.LocalizedPropertyAlpha(color6th);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexIsMSDF);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTex_Cull);
+                                EditorGUI.indentLevel -= 2;
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thEnableLighting);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexBlendMode);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thTexAlphaMode);
+                                lilEditorGUI.DrawLine();
+                                    lilEditorGUI.UV4Decal(m_MaterialEditor, main6thTexIsDecal, main6thTexIsLeftOnly, main6thTexIsRightOnly, main6thTexShouldCopy, main6thTexShouldFlipMirror, main6thTexShouldFlipCopy, main6thTex, main6thTex_ScrollRotate, main6thTexAngle, main6thTexDecalAnimation, main6thTexDecalSubParam, main6thTex_UVMode);
+                                lilEditorGUI.DrawLine();
+                                    lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, maskBlendContent, main6thBlendMask);
+                                EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
+                                EditorGUI.indentLevel++;
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, main6thDistanceFade);
+                                EditorGUI.indentLevel--;
+                                lilEditorGUI.DrawLine();
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, audioLink2Main6th);
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Copy MainColor 6th"))
                                     {
-                                        ResetCategory(mainColor6thCategory, material);
+                                        CopyCategory(mainColor6thCategory, material);
                                     }
-                                }
-                        EditorGUILayout.EndVertical();
-                    }
-                EditorGUILayout.EndVertical();
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Paste MainColor 6th"))
+                                    {
+                                        PasteCategory(mainColor6thCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Reset MainColor 6th"))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                            "Reset Confirmation",
+                                            "MainColor 6th will be reset to their default values. \nAre you sure?",
+                                            "Reset",
+                                            "Cancel"))
+                                        {
+                                            ResetCategory(mainColor6thCategory, material);
+                                        }
+                                    }
+                            EditorGUILayout.EndVertical();
+                        }
+                    EditorGUILayout.EndVertical();
+                }
                 
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useEmission3rd, false);
@@ -1182,7 +1189,7 @@ namespace lilToon
                 
                 if(renderingModeBuf != RenderingMode.Opaque)
                 {
-                    GUILayout.Label(GetLoc("When using MatCap4th, the rendering mode must be opaque"), wrapLabel);
+                    GUILayout.Label(GetLoc("When using MatCap 4th, the rendering mode must be opaque"), wrapLabel);
                 }
                 else
                 {
