@@ -18,7 +18,6 @@ namespace lilToon
         // Custom properties
         //private static bool isShowCustomProperties;
         private const string shaderName = "lilToonMore";
-        private static bool isShowCustomProperties;
         public static lilToonMoreEditorSetting ltmedSet { get { return lilToonMoreEditorSetting.instance; } }
         
 
@@ -899,10 +898,9 @@ namespace lilToon
             // customBox        box (similar to unity default box)
             // customToggleFont label for box
 
-            isShowCustomProperties = Foldout("lilToonMore Settings", "lilToonMore Settings", isShowCustomProperties);
-            if(isShowCustomProperties)
+            ltmedSet.isShowMain = lilEditorGUI.Foldout(GetLoc("sMainColorSetting"), ltmedSet.isShowMain);
+            if(ltmedSet.isShowMain)
             {
-                
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMain4thTex, false);
                     if(useMain4thTex.floatValue == 1)
@@ -1059,7 +1057,11 @@ namespace lilToon
                         }
                     EditorGUILayout.EndVertical();
                 }
-                
+            }
+            
+            ltmedSet.isShowEmission = lilEditorGUI.Foldout(GetLoc("sEmissionSetting"), ltmedSet.isShowEmission);
+            if(ltmedSet.isShowEmission)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useEmission3rd, false);
                     if(useEmission3rd.floatValue == 1)
@@ -1103,7 +1105,11 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
-                
+            }
+            
+            ltmedSet.isShowNormal = lilEditorGUI.Foldout(GetLoc("sNormalMapSetting"), ltmedSet.isShowNormal);
+            if(ltmedSet.isShowNormal)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useBump3rdMap, false);
                     if(useBump3rdMap.floatValue == 1)
@@ -1137,7 +1143,11 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
-                
+            }
+            
+            ltmedSet.isShowMatCap = lilEditorGUI.Foldout(GetLoc("sMatCapSetting"), ltmedSet.isShowMatCap);
+            if(ltmedSet.isShowMatCap)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMatCap3rd, false);
                     if(useMatCap3rd.floatValue == 1)
@@ -1242,7 +1252,11 @@ namespace lilToon
                         }
                     EditorGUILayout.EndVertical();
                 }
-                
+            }
+            
+            ltmedSet.isShowGlitter = lilEditorGUI.Foldout(GetLoc("sGlitterSetting"), ltmedSet.isShowGlitter);
+            if(ltmedSet.isShowGlitter)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useGlitter2nd);
                     if(useGlitter2nd.floatValue == 1)
@@ -1329,7 +1343,11 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
-                
+            }
+            
+            ltmedSet.isShowWarp = Foldout("UVワープ / UV Warp", "UVワープ / UV Warp", ltmedSet.isShowWarp);
+            if(ltmedSet.isShowWarp)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useWarp, false);
                     if(useWarp.floatValue == 1)
@@ -1391,7 +1409,11 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                     }
                 EditorGUILayout.EndVertical();
-                
+            }
+            
+            ltmedSet.isShowMole = Foldout("ほくろ / Mole", "ほくろ / Mole", ltmedSet.isShowMole);
+            if(ltmedSet.isShowMole)
+            {
                 EditorGUILayout.BeginVertical(boxOuter);
                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMole, false);
                     if(useMole.floatValue == 1)
@@ -1678,6 +1700,13 @@ namespace lilToon
             public bool isShowGlitter2ndShapeTex        = false;
             public bool isShowEmission3rdMap            = false;
             public bool isShowEmission3rdBlendMask      = false;
+            public bool isShowMain                      = false;
+            public bool isShowEmission                  = false;
+            public bool isShowNormal                    = false;
+            public bool isShowMatCap                    = false;
+            public bool isShowGlitter                   = false;
+            public bool isShowWarp                      = false;
+            public bool isShowMole                      = false;
         }
     }
 }
