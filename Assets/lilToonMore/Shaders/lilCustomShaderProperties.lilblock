@@ -246,3 +246,11 @@
                         _Mole10thRadius      ("Mole Radius", Range(0, 0.01)) = 0
                         _Mole10thBlur        ("Mole Blur", Range(0.0001, 0.005)) = 0.0002
         
+        //----------------------------------------------------------------------------------------------------------------------
+        // Light Based Alpha
+        [lilToggleLeft] _UseLightAlpha          ("Light Based Alpha", Int) = 0
+                        _LowestLightThreshold   ("Lowest Light Threshold", Range(0, 1.0)) = 0
+                        _HighestLightThreshold  ("Highest Light Threshold", Range(0, 0.9999)) = 0.9999
+        [lilToggle]     _LightAlphaInvert       ("Invert", Int) = 0
+        [lilToggle]     _LightAlphaMask         ("Apply to Alpha Mask Replace Mode", Int) = 0
+        

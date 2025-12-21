@@ -231,7 +231,12 @@
     bool    _UseMole7th; \
     bool    _UseMole8th; \
     bool    _UseMole9th; \
-    bool    _UseMole10th;
+    bool    _UseMole10th; \
+    float   _LowestLightThreshold; \
+    float   _HighestLightThreshold; \
+    bool    _UseLightAlpha; \
+    bool    _LightAlphaInvert; \
+    bool    _LightAlphaMask;
 
 
 

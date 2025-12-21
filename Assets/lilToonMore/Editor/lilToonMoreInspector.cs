@@ -266,6 +266,15 @@ namespace lilToon
             "_Mole10thBlur"
         };
         
+        readonly string[] lightAlphaCategory = new string[]
+        {
+            "_UseLightAlpha",
+            "_LowestLightThreshold",
+            "_HighestLightThreshold",
+            "_LightAlphaInvert",
+            "_LightAlphaMask"
+        };
+        
 
         private MaterialProperty useMain4thTex;
         private MaterialProperty color4th;
@@ -489,6 +498,12 @@ namespace lilToon
         private MaterialProperty mole10thPos;
         private MaterialProperty mole10thRadius;
         private MaterialProperty mole10thBlur;
+        
+        private MaterialProperty useLightAlpha;
+        private MaterialProperty lowestLightThreshold;
+        private MaterialProperty highestLightThreshold;
+        private MaterialProperty lightAlphaInvert;
+        private MaterialProperty lightAlphaMask;
         
         private MaterialProperty useBump2ndMap;
         private MaterialProperty useGlitter;
@@ -890,6 +905,12 @@ namespace lilToon
             mole10thRadius = FindProperty("_Mole10thRadius", props);
             mole10thBlur = FindProperty("_Mole10thBlur", props);
             
+            useLightAlpha = FindProperty("_UseLightAlpha", props);
+            lowestLightThreshold = FindProperty("_LowestLightThreshold", props);
+            highestLightThreshold = FindProperty("_HighestLightThreshold", props);
+            lightAlphaInvert = FindProperty("_LightAlphaInvert", props);
+            lightAlphaMask = FindProperty("_LightAlphaMask", props);
+            
             useBump2ndMap = FindProperty("_UseBump2ndMap", props);
             useGlitter = FindProperty("_UseGlitter", props);
             useEmission2nd = FindProperty("_UseEmission2nd", props);
@@ -1059,6 +1080,49 @@ namespace lilToon
                                             "Cancel"))
                                         {
                                             ResetCategory(mainColor6thCategory, material);
+                                        }
+                                    }
+                            EditorGUILayout.EndVertical();
+                        }
+                    EditorGUILayout.EndVertical();
+                }
+                
+                if(renderingModeBuf == RenderingMode.Opaque)
+                {
+                    GUILayout.Label(GetLoc("When using Light Based Alpha, the rendering mode must be anything other than opaque"), wrapLabel);
+                }
+                else
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, useLightAlpha, false);
+                        if(useLightAlpha.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lowestLightThreshold);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, highestLightThreshold);
+                                lilEditorGUI.DrawLine();
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightAlphaInvert);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightAlphaMask);
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Copy Light Based Alpha"))
+                                    {
+                                        CopyCategory(lightAlphaCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Paste Light Based Alpha"))
+                                    {
+                                        PasteCategory(lightAlphaCategory, material);
+                                    }
+                                lilEditorGUI.DrawLine();
+                                    if (GUILayout.Button("Reset Light Based Alpha"))
+                                    {
+                                        if (EditorUtility.DisplayDialog(
+                                            "Reset Confirmation",
+                                            "Light Based Alpha will be reset to their default values. \nAre you sure?",
+                                            "Reset",
+                                            "Cancel"))
+                                        {
+                                            ResetCategory(lightAlphaCategory, material);
                                         }
                                     }
                             EditorGUILayout.EndVertical();

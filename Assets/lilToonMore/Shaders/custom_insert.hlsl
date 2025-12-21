@@ -67,24 +67,53 @@
         lilGetMain3rdMore(fd, color3rd, main3rdDissolveAlpha LIL_SAMP_IN(sampler_MainTex));
 #endif
 
-#if !defined(BEFORE_ALPHAMASK)
-    #if LIL_RENDER != 0
-        #define BEFORE_ALPHAMASK \
-            float4 color4th = 1.0; \
-            float4 color5th = 1.0; \
-            lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
-            lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
-            lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+#if LIL_RENDER != 0
+    #define BEFORE_ALPHAMASK \
+        float4 color4th = 1.0; \
+        float4 color5th = 1.0; \
+        lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
+        lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
+        lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex)); \
+        float valueFactor = 1.0; \
+        if(_UseLightAlpha) \
+        { \
+                float value = max(fd.lightColor.r, max(fd.lightColor.g, fd.lightColor.b)); \
+                float lLT = min(_LowestLightThreshold, _HighestLightThreshold - 1e-5); \
+                float hLT = max(_HighestLightThreshold, _LowestLightThreshold + 1e-5); \
+                valueFactor = smoothstep(lLT, hLT, value); \
+                if(_LightAlphaInvert) valueFactor = 1.0 - valueFactor; \
+                fd.col.a *= valueFactor; \
+        }
+#else
+    #define BEFORE_ALPHAMASK \
+        float4 color4th = 1.0; \
+        float4 color5th = 1.0; \
+        float4 color6th = 1.0; \
+        lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
+        lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
+        lilGetMain6th(fd, color6th LIL_SAMP_IN(sampler_MainTex)); \
+        lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+#endif
+
+#if !defined(OVERRIDE_ALPHAMASK)
+    #if defined(LIL_FEATURE_AlphaMask)
+        #define LIL_SAMPLE_AlphaMask alphaMask = LIL_SAMPLE_2D_ST(_AlphaMask, sampler_MainTex, fd.uvMain).r
     #else
-        #define BEFORE_ALPHAMASK \
-            float4 color4th = 1.0; \
-            float4 color5th = 1.0; \
-            float4 color6th = 1.0; \
-            lilGetMain4th(fd, color4th LIL_SAMP_IN(sampler_MainTex)); \
-            lilGetMain5th(fd, color5th LIL_SAMP_IN(sampler_MainTex)); \
-            lilGetMain6th(fd, color6th LIL_SAMP_IN(sampler_MainTex)); \
-            lilMoleDrower(fd LIL_SAMP_IN(sampler_MainTex));
+        #define LIL_SAMPLE_AlphaMask
     #endif
+
+    #define OVERRIDE_ALPHAMASK \
+        if(_AlphaMaskMode) \
+        { \
+            float alphaMask = 1.0; \
+            LIL_SAMPLE_AlphaMask; \
+            alphaMask = saturate(alphaMask * _AlphaMaskScale + _AlphaMaskValue); \
+            if(_UseLightAlpha && _LightAlphaMask) alphaMask *= valueFactor; \
+            if(_AlphaMaskMode == 1) fd.col.a = alphaMask; \
+            if(_AlphaMaskMode == 2) fd.col.a = fd.col.a * alphaMask; \
+            if(_AlphaMaskMode == 3) fd.col.a = saturate(fd.col.a + alphaMask); \
+            if(_AlphaMaskMode == 4) fd.col.a = saturate(fd.col.a - alphaMask); \
+        }
 #endif
 
 #define BEFORE_ANISOTROPY \
