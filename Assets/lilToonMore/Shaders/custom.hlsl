@@ -232,11 +232,15 @@
     bool    _UseMole8th; \
     bool    _UseMole9th; \
     bool    _UseMole10th; \
+    float   _LightBasedAlphaMaskStrength; \
     float   _LowestLightThreshold; \
+    float   _MiddleLightThreshold; \
     float   _HighestLightThreshold; \
-    bool    _UseLightAlpha; \
-    bool    _LightAlphaInvert; \
-    bool    _LightAlphaMask;
+    bool    _UseLightBasedAlpha; \
+    bool    _UseMiddleLight; \
+    bool    _LightBasedAlphaMaskInvert; \
+    bool    _LightBasedAlphaInvert; \
+    bool    _LightBasedAlphaForceAlphaMask;
 
 
 

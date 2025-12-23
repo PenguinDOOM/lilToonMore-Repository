@@ -248,9 +248,13 @@
         
         //----------------------------------------------------------------------------------------------------------------------
         // Light Based Alpha
-        [lilToggleLeft] _UseLightAlpha          ("Light Based Alpha", Int) = 0
-                        _LowestLightThreshold   ("Lowest Light Threshold", Range(0, 1.0)) = 0
-                        _HighestLightThreshold  ("Highest Light Threshold", Range(0, 0.9999)) = 0.9999
-        [lilToggle]     _LightAlphaInvert       ("Invert", Int) = 0
-        [lilToggle]     _LightAlphaMask         ("Apply to Alpha Mask Replace Mode", Int) = 0
+        [lilToggleLeft] _UseLightBasedAlpha                     ("Light Based Alpha", Int) = 0
+        [lilToggle]     _LightBasedAlphaMaskInvert              ("Invert Mask", Int) = 0
+                        _LightBasedAlphaMaskStrength            ("Mask Strength", Range(0, 1.0)) = 1.0
+        [lilToggle]     _UseMiddleLight                         ("Use Middle Light Threshold", Int) = 0
+                        _LowestLightThreshold                   ("Lowest Light Threshold", Range(0, 0.9999)) = 0
+                        _MiddleLightThreshold                   ("Middle Light Threshold", Range(0, 0.9999)) = 0.5
+                        _HighestLightThreshold                  ("Highest Light Threshold", Range(0, 0.9999)) = 0.9999
+        [lilToggle]     _LightBasedAlphaInvert                  ("Invert", Int) = 0
+        [lilToggle]     _LightBasedAlphaForceAlphaMask          ("Apply to Alpha Mask Replace Mode", Int) = 0
         

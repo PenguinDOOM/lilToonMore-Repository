@@ -268,11 +268,15 @@ namespace lilToon
         
         readonly string[] lightAlphaCategory = new string[]
         {
-            "_UseLightAlpha",
+            "_UseLightBasedAlpha",
+            "_LightBasedAlphaMaskInvert",
+            "_LightBasedAlphaMaskStrength",
+            "_UseMiddleLight",
             "_LowestLightThreshold",
+            "_MiddleLightThreshold",
             "_HighestLightThreshold",
-            "_LightAlphaInvert",
-            "_LightAlphaMask"
+            "_LightBasedAlphaInvert",
+            "_LightBasedAlphaForceAlphaMask"
         };
         
 
@@ -498,16 +502,21 @@ namespace lilToon
         private MaterialProperty mole10thPos;
         private MaterialProperty mole10thRadius;
         private MaterialProperty mole10thBlur;
-        
-        private MaterialProperty useLightAlpha;
+
+        private MaterialProperty useLightBasedAlpha;
+        private MaterialProperty lightBasedAlphaMaskInvert;
+        private MaterialProperty lightBasedAlphaMaskStrength;
+        private MaterialProperty useMiddleLight;
         private MaterialProperty lowestLightThreshold;
+        private MaterialProperty middleLightThreshold;
         private MaterialProperty highestLightThreshold;
-        private MaterialProperty lightAlphaInvert;
-        private MaterialProperty lightAlphaMask;
+        private MaterialProperty lightBasedAlphaInvert;
+        private MaterialProperty lightBasedAlphaForceAlphaMask;
         
         private MaterialProperty useBump2ndMap;
         private MaterialProperty useGlitter;
         private MaterialProperty useEmission2nd;
+        private MaterialProperty alphaMask;
 
         
         // ▼ コピー／ペースト用バッファ
@@ -904,16 +913,21 @@ namespace lilToon
             mole10thPos = FindProperty("_Mole10thPos", props);
             mole10thRadius = FindProperty("_Mole10thRadius", props);
             mole10thBlur = FindProperty("_Mole10thBlur", props);
-            
-            useLightAlpha = FindProperty("_UseLightAlpha", props);
+
+            useLightBasedAlpha = FindProperty("_UseLightBasedAlpha", props);
+            lightBasedAlphaMaskInvert = FindProperty("_LightBasedAlphaMaskInvert", props);
+            lightBasedAlphaMaskStrength = FindProperty("_LightBasedAlphaMaskStrength", props);
+            useMiddleLight = FindProperty("_UseMiddleLight", props);
             lowestLightThreshold = FindProperty("_LowestLightThreshold", props);
+            middleLightThreshold = FindProperty("_MiddleLightThreshold", props);
             highestLightThreshold = FindProperty("_HighestLightThreshold", props);
-            lightAlphaInvert = FindProperty("_LightAlphaInvert", props);
-            lightAlphaMask = FindProperty("_LightAlphaMask", props);
+            lightBasedAlphaInvert = FindProperty("_LightBasedAlphaInvert", props);
+            lightBasedAlphaForceAlphaMask = FindProperty("_LightBasedAlphaForceAlphaMask", props);
             
             useBump2ndMap = FindProperty("_UseBump2ndMap", props);
             useGlitter = FindProperty("_UseGlitter", props);
             useEmission2nd = FindProperty("_UseEmission2nd", props);
+            alphaMask = FindProperty("_AlphaMask", props);
             
         }
 
@@ -1094,15 +1108,24 @@ namespace lilToon
                 else
                 {
                     EditorGUILayout.BeginVertical(boxOuter);
-                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, useLightAlpha, false);
-                        if(useLightAlpha.floatValue == 1)
+                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, useLightBasedAlpha, false);
+                        if(useLightBasedAlpha.floatValue == 1)
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    lilEditorGUI.LocalizedPropertyTexture(m_MaterialEditor, lilLanguageManager.alphaMaskContent, alphaMask);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightBasedAlphaMaskInvert);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightBasedAlphaMaskStrength);
+                                lilEditorGUI.DrawLine();
                                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, lowestLightThreshold);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, useMiddleLight);
+                                    if(useMiddleLight.floatValue == 1)
+                                    {
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, middleLightThreshold);
+                                    }
                                     lilEditorGUI.LocalizedProperty(m_MaterialEditor, highestLightThreshold);
                                 lilEditorGUI.DrawLine();
-                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightAlphaInvert);
-                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightAlphaMask);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightBasedAlphaInvert);
+                                    lilEditorGUI.LocalizedProperty(m_MaterialEditor, lightBasedAlphaForceAlphaMask);
                                 lilEditorGUI.DrawLine();
                                     if (GUILayout.Button("Copy Light Based Alpha"))
                                     {
