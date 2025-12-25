@@ -1,9 +1,16 @@
+2025/12/25
+Ver. 2.2.0
+Updated Light Based Alpha
+- Added Alpha mode
+- Added Alpha clamp
+- Added Force initialize alpha
+- Made it unavailable for cutouts
+
 2025/12/24
 Ver. 2.1.0
 Added Light Based Alpha
 Avoid bugs caused by optimization
 Align code order with lil_pass_forward_normal.hlsl
-
 
 2025/12/20
 Ver. 2.0.1
