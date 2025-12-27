@@ -496,7 +496,7 @@ void lilLightBasedAlpha(inout lilFragData fd, uint _LightBasedAlphaLoadType, flo
                     valueFactor = smoothstep(L, H, value);
                 }
                 float smooth = valueFactor;
-                float hard   = step(0.5, smooth);
+                float hard   = step(_SharpnessLightThreshold, smooth);
                 valueFactor  = lerp(smooth, hard, sharpness);
             }
             else if(_LightBasedAlphaMode == 1)

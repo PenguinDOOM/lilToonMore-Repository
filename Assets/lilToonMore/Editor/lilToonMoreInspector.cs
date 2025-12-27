@@ -282,6 +282,7 @@ namespace lilToon
             "_LowestLightThreshold",
             "_MiddleLightThreshold",
             "_HighestLightThreshold",
+            "_SharpnessLightThreshold",
             "_LightThreshold",
             "_LightBasedAlphaApplyMode",
             "_UseClamp",
@@ -530,6 +531,7 @@ namespace lilToon
         private MaterialProperty lowestLightThreshold;
         private MaterialProperty middleLightThreshold;
         private MaterialProperty highestLightThreshold;
+        private MaterialProperty sharpnessLightThreshold;
         private MaterialProperty lightThreshold;
         private MaterialProperty lightBasedAlphaApplyMode;
         private MaterialProperty useClamp;
@@ -959,6 +961,7 @@ namespace lilToon
             lowestLightThreshold              = FindProperty("_LowestLightThreshold", props);
             middleLightThreshold              = FindProperty("_MiddleLightThreshold", props);
             highestLightThreshold             = FindProperty("_HighestLightThreshold", props);
+            sharpnessLightThreshold           = FindProperty("_SharpnessLightThreshold", props);
             lightThreshold                    = FindProperty("_LightThreshold", props);
             lightBasedAlphaApplyMode          = FindProperty("_LightBasedAlphaApplyMode", props);
             useClamp                          = FindProperty("_UseClamp", props);
@@ -1247,6 +1250,7 @@ namespace lilToon
                                             lilEditorGUI.LocalizedProperty(m_MaterialEditor, middleLightThreshold);
                                         }
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, highestLightThreshold);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, sharpnessLightThreshold);
                                     }
                                     else if(lightBasedAlphaMode.floatValue == 1)
                                     {

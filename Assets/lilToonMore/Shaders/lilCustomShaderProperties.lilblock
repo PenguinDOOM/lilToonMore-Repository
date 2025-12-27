@@ -263,7 +263,8 @@
                            _LowestLightThreshold                    ("Lowest Light Threshold", Range(0, 0.9999))           = 0
                            _MiddleLightThreshold                    ("Middle Light Threshold", Range(0, 0.9999))           = 0.5
                            _HighestLightThreshold                   ("Highest Light Threshold", Range(0, 0.9999))          = 0.9999
-                           _LightThreshold                          ("Light Threshold", Range(0, 0.9999))                  = 0
+                           _SharpnessLightThreshold                 ("Sharpness Light Threshold", Range(0, 0.9999))        = 0.5
+                           _LightThreshold                          ("Light Threshold", Range(0, 0.9999))                  = 0.5
         [lilEnum]          _LightBasedAlphaApplyMode                ("Apply Mode|Replace|Multiply|Add|Subtract", Int)      = 0
         [lilToggle]        _UseClamp                                ("Use Clamp", Int)                                     = 0
                            _MinTransparency                         ("Min Transparency", Range(0, 1))                      = 0

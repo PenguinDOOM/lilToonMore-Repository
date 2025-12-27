@@ -240,6 +240,7 @@
     float   _LowestLightThreshold; \
     float   _MiddleLightThreshold; \
     float   _HighestLightThreshold; \
+    float   _SharpnessLightThreshold; \
     float   _LightThreshold; \
     float   _MinTransparency; \
     float   _MaxTransparency; \
