@@ -472,7 +472,7 @@ void lilLightBasedAlpha(inout lilFragData fd, uint _LightBasedAlphaLoadType, flo
             float maskedValueFactor = 1.0;
             float minTransparency   = max(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
             float maxTransparency   = min(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
-            float sharpness         = 1.0 - saturate(lightBasedAlphaMask.b);
+            float sharpness         = 1.0 - lightBasedAlphaMask.b;
             float value             = GetLightValue(fd.lightColor, _LightBasedAlphaValueType);
             float L                 = _LowestLightThreshold;
             float M                 = _MiddleLightThreshold;
