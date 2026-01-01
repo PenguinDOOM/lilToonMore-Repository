@@ -454,71 +454,141 @@ float GetLightValue(float3 lightColor, int type)
     }
 }
 
+// Light Based Alpha
+// DO NOT USE WITH "LI MaterialOptimizer" AND "LNU lilToonMaterialOptimizer"
 void lilLightBasedAlpha(inout lilFragData fd, uint _LightBasedAlphaLoadType, float alphaMask, float mainTexAlpha LIL_SAMP_IN_FUNC(samp))
 {
-    if(_UseLightBasedAlpha && !_UseParallax)
-    {
-        float4  lightBasedAlphaMask = 1.0;
-        lightBasedAlphaMask         = saturate(LIL_SAMPLE_2D_ST(_ParallaxMap, sampler_MainTex, fd.uvMain));
-        bool    isOff               = lightBasedAlphaMask.a < 0.25;
-        bool    isOn                = lightBasedAlphaMask.a > 0.75;
-        bool    isInvert            = (!isOff && !isOn) ^ _LightBasedAlphaInvert;
-        if(!isOff)
+    #ifndef LIL_FEATURE_PARALLAX // VRChat with optimization and no parallax
+        if(_UseLightBasedAlpha)
         {
-            if( _LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle) lightBasedAlphaMask.r = saturate(lightBasedAlphaMask.r * _LightBasedAlphaMaskScale + _LightBasedAlphaMaskValue);
-            if(_LightBasedAlphaLoadType == 1) lightBasedAlphaMask.r = mainTexAlpha;
-            if(_LightBasedAlphaLoadType == 2) lightBasedAlphaMask.r = alphaMask;
-            float valueFactor       = 1.0;
-            float maskedValueFactor = 1.0;
-            float minTransparency   = max(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
-            float maxTransparency   = min(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
-            float sharpness         = 1.0 - lightBasedAlphaMask.b;
-            float value             = GetLightValue(fd.lightColor, _LightBasedAlphaValueType);
-            float L                 = _LowestLightThreshold;
-            float M                 = _MiddleLightThreshold;
-            float H                 = _HighestLightThreshold;
-            if(_OverrideMin) minTransparency = 1.0 - min(_OverrideMinTransparency, _OverrideMaxTransparency);
-            if(_OverrideMax) maxTransparency = 1.0 - max(_OverrideMinTransparency, _OverrideMaxTransparency);
-            if(_LightBasedAlphaMode == 0)
+            float4  lightBasedAlphaMask = 1.0;
+            lightBasedAlphaMask         = saturate(LIL_SAMPLE_2D_ST(_ParallaxMap, sampler_MainTex, fd.uvMain));
+            bool    isOff               = lightBasedAlphaMask.a < 0.25;
+            bool    isOn                = lightBasedAlphaMask.a > 0.75;
+            bool    isInvert            = (!isOff && !isOn) ^ _LightBasedAlphaInvert;
+            if(!isOff)
             {
-                if(_UseMiddleLight)
+                if( _LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle) lightBasedAlphaMask.r = saturate(lightBasedAlphaMask.r * _LightBasedAlphaMaskScale + _LightBasedAlphaMaskValue);
+                if(_LightBasedAlphaLoadType == 1) lightBasedAlphaMask.r = mainTexAlpha;
+                if(_LightBasedAlphaLoadType == 2) lightBasedAlphaMask.r = alphaMask;
+                float valueFactor       = 1.0;
+                float maskedValueFactor = 1.0;
+                float minTransparency   = max(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
+                float maxTransparency   = min(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
+                float sharpness         = 1.0 - lightBasedAlphaMask.b;
+                float value             = GetLightValue(fd.lightColor, _LightBasedAlphaValueType);
+                float L                 = _LowestLightThreshold;
+                float M                 = _MiddleLightThreshold;
+                float H                 = _HighestLightThreshold;
+                if(_OverrideMin) minTransparency = 1.0 - min(_OverrideMinTransparency, _OverrideMaxTransparency);
+                if(_OverrideMax) maxTransparency = 1.0 - max(_OverrideMinTransparency, _OverrideMaxTransparency);
+                if(_LightBasedAlphaMode == 0)
                 {
-                    L            = min(L, M - 1e-5);
-                    H            = max(H, M + 1e-5);
-                    float up     = smoothstep(L, M, value);
-                    float down   = 1.0 - smoothstep(M, H, value);
-                    valueFactor  = up * down;
+                    if(_UseMiddleLight)
+                    {
+                        L            = min(L, M - 1e-5);
+                        H            = max(H, M + 1e-5);
+                        float up     = smoothstep(L, M, value);
+                        float down   = 1.0 - smoothstep(M, H, value);
+                        valueFactor  = up * down;
+                    }
+                    else
+                    {
+                        L           = min(L, H - 1e-5);
+                        H           = max(H, L + 1e-5);
+                        valueFactor = smoothstep(L, H, value);
+                    }
+                    float smooth = valueFactor;
+                    float hard   = step(_SharpnessLightThreshold, smooth);
+                    valueFactor  = lerp(smooth, hard, sharpness);
+                }
+                else if(_LightBasedAlphaMode == 1)
+                {
+                    valueFactor = step(_LightThreshold, value);
                 }
                 else
                 {
-                    L           = min(L, H - 1e-5);
-                    H           = max(H, L + 1e-5);
-                    valueFactor = smoothstep(L, H, value);
+                    valueFactor = step(L, value) * step(value, H);
                 }
-                float smooth = valueFactor;
-                float hard   = step(_SharpnessLightThreshold, smooth);
-                valueFactor  = lerp(smooth, hard, sharpness);
-            }
-            else if(_LightBasedAlphaMode == 1)
-            {
-                valueFactor = step(_LightThreshold, value);
-            }
-            else
-            {
-                valueFactor = step(L, value) * step(value, H);
-            }
-            if(isInvert) valueFactor = 1.0 - valueFactor;
-            maskedValueFactor = lerp(minTransparency, maxTransparency, valueFactor);
-            if(_LightBasedAlphaApplyMode == 0) fd.col.a = maskedValueFactor;
-            if(_LightBasedAlphaApplyMode == 1) fd.col.a = fd.col.a * maskedValueFactor;
-            if(_LightBasedAlphaApplyMode == 2) fd.col.a = saturate(fd.col.a + maskedValueFactor);
-            if(_LightBasedAlphaApplyMode == 3) fd.col.a = saturate(fd.col.a - maskedValueFactor);
-            if(_UseClamp)
-            {
-                float minT = 1.0 - max(_MinTransparency, _MaxTransparency);
-                float maxT = 1.0 - min(_MinTransparency, _MaxTransparency);
-                fd.col.a   = clamp(fd.col.a, minT, maxT);
+                if(isInvert) valueFactor = 1.0 - valueFactor;
+                maskedValueFactor = lerp(minTransparency, maxTransparency, valueFactor);
+                if(_LightBasedAlphaApplyMode == 0) fd.col.a = maskedValueFactor;
+                if(_LightBasedAlphaApplyMode == 1) fd.col.a = fd.col.a * maskedValueFactor;
+                if(_LightBasedAlphaApplyMode == 2) fd.col.a = saturate(fd.col.a + maskedValueFactor);
+                if(_LightBasedAlphaApplyMode == 3) fd.col.a = saturate(fd.col.a - maskedValueFactor);
+                if(_UseClamp)
+                {
+                    float minT = 1.0 - max(_MinTransparency, _MaxTransparency);
+                    float maxT = 1.0 - min(_MinTransparency, _MaxTransparency);
+                    fd.col.a   = clamp(fd.col.a, minT, maxT);
+                }
             }
         }
-    }
+    #else // On Editor and VRChat with optimization and parallax
+        if(_UseLightBasedAlpha && !_UseParallax)
+        {
+            float4  lightBasedAlphaMask = 1.0;
+            lightBasedAlphaMask         = saturate(LIL_SAMPLE_2D_ST(_ParallaxMap, sampler_MainTex, fd.uvMain));
+            bool    isOff               = lightBasedAlphaMask.a < 0.25;
+            bool    isOn                = lightBasedAlphaMask.a > 0.75;
+            bool    isInvert            = (!isOff && !isOn) ^ _LightBasedAlphaInvert;
+            if(!isOff)
+            {
+                if( _LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle) lightBasedAlphaMask.r = saturate(lightBasedAlphaMask.r * _LightBasedAlphaMaskScale + _LightBasedAlphaMaskValue);
+                if(_LightBasedAlphaLoadType == 1) lightBasedAlphaMask.r = mainTexAlpha;
+                if(_LightBasedAlphaLoadType == 2) lightBasedAlphaMask.r = alphaMask;
+                float valueFactor       = 1.0;
+                float maskedValueFactor = 1.0;
+                float minTransparency   = max(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
+                float maxTransparency   = min(lightBasedAlphaMask.g, lightBasedAlphaMask.r);
+                float sharpness         = 1.0 - lightBasedAlphaMask.b;
+                float value             = GetLightValue(fd.lightColor, _LightBasedAlphaValueType);
+                float L                 = _LowestLightThreshold;
+                float M                 = _MiddleLightThreshold;
+                float H                 = _HighestLightThreshold;
+                if(_OverrideMin) minTransparency = 1.0 - min(_OverrideMinTransparency, _OverrideMaxTransparency);
+                if(_OverrideMax) maxTransparency = 1.0 - max(_OverrideMinTransparency, _OverrideMaxTransparency);
+                if(_LightBasedAlphaMode == 0)
+                {
+                    if(_UseMiddleLight)
+                    {
+                        L            = min(L, M - 1e-5);
+                        H            = max(H, M + 1e-5);
+                        float up     = smoothstep(L, M, value);
+                        float down   = 1.0 - smoothstep(M, H, value);
+                        valueFactor  = up * down;
+                    }
+                    else
+                    {
+                        L           = min(L, H - 1e-5);
+                        H           = max(H, L + 1e-5);
+                        valueFactor = smoothstep(L, H, value);
+                    }
+                    float smooth = valueFactor;
+                    float hard   = step(_SharpnessLightThreshold, smooth);
+                    valueFactor  = lerp(smooth, hard, sharpness);
+                }
+                else if(_LightBasedAlphaMode == 1)
+                {
+                    valueFactor = step(_LightThreshold, value);
+                }
+                else
+                {
+                    valueFactor = step(L, value) * step(value, H);
+                }
+                if(isInvert) valueFactor = 1.0 - valueFactor;
+                maskedValueFactor = lerp(minTransparency, maxTransparency, valueFactor);
+                if(_LightBasedAlphaApplyMode == 0) fd.col.a = maskedValueFactor;
+                if(_LightBasedAlphaApplyMode == 1) fd.col.a = fd.col.a * maskedValueFactor;
+                if(_LightBasedAlphaApplyMode == 2) fd.col.a = saturate(fd.col.a + maskedValueFactor);
+                if(_LightBasedAlphaApplyMode == 3) fd.col.a = saturate(fd.col.a - maskedValueFactor);
+                if(_UseClamp)
+                {
+                    float minT = 1.0 - max(_MinTransparency, _MaxTransparency);
+                    float maxT = 1.0 - min(_MinTransparency, _MaxTransparency);
+                    fd.col.a   = clamp(fd.col.a, minT, maxT);
+                }
+            }
+        }
+    #endif
 }
