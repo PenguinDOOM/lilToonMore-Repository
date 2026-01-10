@@ -21,10 +21,11 @@ jobs:
         uses: somaz94/compress-decompress@v1
         with:
           command: compress
-          source: ./Assets/lilToonMore
-          format: zip
+          source: .
           dest: './dist'
           destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
+          exclude: '.git .github .gitattributes .gitignore'
+          format: zip
 
       - name: Extract release info
         id: metadata
