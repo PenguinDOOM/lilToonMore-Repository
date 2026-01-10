@@ -21,10 +21,10 @@ jobs:
         uses: somaz94/compress-decompress@v1
         with:
           command: compress
-          source: .
+          source: ./workspace/*
           dest: './dist'
           destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
-          exclude: '.git .github .gitattributes .gitignore'
+          exclude: '.git .github .gitattributes .gitignore dist /dist/*'
           format: zip
 
       - name: Extract release info
