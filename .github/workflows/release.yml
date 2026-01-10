@@ -21,7 +21,7 @@ jobs:
         uses: somaz94/compress-decompress@v1
         with:
           command: compress
-          source: ./workspace/*
+          source: ${{ github.workspace }}/workspace/*
           dest: './dist'
           destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
           exclude: '.git .github .gitattributes .gitignore dist /dist/*'
