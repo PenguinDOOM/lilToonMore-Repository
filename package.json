@@ -1,7 +1,7 @@
 {
     "name": "jp.penguin.liltoonmore",
     "displayName": "lilToonMore",
-    "version": "4.0.1",
+    "version": "4.0.2",
     "author": 
     {
         "name": "Penguin"
@@ -16,7 +16,7 @@
     "licensesUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/master/LICENSE",
     "license": "MIT",
     "keywords": ["Toon", "Shader", "Material"],
-    "url" : "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.0.1/jp.penguin.liltoonmore-4.0.1.zip?",
+    "url" : "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.0.2/jp.penguin.liltoonmore-4.0.2.zip?",
     "legacyFolders" : 
     {
         "Assets\\lilToonMore" : "2d67ded333893654ca23a5a37c59dfb2"
