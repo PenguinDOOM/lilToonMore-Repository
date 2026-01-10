@@ -26,6 +26,7 @@ jobs:
           destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
           exclude: '.git .github .gitattributes .gitignore dist'
           format: zip
+          includeRoot: 'false'
 
       - name: Extract release info
         id: metadata
