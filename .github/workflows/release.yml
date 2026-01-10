@@ -1,51 +1,51 @@
 name: Release
 
 on:
-    push:
-        tags:
-            - '*.*.*'
+  push:
+    tags:
+      - '*.*.*'
 
 jobs:
-    release:
-        name: Release
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-        steps:
-            - uses: actions/checkout@v6
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
 
-            - name: Pull tags
-                run: git fetch --tags --force
+      - name: Pull tags
+        run: git fetch --tags --force
 
-            - name: Create zip file
-                uses: somaz94/compress-decompress@v1
-                with:
-                    command: compress
-                    source: ./Assets/lilToonMore
-                    format: zip
-                    dest: './dist'
-                    destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
+      - name: Create zip file
+        uses: somaz94/compress-decompress@v1
+        with:
+          command: compress
+          source: ./Assets/lilToonMore
+          format: zip
+          dest: './dist'
+          destfilename: 'jp.penguin.liltoonmore-${{github.ref_name}}'
 
-            - name: Extract release info
-                id: metadata
-                run: |
-                    echo "title=$(git tag -l --format '%(subject)' ${{github.ref_name}})" >> $GITHUB_OUTPUT
-                    echo "release_note<<EOF" >> $GITHUB_OUTPUT
-                    git tag -l --format '%(contents:body)' ${{github.ref_name}} >> $GITHUB_OUTPUT
-                    echo "EOF" >> $GITHUB_OUTPUT
+      - name: Extract release info
+        id: metadata
+        run: |
+          echo "title=$(git tag -l --format '%(subject)' ${{github.ref_name}})" >> $GITHUB_OUTPUT
+          echo "release_note<<EOF" >> $GITHUB_OUTPUT
+          git tag -l --format '%(contents:body)' ${{github.ref_name}} >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-            - name: Create GitHub Release
-                run: |
-                    gh release create ${{github.ref_name}} \
-                        --title "${{ steps.metadata.outputs.title }}" \
-                        --notes "${{ steps.metadata.outputs.release_note }}" \
-                        ./dist/*
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        run: |
+          gh release create ${{github.ref_name}} \
+            --title "${{ steps.metadata.outputs.title }}" \
+            --notes "${{ steps.metadata.outputs.release_note }}" \
+            ./dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Trigger Repository B Workflow
-                uses: peter-evans/repository-dispatch@v3
-                with:
-                    token: ${{ secrets.PAT_FOR_DISPATCH }}
-                    repository: PenguinDOOM/lilToonMore
-                    event-type: update-vpm
+      - name: Trigger Repository B Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT_FOR_DISPATCH }}
+          repository: PenguinDOOM/lilToonMore
+          event-type: update-vpm
