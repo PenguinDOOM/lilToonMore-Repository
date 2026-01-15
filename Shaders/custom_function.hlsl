@@ -470,8 +470,8 @@ float opXor(float d1, float d2)
 float opSmoothUnion(float d1, float d2, float k)
 {
     k *= 4.0;
-    float h = max(k - abs(d1 - d2), 0.0);
-    return min(d1, d2) - h * h * 0.25 / k;
+    float h = opIntersection(k - abs(d1 - d2), 0.0);
+    return opUnion(d1, d2) - h * h * 0.25 / k;
 }
 
 float opSmoothSubtraction(float d1, float d2, float k)
@@ -540,7 +540,7 @@ float sdCross(float2 p, float size)
     float k = opIntersection(q.y, q.x);
     float2 w = (k > 0.0) ? q : float2(b.y - p.x, -k);
 
-    return sign(k) * length(opIntersection(w, 0.0));
+    return sign(k) * length(max(w, 0.0));
 }
 
 // 4. Rounded X
@@ -567,7 +567,7 @@ float sdRoundedBox(float2 p, float2 b, float r)
     float2 q = abs(p) - b + r;
 
     return opUnion(opIntersection(q.x, q.y), 0.0) +
-           length(opIntersection(q, 0.0)) - r;
+           length(max(q, 0.0)) - r;
 }
 
 // 7. Moon
@@ -575,12 +575,12 @@ float sdMoon(float2 p, float d, float ra, float rb)
 {
     p.y = abs(p.y);
     float a = (ra * ra - rb * rb + d * d) / (2.0 * d);
-    float b = sqrt(opUnion(ra * ra - a * a, 0.0));
+    float b = sqrt(opIntersection(ra * ra - a * a, 0.0));
 
-    if(d * (p.x * b - p.y * a) > d * d * opUnion(b - p.y, 0.0))
+    if(d * (p.x * b - p.y * a) > d * d * opIntersection(b - p.y, 0.0))
         return length(p - float2(a, b));
 
-    return opUnion((length(p) - ra), -(length(p - float2(d, 0)) - rb));
+    return opIntersection((length(p) - ra), -(length(p - float2(d, 0)) - rb));
 }
 
 float sdEquilateralTriangle(float2 p, float r)
