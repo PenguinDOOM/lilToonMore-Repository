@@ -456,10 +456,12 @@ float opSubtraction(float d1, float d2)
 {
     return max(-d1, d2);
 }
+
 float opIntersection(float d1, float d2)
 {
     return max(d1, d2);
 }
+
 float opXor(float d1, float d2)
 {
     return max(min(d1, d2), -max(d1, d2));
@@ -468,29 +470,8 @@ float opXor(float d1, float d2)
 float opSmoothUnion(float d1, float d2, float k)
 {
     k *= 4.0;
-    float h = max(k-abs(d1-d2),0.0);
-    return min(d1, d2) - h*h*0.25/k;
-}
-
-float opSmoothSubtraction(float d1, float d2,
-float opSubtraction(float d1, float d2)
-{
-    return max(-d1, d2);
-}
-float opIntersection(float d1, float d2)
-{
-    return max(d1, d2);
-}
-float opXor(float d1, float d2)
-{
-    return max(min(d1, d2), -max(d1, d2));
-}
-
-float opSmoothUnion(float d1, float d2, float k)
-{
-    k *= 4.0;
-    float h = max(k-abs(d1-d2),0.0);
-    return min(d1, d2) - h*h*0.25/k;
+    float h = max(k - abs(d1 - d2), 0.0);
+    return min(d1, d2) - h * h * 0.25 / k;
 }
 
 float opSmoothSubtraction(float d1, float d2, float k)
@@ -815,7 +796,8 @@ void lilLightBasedAlpha(inout lilFragData fd, uint _LightBasedAlphaLoadType, flo
         
         if(isOff) return;
 
-        if(_LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle) lightBasedAlphaMask.r = saturate(lightBasedAlphaMask.r * _LightBasedAlphaMaskScale + _LightBasedAlphaMaskValue);
+        if(_LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle)
+            lightBasedAlphaMask.r = saturate(lightBasedAlphaMask.r * _LightBasedAlphaMaskScale + _LightBasedAlphaMaskValue);
         if(_LightBasedAlphaLoadType == 1)  lightBasedAlphaMask.r = mainTexAlpha;
         if(_LightBasedAlphaLoadType == 2)  lightBasedAlphaMask.r = alphaMask;
 
