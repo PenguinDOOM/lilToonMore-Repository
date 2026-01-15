@@ -209,6 +209,16 @@
     float   _Mole8thRadius; \
     float   _Mole9thRadius; \
     float   _Mole10thRadius; \
+    float   _Mole1stRadiusMultiplier; \
+    float   _Mole2ndRadiusMultiplier; \
+    float   _Mole3rdRadiusMultiplier; \
+    float   _Mole4thRadiusMultiplier; \
+    float   _Mole5thRadiusMultiplier; \
+    float   _Mole6thRadiusMultiplier; \
+    float   _Mole7thRadiusMultiplier; \
+    float   _Mole8thRadiusMultiplier; \
+    float   _Mole9thRadiusMultiplier; \
+    float   _Mole10thRadiusMultiplier; \
     float   _Mole1stBlur; \
     float   _Mole2ndBlur; \
     float   _Mole3rdBlur; \
@@ -219,7 +229,27 @@
     float   _Mole8thBlur; \
     float   _Mole9thBlur; \
     float   _Mole10thBlur; \
+    float   _Mole1stRotation; \
+    float   _Mole2ndRotation; \
+    float   _Mole3rdRotation; \
+    float   _Mole4thRotation; \
+    float   _Mole5thRotation; \
+    float   _Mole6thRotation; \
+    float   _Mole7thRotation; \
+    float   _Mole8thRotation; \
+    float   _Mole9thRotation; \
+    float   _Mole10thRotation; \
     uint    _MoleBlendMode; \
+    uint    _Mole1stShape; \
+    uint    _Mole2ndShape; \
+    uint    _Mole3rdShape; \
+    uint    _Mole4thShape; \
+    uint    _Mole5thShape; \
+    uint    _Mole6thShape; \
+    uint    _Mole7thShape; \
+    uint    _Mole8thShape; \
+    uint    _Mole9thShape; \
+    uint    _Mole10thShape; \
     bool    _MoleAspectFix; \
     bool    _UseMole; \
     bool    _UseMole1st; \

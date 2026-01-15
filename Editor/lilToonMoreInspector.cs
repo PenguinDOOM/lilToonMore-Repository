@@ -220,50 +220,79 @@ namespace lilToon
         
         readonly string[] moleCategory = new string[]
         {
-            "_UseMole",
             "_MoleColor",
             "_MoleBlendMode",
             "_MoleAspectFix",
             "_UseMole1st",
             "_Mole1stPos",
             "_Mole1stRadius",
+            "_Mole1stRadiusMultiplier",
             "_Mole1stBlur",
+            "_Mole1stShape",
+            "_Mole1stRotation",
             "_UseMole2nd",
             "_Mole2ndPos",
             "_Mole2ndRadius",
+            "_Mole2ndRadiusMultiplier",
             "_Mole2ndBlur",
+            "_Mole2ndShape",
+            "_Mole2ndRotation",
             "_UseMole3rd",
             "_Mole3rdPos",
             "_Mole3rdRadius",
+            "_Mole3rdRadiusMultiplier",
             "_Mole3rdBlur",
+            "_Mole3rdShape",
+            "_Mole3rdRotation",
             "_UseMole4th",
             "_Mole4thPos",
             "_Mole4thRadius",
+            "_Mole4thRadiusMultiplier",
             "_Mole4thBlur",
+            "_Mole4thShape",
+            "_Mole4thRotation",
             "_UseMole5th",
             "_Mole5thPos",
             "_Mole5thRadius",
+            "_Mole5thRadiusMultiplier",
             "_Mole5thBlur",
+            "_Mole5thShape",
+            "_Mole5thRotation",
             "_UseMole6th",
             "_Mole6thPos",
             "_Mole6thRadius",
+            "_Mole6thRadiusMultiplier",
             "_Mole6thBlur",
+            "_Mole6thShape",
+            "_Mole6thRotation",
             "_UseMole7th",
             "_Mole7thPos",
             "_Mole7thRadius",
+            "_Mole7thRadiusMultiplier",
             "_Mole7thBlur",
+            "_Mole7thShape",
+            "_Mole7thRotation",
             "_UseMole8th",
             "_Mole8thPos",
             "_Mole8thRadius",
+            "_Mole8thRadiusMultiplier",
             "_Mole8thBlur",
+            "_Mole8thShape",
+            "_Mole8thRotation",
             "_UseMole9th",
             "_Mole9thPos",
             "_Mole9thRadius",
+            "_Mole9thRadiusMultiplier",
             "_Mole9thBlur",
+            "_Mole9thShape",
+            "_Mole9thRotation",
             "_UseMole10th",
             "_Mole10thPos",
             "_Mole10thRadius",
-            "_Mole10thBlur"
+            "_Mole10thRadiusMultiplier",
+            "_Mole10thBlur",
+            "_Mole10thShape",
+            "_Mole10thRotation"
         };
         
         readonly string[] lightAlphaCategory = new string[]
@@ -478,43 +507,73 @@ namespace lilToon
         private MaterialProperty useMole1st;
         private MaterialProperty mole1stPos;
         private MaterialProperty mole1stRadius;
+        private MaterialProperty mole1stRadiusMultiplier;
         private MaterialProperty mole1stBlur;
+        private MaterialProperty mole1stShape;
+        private MaterialProperty mole1stRotation;
         private MaterialProperty useMole2nd;
         private MaterialProperty mole2ndPos;
         private MaterialProperty mole2ndRadius;
+        private MaterialProperty mole2ndRadiusMultiplier;
         private MaterialProperty mole2ndBlur;
+        private MaterialProperty mole2ndShape;
+        private MaterialProperty mole2ndRotation;
         private MaterialProperty useMole3rd;
         private MaterialProperty mole3rdPos;
         private MaterialProperty mole3rdRadius;
+        private MaterialProperty mole3rdRadiusMultiplier;
         private MaterialProperty mole3rdBlur;
+        private MaterialProperty mole3rdShape;
+        private MaterialProperty mole3rdRotation;
         private MaterialProperty useMole4th;
         private MaterialProperty mole4thPos;
         private MaterialProperty mole4thRadius;
+        private MaterialProperty mole4thRadiusMultiplier;
         private MaterialProperty mole4thBlur;
+        private MaterialProperty mole4thShape;
+        private MaterialProperty mole4thRotation;
         private MaterialProperty useMole5th;
         private MaterialProperty mole5thPos;
         private MaterialProperty mole5thRadius;
+        private MaterialProperty mole5thRadiusMultiplier;
         private MaterialProperty mole5thBlur;
+        private MaterialProperty mole5thShape;
+        private MaterialProperty mole5thRotation;
         private MaterialProperty useMole6th;
         private MaterialProperty mole6thPos;
         private MaterialProperty mole6thRadius;
+        private MaterialProperty mole6thRadiusMultiplier;
         private MaterialProperty mole6thBlur;
+        private MaterialProperty mole6thShape;
+        private MaterialProperty mole6thRotation;
         private MaterialProperty useMole7th;
         private MaterialProperty mole7thPos;
         private MaterialProperty mole7thRadius;
+        private MaterialProperty mole7thRadiusMultiplier;
         private MaterialProperty mole7thBlur;
+        private MaterialProperty mole7thShape;
+        private MaterialProperty mole7thRotation;
         private MaterialProperty useMole8th;
         private MaterialProperty mole8thPos;
         private MaterialProperty mole8thRadius;
+        private MaterialProperty mole8thRadiusMultiplier;
         private MaterialProperty mole8thBlur;
+        private MaterialProperty mole8thShape;
+        private MaterialProperty mole8thRotation;
         private MaterialProperty useMole9th;
         private MaterialProperty mole9thPos;
         private MaterialProperty mole9thRadius;
+        private MaterialProperty mole9thRadiusMultiplier;
         private MaterialProperty mole9thBlur;
+        private MaterialProperty mole9thShape;
+        private MaterialProperty mole9thRotation;
         private MaterialProperty useMole10th;
         private MaterialProperty mole10thPos;
         private MaterialProperty mole10thRadius;
+        private MaterialProperty mole10thRadiusMultiplier;
         private MaterialProperty mole10thBlur;
+        private MaterialProperty mole10thShape;
+        private MaterialProperty mole10thRotation;
 
         private MaterialProperty useLightBasedAlpha;
         private MaterialProperty useAlphaMaskStyle;
@@ -901,50 +960,80 @@ namespace lilToon
             emission3rdFluorescence           = FindProperty("_Emission3rdFluorescence", props);
             audioLink2Emission3rd             = FindProperty("_AudioLink2Emission3rd", props);
 
-            useMole                           = FindProperty("_UseMole", props);
-            moleColor                         = FindProperty("_MoleColor", props);
-            moleBlendMode                     = FindProperty("_MoleBlendMode", props);
-            moleAspectFix                     = FindProperty("_MoleAspectFix", props);
-            useMole1st                        = FindProperty("_UseMole1st", props);
-            mole1stPos                        = FindProperty("_Mole1stPos", props);
-            mole1stRadius                     = FindProperty("_Mole1stRadius", props);
-            mole1stBlur                       = FindProperty("_Mole1stBlur", props);
-            useMole2nd                        = FindProperty("_UseMole2nd", props);
-            mole2ndPos                        = FindProperty("_Mole2ndPos", props);
-            mole2ndRadius                     = FindProperty("_Mole2ndRadius", props);
-            mole2ndBlur                       = FindProperty("_Mole2ndBlur", props);
-            useMole3rd                        = FindProperty("_UseMole3rd", props);
-            mole3rdPos                        = FindProperty("_Mole3rdPos", props);
-            mole3rdRadius                     = FindProperty("_Mole3rdRadius", props);
-            mole3rdBlur                       = FindProperty("_Mole3rdBlur", props);
-            useMole4th                        = FindProperty("_UseMole4th", props);
-            mole4thPos                        = FindProperty("_Mole4thPos", props);
-            mole4thRadius                     = FindProperty("_Mole4thRadius", props);
-            mole4thBlur                       = FindProperty("_Mole4thBlur", props);
-            useMole5th                        = FindProperty("_UseMole5th", props);
-            mole5thPos                        = FindProperty("_Mole5thPos", props);
-            mole5thRadius                     = FindProperty("_Mole5thRadius", props);
-            mole5thBlur                       = FindProperty("_Mole5thBlur", props);
-            useMole6th                        = FindProperty("_UseMole6th", props);
-            mole6thPos                        = FindProperty("_Mole6thPos", props);
-            mole6thRadius                     = FindProperty("_Mole6thRadius", props);
-            mole6thBlur                       = FindProperty("_Mole6thBlur", props);
-            useMole7th                        = FindProperty("_UseMole7th", props);
-            mole7thPos                        = FindProperty("_Mole7thPos", props);
-            mole7thRadius                     = FindProperty("_Mole7thRadius", props);
-            mole7thBlur                       = FindProperty("_Mole7thBlur", props);
-            useMole8th                        = FindProperty("_UseMole8th", props);
-            mole8thPos                        = FindProperty("_Mole8thPos", props);
-            mole8thRadius                     = FindProperty("_Mole8thRadius", props);
-            mole8thBlur                       = FindProperty("_Mole8thBlur", props);
-            useMole9th                        = FindProperty("_UseMole9th", props);
-            mole9thPos                        = FindProperty("_Mole9thPos", props);
-            mole9thRadius                     = FindProperty("_Mole9thRadius", props);
-            mole9thBlur                       = FindProperty("_Mole9thBlur", props);
-            useMole10th                       = FindProperty("_UseMole10th", props);
-            mole10thPos                       = FindProperty("_Mole10thPos", props);
-            mole10thRadius                    = FindProperty("_Mole10thRadius", props);
-            mole10thBlur                      = FindProperty("_Mole10thBlur", props);
+            useMole                           = FindProperty("_UseMole"                          , props);
+            moleColor                         = FindProperty("_MoleColor"                        , props);
+            moleBlendMode                     = FindProperty("_MoleBlendMode"                    , props);
+            moleAspectFix                     = FindProperty("_MoleAspectFix"                    , props);
+            useMole1st                        = FindProperty("_UseMole1st"                       , props);
+            mole1stPos                        = FindProperty("_Mole1stPos"                       , props);
+            mole1stRadius                     = FindProperty("_Mole1stRadius"                    , props);
+            mole1stRadiusMultiplier           = FindProperty("_Mole1stRadiusMultiplier"          , props);
+            mole1stBlur                       = FindProperty("_Mole1stBlur"                      , props);
+            mole1stShape                      = FindProperty("_Mole1stShape"                     , props);
+            mole1stRotation                   = FindProperty("_Mole1stRotation"                  , props);
+            useMole2nd                        = FindProperty("_UseMole2nd"                       , props);
+            mole2ndPos                        = FindProperty("_Mole2ndPos"                       , props);
+            mole2ndRadius                     = FindProperty("_Mole2ndRadius"                    , props);
+            mole2ndRadiusMultiplier           = FindProperty("_Mole2ndRadiusMultiplier"          , props);
+            mole2ndBlur                       = FindProperty("_Mole2ndBlur"                      , props);
+            mole2ndShape                      = FindProperty("_Mole2ndShape"                     , props);
+            mole2ndRotation                   = FindProperty("_Mole2ndRotation"                  , props);
+            useMole3rd                        = FindProperty("_UseMole3rd"                       , props);
+            mole3rdPos                        = FindProperty("_Mole3rdPos"                       , props);
+            mole3rdRadius                     = FindProperty("_Mole3rdRadius"                    , props);
+            mole3rdRadiusMultiplier           = FindProperty("_Mole3rdRadiusMultiplier"          , props);
+            mole3rdBlur                       = FindProperty("_Mole3rdBlur"                      , props);
+            mole3rdShape                      = FindProperty("_Mole3rdShape"                     , props);
+            mole3rdRotation                   = FindProperty("_Mole3rdRotation"                  , props);
+            useMole4th                        = FindProperty("_UseMole4th"                       , props);
+            mole4thPos                        = FindProperty("_Mole4thPos"                       , props);
+            mole4thRadius                     = FindProperty("_Mole4thRadius"                    , props);
+            mole4thRadiusMultiplier           = FindProperty("_Mole4thRadiusMultiplier"          , props);
+            mole4thBlur                       = FindProperty("_Mole4thBlur"                      , props);
+            mole4thShape                      = FindProperty("_Mole4thShape"                     , props);
+            mole4thRotation                   = FindProperty("_Mole4thRotation"                  , props);
+            useMole5th                        = FindProperty("_UseMole5th"                       , props);
+            mole5thPos                        = FindProperty("_Mole5thPos"                       , props);
+            mole5thRadius                     = FindProperty("_Mole5thRadius"                    , props);
+            mole5thRadiusMultiplier           = FindProperty("_Mole5thRadiusMultiplier"          , props);
+            mole5thBlur                       = FindProperty("_Mole5thBlur"                      , props);
+            mole5thShape                      = FindProperty("_Mole5thShape"                     , props);
+            mole5thRotation                   = FindProperty("_Mole5thRotation"                  , props);
+            useMole6th                        = FindProperty("_UseMole6th"                       , props);
+            mole6thPos                        = FindProperty("_Mole6thPos"                       , props);
+            mole6thRadius                     = FindProperty("_Mole6thRadius"                    , props);
+            mole6thRadiusMultiplier           = FindProperty("_Mole6thRadiusMultiplier"          , props);
+            mole6thBlur                       = FindProperty("_Mole6thBlur"                      , props);
+            mole6thShape                      = FindProperty("_Mole6thShape"                     , props);
+            mole6thRotation                   = FindProperty("_Mole6thRotation"                  , props);
+            useMole7th                        = FindProperty("_UseMole7th"                       , props);
+            mole7thPos                        = FindProperty("_Mole7thPos"                       , props);
+            mole7thRadius                     = FindProperty("_Mole7thRadius"                    , props);
+            mole7thRadiusMultiplier           = FindProperty("_Mole7thRadiusMultiplier"          , props);
+            mole7thBlur                       = FindProperty("_Mole7thBlur"                      , props);
+            mole7thShape                      = FindProperty("_Mole7thShape"                     , props);
+            mole7thRotation                   = FindProperty("_Mole7thRotation"                  , props);
+            useMole8th                        = FindProperty("_UseMole8th"                       , props);
+            mole8thPos                        = FindProperty("_Mole8thPos"                       , props);
+            mole8thRadius                     = FindProperty("_Mole8thRadius"                    , props);
+            mole8thRadiusMultiplier           = FindProperty("_Mole8thRadiusMultiplier"          , props);
+            mole8thBlur                       = FindProperty("_Mole8thBlur"                      , props);
+            mole8thShape                      = FindProperty("_Mole8thShape"                     , props);
+            mole8thRotation                   = FindProperty("_Mole8thRotation"                  , props);
+            useMole9th                        = FindProperty("_UseMole9th"                       , props);
+            mole9thPos                        = FindProperty("_Mole9thPos"                       , props);
+            mole9thRadius                     = FindProperty("_Mole9thRadius"                    , props);
+            mole9thRadiusMultiplier           = FindProperty("_Mole9thRadiusMultiplier"          , props);
+            mole9thBlur                       = FindProperty("_Mole9thBlur"                      , props);
+            mole9thShape                      = FindProperty("_Mole9thShape"                     , props);
+            mole9thRotation                   = FindProperty("_Mole9thRotation"                  , props);
+            useMole10th                       = FindProperty("_UseMole10th"                      , props);
+            mole10thPos                       = FindProperty("_Mole10thPos"                      , props);
+            mole10thRadius                    = FindProperty("_Mole10thRadius"                   , props);
+            mole10thRadiusMultiplier          = FindProperty("_Mole10thRadiusMultiplier"         , props);
+            mole10thBlur                      = FindProperty("_Mole10thBlur"                     , props);
+            mole10thShape                     = FindProperty("_Mole10thShape"                    , props);
+            mole10thRotation                  = FindProperty("_Mole10thRotation"                 , props);
 
             useLightBasedAlpha                = FindProperty("_UseLightBasedAlpha", props);
             useAlphaMaskStyle                 = FindProperty("_UseAlphaMaskStyle", props);
@@ -1696,7 +1785,10 @@ namespace lilToon
                                         _1stPos.x = lilEditorGUI.Slider(mole1stPos.displayName + " X", _1stPos.x, 0, 1);
                                         _1stPos.y = lilEditorGUI.Slider(mole1stPos.displayName + " Y", _1stPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole1stRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole1stRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole1stBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole1stShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole1stRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole1stPos.vectorValue = _1stPos;
@@ -1713,7 +1805,10 @@ namespace lilToon
                                         _2ndPos.x = lilEditorGUI.Slider(mole2ndPos.displayName + " X", _2ndPos.x, 0, 1);
                                         _2ndPos.y = lilEditorGUI.Slider(mole2ndPos.displayName + " Y", _2ndPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole2ndRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole2ndRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole2ndBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole2ndShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole2ndRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole2ndPos.vectorValue = _2ndPos;
@@ -1730,7 +1825,10 @@ namespace lilToon
                                         _3rdPos.x = lilEditorGUI.Slider(mole3rdPos.displayName + " X", _3rdPos.x, 0, 1);
                                         _3rdPos.y = lilEditorGUI.Slider(mole3rdPos.displayName + " Y", _3rdPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole3rdRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole3rdRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole3rdBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole3rdShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole3rdRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole3rdPos.vectorValue = _3rdPos;
@@ -1747,7 +1845,10 @@ namespace lilToon
                                         _4thPos.x = lilEditorGUI.Slider(mole4thPos.displayName + " X", _4thPos.x, 0, 1);
                                         _4thPos.y = lilEditorGUI.Slider(mole4thPos.displayName + " Y", _4thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole4thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole4thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole4thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole4thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole4thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole4thPos.vectorValue = _4thPos;
@@ -1764,7 +1865,10 @@ namespace lilToon
                                         _5thPos.x = lilEditorGUI.Slider(mole5thPos.displayName + " X", _5thPos.x, 0, 1);
                                         _5thPos.y = lilEditorGUI.Slider(mole5thPos.displayName + " Y", _5thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole5thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole5thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole5thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole5thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole5thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole5thPos.vectorValue = _5thPos;
@@ -1781,7 +1885,10 @@ namespace lilToon
                                         _6thPos.x = lilEditorGUI.Slider(mole6thPos.displayName + " X", _6thPos.x, 0, 1);
                                         _6thPos.y = lilEditorGUI.Slider(mole6thPos.displayName + " Y", _6thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole6thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole6thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole6thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole6thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole6thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole6thPos.vectorValue = _6thPos;
@@ -1798,7 +1905,10 @@ namespace lilToon
                                         _7thPos.x = lilEditorGUI.Slider(mole7thPos.displayName + " X", _7thPos.x, 0, 1);
                                         _7thPos.y = lilEditorGUI.Slider(mole7thPos.displayName + " Y", _7thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole7thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole7thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole7thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole7thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole7thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole7thPos.vectorValue = _7thPos;
@@ -1815,7 +1925,10 @@ namespace lilToon
                                         _8thPos.x = lilEditorGUI.Slider(mole8thPos.displayName + " X", _8thPos.x, 0, 1);
                                         _8thPos.y = lilEditorGUI.Slider(mole8thPos.displayName + " Y", _8thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole8thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole8thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole8thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole8thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole8thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole8thPos.vectorValue = _8thPos;
@@ -1832,7 +1945,10 @@ namespace lilToon
                                         _9thPos.x = lilEditorGUI.Slider(mole9thPos.displayName + " X", _9thPos.x, 0, 1);
                                         _9thPos.y = lilEditorGUI.Slider(mole9thPos.displayName + " Y", _9thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole9thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole9thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole9thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole9thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole9thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole9thPos.vectorValue = _9thPos;
@@ -1849,7 +1965,10 @@ namespace lilToon
                                         _10thPos.x = lilEditorGUI.Slider(mole10thPos.displayName + " X", _10thPos.x, 0, 1);
                                         _10thPos.y = lilEditorGUI.Slider(mole10thPos.displayName + " Y", _10thPos.y, 0, 1);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole10thRadius);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole10thRadiusMultiplier);
                                         lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole10thBlur);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole10thShape);
+                                        lilEditorGUI.LocalizedProperty(m_MaterialEditor, mole10thRotation);
                                     if(EditorGUI.EndChangeCheck())
                                     {
                                         mole10thPos.vectorValue = _10thPos;

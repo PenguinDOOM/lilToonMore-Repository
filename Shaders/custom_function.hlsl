@@ -400,39 +400,244 @@ void lilEmission3rd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     }
 }
 
-float MoleCalc(float2 uv, float2 pos, float radius, float blur)
+float ndot(float2 a, float2 b)
 {
-    float   aspectFix = 1.0;
-    if(_MoleAspectFix) aspectFix = _MainTex_TexelSize.w / _MainTex_TexelSize.z;
-    float2 afuv = (uv - pos) * float2(aspectFix, 1);
-    float  dist = length(afuv);
+    return a.x*b.x - a.y*b.y;
+}
+
+float dot2(float2 v)
+{
+    return dot(v,v);
+}
+
+float opUnion(float d1, float d2)
+{
+    return min(d1, d2);
+}
+
+float opSmoothUnion(float d1, float d2, float k)
+{
+    float h = saturate(0.5 + 0.5 * (d2 - d1) / k);
+
+    return lerp(d2, d1, h) - k * h * (1.0 - h);
+}
+
+// ==========================================================
+// SDF (Signed Distance Functions)
+// ==========================================================
+
+// 1. ハート
+float sdHeart(float2 p)
+{
+    p.x = abs(p.x);
     
-    return smoothstep(radius + blur, radius, dist);
+    if( p.y+p.x > 1.0 )
+        return sqrt(dot2(p-float2(0.25,0.75))) - sqrt(2.0)/4.0;
+        
+    return sqrt(min(dot2(p-float2(0.00,1.00)),
+                    dot2(p-0.5*max(p.x+p.y,0.0)))) * sign(p.x-p.y);
+}
+
+// 2. 星型
+float sdStar(float2 p, float r, float rf)
+{
+    const float2 k1 = float2(0.80901699437, -0.58778525229);
+    const float2 k2 = float2(-k1.x, k1.y);
+    
+    p.x  = abs(p.x);
+    p   -= 2.0*max(dot(k1,p),0.0)*k1;
+    p   -= 2.0*max(dot(k2,p),0.0)*k2;
+    p.x  = abs(p.x);
+    p.y -= r;
+    
+    float2 ba = rf*float2(-k1.y,k1.x) - float2(0,r);
+    float  h  = clamp( dot(p,ba)/dot(ba,ba), 0.0, r );
+    
+    return length(p-ba*h) * sign(p.y*ba.x-p.x*ba.y);
+}
+
+// 3. 十字
+float sdCross(float2 p, float size)
+{
+    float2  b = float2(size, size * 0.25); // 太さ
+            p = abs(p);
+            p = (p.y > p.x) ? p.yx : p.xy;
+    float2  q = p - b;
+    float   k = max(q.y, q.x);
+    float2  w = (k > 0.0) ? q : float2(b.y - p.x, -k);
+    
+    return sign(k) * length(max(w, 0.0));
+}
+
+// 4. 角丸X
+float sdRoundedX(float2 p, float w, float r)
+{
+    p = abs(p);
+    
+    return length(p-min(p.x+p.y,w)*0.5) - r;
+}
+
+// 5. 菱形
+float sdRhombus(float2 p, float2 b) 
+{
+          p = abs(p);
+    float h = clamp(0.5 + 0.5*ndot(b-2.0*p,b)/dot(b,b), 0.0, 1.0);
+    
+    return length(p - 0.5*b*float2(1.0-h,1.0+h)) * sign(p.x*b.y + p.y*b.x - b.x*b.y);
+}
+
+// 6. 角丸四角
+float sdRoundedBox(float2 p, float2 b, float r)
+{
+    float2 q = abs(p) - b + r;
+    
+    return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - r;
+}
+
+// 7. 三日月
+float sdMoon(float2 p, float d, float ra, float rb)
+{
+          p.y = abs(p.y);
+    float a   = (ra*ra - rb*rb + d*d)/(2.0*d);
+    float b   = sqrt(max(ra*ra-a*a,0.0));
+    
+    if( d*(p.x*b-p.y*a) > d*d*max(b-p.y,0.0) )
+        return length(p-float2(a,b));
+    
+    return max( (length(p)-ra), -(length(p-float2(d,0))-rb));
+}
+
+// 8. 猫の顔
+float sdCatFace(float2 p)
+{
+    // --- 顔 (楕円) ---
+    // pから中心位置をずらす (少し下げる)
+    float2 facePos = p - float2(0.0, -0.1);
+    
+    // 座標をスケール変換して楕円にする
+    // float2(x, y)
+    float faceShape = length(facePos * float2(0.65, 1.0)) - 0.5;
+
+    // --- 耳 (傾けて配置) ---
+    float2 q = p;
+    q.x = abs(q.x); // 左右対称にする
+
+    // 耳の回転の基準点（ピボット）を定義（だいたい顔の輪郭の斜め上あたり）
+    float2 earPivot = float2(0.32, 0.2);
+    float2 earUv = q - earPivot;
+
+    // 回転角度 (ラジアン)。マイナス値で外側に開きます。
+    // 0.4 くらいの値が程よい傾きになります。
+    float angle = 0.4; 
+    float s     = sin(angle);
+    float c     = cos(angle);
+    // 2D回転行列の適用
+    earUv = float2(earUv.x * c - earUv.y * s, earUv.x * s + earUv.y * c);
+
+    // 回転した座標系基準で、耳の位置を少し上にずらす
+    earUv -= float2(0.0, 0.25);
+
+    // 三角形 SDF
+    // abs(earUv.x)* N の Nを大きくすると耳が鋭角になります。
+    // 最後の - 0.15 は耳の大きさ
+    float earShape = max(abs(earUv.x)*1.0 + earUv.y*0.5, -earUv.y) - 0.15;
+
+    // 顔と耳を結合
+    return min(faceShape, earShape);
+}
+
+// 9. 猫の手
+float sdCatPaw(float2 p) {
+    p.x = abs(p.x);
+
+    // 1. メインの大きな肉球（少し横長の楕円に調整）
+    float pad = length(p * float2(0.9, 1.0) - float2(0.0, -0.2)) - 0.35;
+
+    // 2. 内側の指（中心寄り、高め）
+    // p.x = abs(p.x) により、左右に1つずつ（計2本）表示されます
+    float toe_inner = length(p - float2(0.18, 0.32)) - 0.15;
+
+    // 3. 外側の指（外寄り、少し低め）
+    // これでさらに左右に1つずつ（計2本）追加され、合計4本になります
+    float toe_outer = length(p - float2(0.45, 0.12)) - 0.14;
+
+    // すべてを結合
+    return min(pad, min(toe_inner, toe_outer));
+}
+
+// ==========================================================
+// 計算 & 描画処理
+// ==========================================================
+
+float MoleCalc(float2 uv, float2 pos, float radius, float rotation, int shapeType)
+{
+    // --- アスペクト比補正 ---
+    float aspectFix = 1.0;
+    if (_MoleAspectFix)
+        aspectFix = _MainTex_TexelSize.w / _MainTex_TexelSize.z;
+
+    float2 p = (uv - pos) * float2(aspectFix, 1.0);
+
+    // --- 回転 ---
+    float rotRad = radians(rotation);
+    float s      = sin(rotRad), c = cos(rotRad);
+          p      = mul(p, float2x2(c, -s, s, c));
+
+    // --- 正規化空間 ---
+    float2 sp = p / max(radius, 1e-5);
+
+    float d;
+
+    if      (shapeType == 1) d = sdHeart(sp + float2(0,0.5));
+    else if (shapeType == 2) d = sdStar(sp, 1.0, 0.45);
+    else if (shapeType == 3) d = sdCross(sp, 0.8);
+    else if (shapeType == 4) d = sdRoundedX(sp, 0.5, 0.1);
+    else if (shapeType == 5) d = sdRhombus(sp, float2(0.8,1.0));
+    else if (shapeType == 6) d = sdRoundedBox(sp, 0.7, 0.2);
+    else if (shapeType == 7) d = sdMoon(sp, 0.4, 1.0, 0.85);
+    else if (shapeType == 8) d = sdCatFace(sp);
+    else if (shapeType == 9) d = sdCatPaw(sp);
+    else                     d = length(sp) - 1.0; // 円
+
+    // 距離スケールをUV空間に戻す
+    return d * radius;
+}
+
+float MoleCalc_WithBlur(float2 uv, float2 pos, float radius, float blur, float rotation, int shapeType)
+{
+    float d = MoleCalc(uv, pos, radius, rotation, shapeType);
+
+    // d == 0 が縁
+    // d < 0 内部 / d > 0 外部
+
+    // blur を「1.0単位」に正規化
+    return d / max(blur, 1e-5);
 }
 
 // Mole
 void lilMoleDrower(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
 {
-    if(_UseMole)
-    {
-        float  mole      = 0;
-        float2 uv        = fd.uvMain;
-        float4 moleColor = _MoleColor;
-        
-        if(_UseMole1st)  mole += MoleCalc(uv, _Mole1stPos, _Mole1stRadius, _Mole1stBlur);
-        if(_UseMole2nd)  mole += MoleCalc(uv, _Mole2ndPos, _Mole2ndRadius, _Mole2ndBlur);
-        if(_UseMole3rd)  mole += MoleCalc(uv, _Mole3rdPos, _Mole3rdRadius, _Mole3rdBlur);
-        if(_UseMole4th)  mole += MoleCalc(uv, _Mole4thPos, _Mole4thRadius, _Mole4thBlur);
-        if(_UseMole5th)  mole += MoleCalc(uv, _Mole5thPos, _Mole5thRadius, _Mole5thBlur);
-        if(_UseMole6th)  mole += MoleCalc(uv, _Mole6thPos, _Mole6thRadius, _Mole6thBlur);
-        if(_UseMole7th)  mole += MoleCalc(uv, _Mole7thPos, _Mole7thRadius, _Mole7thBlur);
-        if(_UseMole8th)  mole += MoleCalc(uv, _Mole8thPos, _Mole8thRadius, _Mole8thBlur);
-        if(_UseMole9th)  mole += MoleCalc(uv, _Mole9thPos, _Mole9thRadius, _Mole9thBlur);
-        if(_UseMole10th) mole += MoleCalc(uv, _Mole10thPos, _Mole10thRadius, _Mole10thBlur);
+    if (!_UseMole) return;
 
-        mole       = saturate(mole);
-        fd.col.rgb = lilBlendColor(fd.col.rgb, moleColor.rgb, mole * moleColor.a, _MoleBlendMode);
-    }
+    float4 moleColor = _MoleColor;
+    float2 uv        = fd.uvMain;
+    float  d         = 1e6;
+
+    if(_UseMole1st)  d = min(d, MoleCalc_WithBlur(uv, _Mole1stPos,  _Mole1stRadius *  _Mole1stRadiusMultiplier,  _Mole1stBlur,  _Mole1stRotation,  _Mole1stShape));
+    if(_UseMole2nd)  d = min(d, MoleCalc_WithBlur(uv, _Mole2ndPos,  _Mole2ndRadius *  _Mole2ndRadiusMultiplier,  _Mole2ndBlur,  _Mole2ndRotation,  _Mole2ndShape));
+    if(_UseMole3rd)  d = min(d, MoleCalc_WithBlur(uv, _Mole3rdPos,  _Mole3rdRadius *  _Mole3rdRadiusMultiplier,  _Mole3rdBlur,  _Mole3rdRotation,  _Mole3rdShape));
+    if(_UseMole4th)  d = min(d, MoleCalc_WithBlur(uv, _Mole4thPos,  _Mole4thRadius *  _Mole4thRadiusMultiplier,  _Mole4thBlur,  _Mole4thRotation,  _Mole4thShape));
+    if(_UseMole5th)  d = min(d, MoleCalc_WithBlur(uv, _Mole5thPos,  _Mole5thRadius *  _Mole5thRadiusMultiplier,  _Mole5thBlur,  _Mole5thRotation,  _Mole5thShape));
+    if(_UseMole6th)  d = min(d, MoleCalc_WithBlur(uv, _Mole6thPos,  _Mole6thRadius *  _Mole6thRadiusMultiplier,  _Mole6thBlur,  _Mole6thRotation,  _Mole6thShape));
+    if(_UseMole7th)  d = min(d, MoleCalc_WithBlur(uv, _Mole7thPos,  _Mole7thRadius *  _Mole7thRadiusMultiplier,  _Mole7thBlur,  _Mole7thRotation,  _Mole7thShape));
+    if(_UseMole8th)  d = min(d, MoleCalc_WithBlur(uv, _Mole8thPos,  _Mole8thRadius *  _Mole8thRadiusMultiplier,  _Mole8thBlur,  _Mole8thRotation,  _Mole8thShape));
+    if(_UseMole9th)  d = min(d, MoleCalc_WithBlur(uv, _Mole9thPos,  _Mole9thRadius *  _Mole9thRadiusMultiplier,  _Mole9thBlur,  _Mole9thRotation,  _Mole9thShape));
+    if(_UseMole10th) d = min(d, MoleCalc_WithBlur(uv, _Mole10thPos, _Mole10thRadius * _Mole10thRadiusMultiplier, _Mole10thBlur, _Mole10thRotation, _Mole10thShape));
+
+    // --- SDF距離 → マスク ---
+    float mole = smoothstep(1.0, 0.0, d);
+
+    fd.col.rgb = lilBlendColor(fd.col.rgb, moleColor.rgb, mole * moleColor.a, _MoleBlendMode);
 }
 
 float GetLightValue(float3 lightColor, int type)
