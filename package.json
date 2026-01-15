@@ -1,24 +1,25 @@
 {
-    "name": "jp.penguin.liltoonmore",
-    "displayName": "lilToonMore",
-    "version": "4.0.3",
-    "author": 
-    {
-        "name": "Penguin"
-    },
-    "unity" : "2022.3",
-    "description" : "Customized lilToon.",
-    "vpmDependencies" : 
-    {
-        "jp.lilxyzw.liltoon" : "2.3.2"
-    },
-    "changelogUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/master/CHANGELOG.txt",
-    "licensesUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/master/LICENSE",
-    "license": "MIT",
-    "keywords": ["Toon", "Shader", "Material"],
-    "url" : "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.0.3/jp.penguin.liltoonmore-4.0.3.zip?",
-    "legacyFolders" : 
-    {
-        "Assets\\lilToonMore" : "2d67ded333893654ca23a5a37c59dfb2"
-    }
+  "name": "jp.penguin.liltoonmore",
+  "displayName": "lilToonMore",
+  "version": "4.1.0",
+  "author": {
+    "name": "Penguin"
+  },
+  "unity": "2022.3",
+  "description": "Customized lilToon.",
+  "vpmDependencies": {
+    "jp.lilxyzw.liltoon": "2.3.2"
+  },
+  "changelogUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/c6cfee3f8e9e8df6e2117c0f86f34fed37301509/CHANGELOG.txt",
+  "licensesUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/c6cfee3f8e9e8df6e2117c0f86f34fed37301509/LICENSE",
+  "license": "MIT",
+  "keywords": [
+    "Toon",
+    "Shader",
+    "Material"
+  ],
+  "url": "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.1.0/jp.penguin.liltoonmore-4.1.0.zip?",
+  "legacyFolders": {
+    "Assets\\lilToonMore": ""
+  }
 }
