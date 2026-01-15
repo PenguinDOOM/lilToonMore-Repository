@@ -1,3 +1,9 @@
+2026/01/15
+Ver. 4.1
+Major rewrite of MoleDrower
+Make an early return
+Improve readability
+
 2026/01/02
 Ver. 3.1.1
 Fixed undefined error due to lilToon's optimization (Shader fallback in VRChat)
