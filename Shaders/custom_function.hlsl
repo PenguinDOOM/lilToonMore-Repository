@@ -615,7 +615,7 @@ float sdCatFace(float2 p)
                     earUV.x * s + earUV.y * c);
     earUV -= float2(0.0, 0.2);
 
-    float earShape = opRound(sdEquilateralTriangle(earUV, 0.15), 0.07);
+    float earShape = opRound(sdEquilateralTriangle(earUV, 0.15), 0.1);
 
     // --- Blend ---
     return opSmoothUnion(faceShape, earShape, 0.01);
@@ -647,7 +647,7 @@ float sdCatPaw(float2 p)
     // Main pads
     float d1 = length(p - float2(0.00, -0.15)) - 0.2;
     float d2 = length(p - float2(0.22, -0.28)) - 0.2;
-    float k  = 0.18;
+    float k  = 0.045;
 
     float pad = opSmoothUnion(d1, d2, k);
 
@@ -663,7 +663,7 @@ float sdCatPaw(float2 p)
     float lp   = 0.44;
     float d3   = length(p - float2(0.00, -0.15 - lp)) - 0.2;
     float d4   = length(p - float2(0.30, -0.24 - lp)) - 0.2;
-    float k2   = 0.18;
+    float k2   = 0.045;
     float dent = opSmoothUnion(d3, d4, k2);
 
     paw = opSmoothSubtraction(dent, paw, 0.01);
