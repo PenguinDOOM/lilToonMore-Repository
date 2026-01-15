@@ -486,6 +486,11 @@ float opSmoothIntersection(float d1, float d2, float k)
 
 float opRound(float2 p, float r)
 {
+    return p - r;
+}
+
+float opRoundInside(float2 p, float r)
+{
     return length(p) - r;
 }
 
