@@ -613,7 +613,7 @@ float sdCatFace(float2 p)
 
     earUV  = float2(earUV.x * c - earUV.y * s,
                     earUV.x * s + earUV.y * c);
-    earUV -= float2(0.0, 0.2);
+    earUV -= float2(0.0, 0.18);
 
     float earShape = opRound(sdEquilateralTriangle(earUV, 0.15), 0.1);
 
