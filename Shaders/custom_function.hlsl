@@ -405,12 +405,39 @@ float opUnion(float d1, float d2)
 {
     return min(d1, d2);
 }
+float opSubtraction(float d1, float d2)
+{
+    return max(-d1, d2);
+}
+float opIntersection(float d1, float d2)
+{
+    return max(d1, d2);
+}
+float opXor(float d1, float d2)
+{
+    return max(min(d1, d2), -max(d1, d2));
+}
 
 float opSmoothUnion(float d1, float d2, float k)
 {
-    float h = saturate(0.5 + 0.5 * (d2 - d1) / k);
+    k *= 4.0;
+    float h = max(k-abs(d1-d2),0.0);
+    return min(d1, d2) - h*h*0.25/k;
+}
 
-    return lerp(d2, d1, h) - k * h * (1.0 - h);
+float opSmoothSubtraction(float d1, float d2, float k)
+{
+    return -opSmoothUnion(d1, -d2, k);
+}
+
+float opSmoothIntersection(float d1, float d2, float k)
+{
+    return -opSmoothUnion(-d1, -d2, k);
+}
+
+float opRound(float2 p, float r)
+{
+  return p - r;
 }
 
 // ==========================================================
@@ -425,8 +452,8 @@ float sdHeart(float2 p)
     if( p.y+p.x > 1.0 )
         return sqrt(dot2(p-float2(0.25,0.75))) - sqrt(2.0)/4.0;
         
-    return sqrt(min(dot2(p-float2(0.00,1.00)),
-                    dot2(p-0.5*max(p.x+p.y,0.0)))) * sign(p.x-p.y);
+    return sqrt(opUnion(dot2(p-float2(0.00,1.00)),
+                    dot2(p-0.5*opIntersection(p.x+p.y,0.0)))) * sign(p.x-p.y);
 }
 
 // 2. 星型
@@ -436,8 +463,8 @@ float sdStar(float2 p, float r, float rf)
     const float2 k2 = float2(-k1.x, k1.y);
     
     p.x  = abs(p.x);
-    p   -= 2.0*max(dot(k1,p),0.0)*k1;
-    p   -= 2.0*max(dot(k2,p),0.0)*k2;
+    p   -= 2.0*opIntersection(dot(k1,p),0.0)*k1;
+    p   -= 2.0*opIntersection(dot(k2,p),0.0)*k2;
     p.x  = abs(p.x);
     p.y -= r;
     
@@ -454,10 +481,10 @@ float sdCross(float2 p, float size)
             p = abs(p);
             p = (p.y > p.x) ? p.yx : p.xy;
     float2  q = p - b;
-    float   k = max(q.y, q.x);
+    float   k = opIntersection(q.y, q.x);
     float2  w = (k > 0.0) ? q : float2(b.y - p.x, -k);
     
-    return sign(k) * length(max(w, 0.0));
+    return sign(k) * length(opIntersection(w, 0.0));
 }
 
 // 4. 角丸X
@@ -465,7 +492,7 @@ float sdRoundedX(float2 p, float w, float r)
 {
     p = abs(p);
     
-    return length(p-min(p.x+p.y,w)*0.5) - r;
+    return length(p-opUnion(p.x+p.y,w)*0.5) - r;
 }
 
 // 5. 菱形
@@ -482,7 +509,7 @@ float sdRoundedBox(float2 p, float2 b, float r)
 {
     float2 q = abs(p) - b + r;
     
-    return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - r;
+    return opUnion(opIntersection(q.x,q.y),0.0) + length(opIntersection(q,0.0)) - r;
 }
 
 // 7. 三日月
@@ -490,12 +517,22 @@ float sdMoon(float2 p, float d, float ra, float rb)
 {
           p.y = abs(p.y);
     float a   = (ra*ra - rb*rb + d*d)/(2.0*d);
-    float b   = sqrt(max(ra*ra-a*a,0.0));
+    float b   = sqrt(opUnion(ra*ra-a*a,0.0));
     
-    if( d*(p.x*b-p.y*a) > d*d*max(b-p.y,0.0) )
+    if( d*(p.x*b-p.y*a) > d*d*opUnion(b-p.y,0.0) )
         return length(p-float2(a,b));
     
-    return max( (length(p)-ra), -(length(p-float2(d,0))-rb));
+    return opUnion( (length(p)-ra), -(length(p-float2(d,0))-rb));
+}
+
+float sdEquilateralTriangle(float2 p, float r)
+{
+    const float k = sqrt(3.0);
+    p.x = abs(p.x) - r;
+    p.y = p.y + r/k;
+    if( p.x+k*p.y>0.0 ) p = float2(p.x-k*p.y,-k*p.x-p.y)/2.0;
+    p.x -= clamp( p.x, -2.0*r, 0.0 );
+    return -length(p)*sign(p.y);
 }
 
 // 8. 猫の顔
@@ -515,7 +552,7 @@ float sdCatFace(float2 p)
 
     // 耳の回転の基準点（ピボット）を定義（だいたい顔の輪郭の斜め上あたり）
     float2 earPivot = float2(0.32, 0.2);
-    float2 earUv = q - earPivot;
+    float2 earUV = q - earPivot;
 
     // 回転角度 (ラジアン)。マイナス値で外側に開きます。
     // 0.4 くらいの値が程よい傾きになります。
@@ -523,18 +560,35 @@ float sdCatFace(float2 p)
     float s     = sin(angle);
     float c     = cos(angle);
     // 2D回転行列の適用
-    earUv = float2(earUv.x * c - earUv.y * s, earUv.x * s + earUv.y * c);
+    earUV = float2(earUV.x * c - earUV.y * s, earUV.x * s + earUV.y * c);
 
     // 回転した座標系基準で、耳の位置を少し上にずらす
-    earUv -= float2(0.0, 0.25);
-
+    earUV -= float2(0.0, 0.2);
     // 三角形 SDF
-    // abs(earUv.x)* N の Nを大きくすると耳が鋭角になります。
+    // abs(earUV.x)* N の Nを大きくすると耳が鋭角になります。
     // 最後の - 0.15 は耳の大きさ
-    float earShape = max(abs(earUv.x)*1.0 + earUv.y*0.5, -earUv.y) - 0.15;
+    float earShape = opRound(sdEquilateralTriangle(earUV, 0.15), 0.07);
 
     // 顔と耳を結合
-    return min(faceShape, earShape);
+    return opSmoothUnion(faceShape, earShape, 0.01);
+}
+
+float removeOverlap(float d1, float d2)
+{
+    // 両方の内側なら「強制的に外側」にする
+    if (d1 < 0 && d2 < 0)
+        return opIntersection(d1, d2); // 共通部分を削る
+
+    return opUnion(d1, d2);
+}
+
+float removeOverlapSmooth(float d1, float d2, float k)
+{
+    // 両方の内側なら「強制的に外側」にする
+    if (d1 < 0 && d2 < 0)
+        return opSmoothSubtraction(d1, d2, k); // 共通部分を削る
+
+    return opUnion(d1, d2);
 }
 
 // 9. 猫の手
@@ -542,19 +596,41 @@ float sdCatPaw(float2 p) {
     p.x = abs(p.x);
 
     // 1. メインの大きな肉球（少し横長の楕円に調整）
-    float pad = length(p * float2(0.9, 1.0) - float2(0.0, -0.2)) - 0.35;
+    float d1 = length(p - float2(0.00, -0.15)) - 0.2; // 中央
+    float d2 = length(p - float2(0.22, -0.28)) - 0.2; // 下
+    float k = 0.18; // ぷに度
 
+    float pad = opSmoothUnion(d1, d2, k);
     // 2. 内側の指（中心寄り、高め）
     // p.x = abs(p.x) により、左右に1つずつ（計2本）表示されます
-    float toe_inner = length(p - float2(0.18, 0.32)) - 0.15;
+    float toe_inner = length((p - float2(0.18, 0.32)) * float2(1.25, 1.0) ) - 0.1875;
 
     // 3. 外側の指（外寄り、少し低め）
     // これでさらに左右に1つずつ（計2本）追加され、合計4本になります
     float toe_outer = length(p - float2(0.45, 0.12)) - 0.14;
 
     // すべてを結合
-    return min(pad, min(toe_inner, toe_outer));
+    float paw = opUnion(pad, opUnion(toe_inner, toe_outer));
+    
+    float lp = 0.44;
+    float d3 = length(p - float2(0.00, -0.15 - lp)) - 0.2; // 中央
+    float d4 = length(p - float2(0.30, -0.24 - lp)) - 0.2; // 左
+    float k2 = 0.18;
+    float dent = opSmoothUnion(d3, d4, k2);
+    
+    paw = opSmoothSubtraction(dent, paw, 0.01);
+
+    return paw;
 }
+
+    // circle = length(p * float2(height, width) - float2(x, y)) - radius;
+    // p ピクセルのUV座標
+    // * float2(height, width) 円の高さと幅
+    // - float2(x, y) pおける円の中心位置
+    // length(...) 現在のピクセルから中心までの距離
+    // - radius 距離から半径を減算
+    // radius > 1 大きくなる
+    // radius < 1 小さくなる
 
 // ==========================================================
 // 計算 & 描画処理
