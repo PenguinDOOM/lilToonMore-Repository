@@ -46,7 +46,7 @@ Where `LIL_REFRACTION_SAMPNUM = 8`
 
 | Quality | Taps | Effective Samples | Coverage Area | Speed Multiplier | Gaussian Weighting | Recommended Use |
 |---------|------|------------------|---------------|------------------|--------------------|-----------------|
-| **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Mobile/lightweight |
+| **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Lightweight |
 | **Low** | 8 | 32px | 10×7px | 6.7× | ✓ Yes | PC VR recommended |
 | **Mid** | 13 | 52px | 16×10px | 4.6× | ✓ Yes | PC Desktop recommended |
 | **High** | 17 | 68px | 16×10px (dense) | 3.7× | ✓ Yes | High-end PC |
