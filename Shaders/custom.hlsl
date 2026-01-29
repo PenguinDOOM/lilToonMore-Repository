@@ -285,7 +285,9 @@
     bool    _UseMiddleLight; \
     bool    _UseClamp; \
     bool    _LightBasedAlphaInvert; \
-    bool    _LightBasedAlphaPrePost;
+    bool    _LightBasedAlphaPrePost; \
+    uint    _RefractionType; \
+    uint    _RefractionKawaseQuality;
 
 
 

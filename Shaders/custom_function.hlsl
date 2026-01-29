@@ -32,6 +32,246 @@ void warp(inout float2 inuv)
 
         fd.col.rgb = lerp(warpedBG, fd.col.rgb, fd.col.a);
     }
+
+    // Refraction - Kawase Blur版（低中高最高品質）
+    void lilRefractionKawase(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
+    {
+        float2 refractUV = fd.uvScn + (pow(1.0 - fd.nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, fd.N).xy;
+        
+        #if defined(LIL_REFRACTION_BLUR2)
+            #if defined(LIL_BRP)
+                float3 refractCol = 0;
+                
+                // 元のぼかし強度計算を完全に流用
+                float baseBlurOffset = fd.perceptualRoughness / sqrt(fd.positionSS.w) * (0.03 / LIL_REFRACTION_SAMPNUM);
+                
+                if(_RefractionType == 1)
+                {
+                    if(_RefractionKawaseQuality == 3)
+                    {
+                        // === Ultra：25タップ（ガウス重み付き）===
+                        float sum = 0;
+                        // X方向も追加（元はY方向のみ）
+                        float2 blurOffset = float2(
+                            baseBlurOffset * LIL_MATRIX_P._m00,
+                            baseBlurOffset * LIL_MATRIX_P._m11
+                        );
+                        
+                        // ガウス分布パラメータ（元の式と同じ）
+                        // sigma^2 = LIL_REFRACTION_SAMPNUM^2 / 2 = 8^2 / 2 = 32
+                        float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
+                        
+                        // 中央
+                        float dist0 = 0;
+                        float weight0 = exp(-dist0 * dist0 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
+                        sum += weight0;
+                        
+                        // リング1（0.5）- 対角4点
+                        float2 offset1 = blurOffset * 0.5;
+                        float dist1 = 0.5;
+                        float weight1 = exp(-dist1 * dist1 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, -offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
+                        sum += weight1 * 4;
+                        
+                        // リング2（1.5）- 対角4点 + 十字4点
+                        float2 offset2 = blurOffset * 1.5;
+                        float dist2 = 1.5;
+                        float weight2 = exp(-dist2 * dist2 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, -offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, -offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, 0), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, 0), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb * weight2;
+                        sum += weight2 * 8;
+                        
+                        // リング3（2.5）- 対角4点 + 十字4点
+                        float2 offset3 = blurOffset * 2.5;
+                        float dist3 = 2.5;
+                        float weight3 = exp(-dist3 * dist3 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, -offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, -offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, 0), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, 0), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset3.y), 0).rgb * weight3;
+                        sum += weight3 * 8;
+                        
+                        // リング4（3.5）- 対角4点
+                        float2 offset4 = blurOffset * 3.5;
+                        float dist4 = 3.5;
+                        float weight4 = exp(-dist4 * dist4 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset4.x, offset4.y), 0).rgb * weight4;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset4.x, -offset4.y), 0).rgb * weight4;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset4.x, offset4.y), 0).rgb * weight4;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset4.x, -offset4.y), 0).rgb * weight4;
+                        sum += weight4 * 4;
+                        
+                        refractCol /= sum;
+                    }
+                    else if(_RefractionKawaseQuality == 2)
+                    {
+                        // === High：17タップ（ガウス重み付き）===
+                        float sum = 0;
+                        float2 blurOffset = float2(
+                            baseBlurOffset * LIL_MATRIX_P._m00,
+                            baseBlurOffset * LIL_MATRIX_P._m11
+                        );
+                        
+                        float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
+                        
+                        // 中央
+                        float dist0 = 0;
+                        float weight0 = exp(-dist0 * dist0 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
+                        sum += weight0;
+                        
+                        // リング1（0.5）- 対角4点
+                        float2 offset1 = blurOffset * 0.5;
+                        float dist1 = 0.5;
+                        float weight1 = exp(-dist1 * dist1 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, -offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
+                        sum += weight1 * 4;
+                        
+                        // リング2（1.5）- 対角4点
+                        float2 offset2 = blurOffset * 1.5;
+                        float dist2 = 1.5;
+                        float weight2 = exp(-dist2 * dist2 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, -offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, -offset2.y), 0).rgb * weight2;
+                        sum += weight2 * 4;
+                        
+                        // リング3（2.5）- 対角4点 + 十字4点
+                        float2 offset3 = blurOffset * 2.5;
+                        float dist3 = 2.5;
+                        float weight3 = exp(-dist3 * dist3 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, -offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, -offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, 0), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, 0), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset3.y), 0).rgb * weight3;
+                        sum += weight3 * 8;
+                        
+                        refractCol /= sum;
+                    }
+                    else if(_RefractionKawaseQuality == 1)
+                    {
+                        // === Mid：13タップ（ガウス重み付き）===
+                        float sum = 0;
+                        float2 blurOffset = float2(
+                            baseBlurOffset * LIL_MATRIX_P._m00,
+                            baseBlurOffset * LIL_MATRIX_P._m11
+                        );
+                        
+                        float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
+                        
+                        // 中央
+                        float dist0 = 0;
+                        float weight0 = exp(-dist0 * dist0 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
+                        sum += weight0;
+                        
+                        // リング1（0.5）- 対角4点
+                        float2 offset1 = blurOffset * 0.5;
+                        float dist1 = 0.5;
+                        float weight1 = exp(-dist1 * dist1 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, -offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
+                        sum += weight1 * 4;
+                        
+                        // リング2（1.5）- 十字4点
+                        float2 offset2 = blurOffset * 1.5;
+                        float dist2 = 1.5;
+                        float weight2 = exp(-dist2 * dist2 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, 0), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, 0), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb * weight2;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb * weight2;
+                        sum += weight2 * 4;
+                        
+                        // リング3（2.5）- 対角4点
+                        float2 offset3 = blurOffset * 2.5;
+                        float dist3 = 2.5;
+                        float weight3 = exp(-dist3 * dist3 / sigmaSq);
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset3.x, -offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, offset3.y), 0).rgb * weight3;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, -offset3.y), 0).rgb * weight3;
+                        sum += weight3 * 4;
+                        
+                        refractCol /= sum;
+                    }
+                    else
+                    {
+                        // === Low：8タップ（シンプル平均）===
+                        // Quest用は計算量削減のためガウス重みなし
+                        float2 blurOffset = float2(
+                            baseBlurOffset * LIL_MATRIX_P._m00,
+                            baseBlurOffset * LIL_MATRIX_P._m11
+                        );
+                        
+                        // リング1（0.5）- 対角4点
+                        float2 offset1 = blurOffset * 0.5;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, offset1.y), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, -offset1.y), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb;
+                        
+                        // リング2（1.5）- 十字4点
+                        float2 offset2 = blurOffset * 1.5;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, 0), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, 0), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb;
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb;
+                        
+                        refractCol /= 8.0;
+                    }
+                }
+                else
+                {
+                    // === デフォルト：元の33タップ垂直ガウシアン ===
+                    float sum = 0;
+                    float blurOffset = baseBlurOffset * LIL_MATRIX_P._m11;
+                    for(int j = -16; j <= 16; j++)
+                    {
+                        refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, j * blurOffset), 0).rgb * LIL_REFRACTION_GAUSDIST(j);
+                        sum += LIL_REFRACTION_GAUSDIST(j);
+                    }
+                    refractCol /= sum;
+                }
+                
+                refractCol *= _RefractionColor.rgb;
+            #else
+                // URP/HDRP: ミップマップ使用
+                float refractLod = min(sqrt(fd.perceptualRoughness / sqrt(fd.positionSS.w) * 5.0), 10);
+                float3 refractCol = LIL_GET_GRAB_TEX(refractUV, refractLod).rgb * _RefractionColor.rgb;
+            #endif
+        #else
+            // ブラーなし
+            float3 refractCol = LIL_GET_BG_TEX(refractUV, 0).rgb * _RefractionColor.rgb;
+        #endif
+        
+        if(_RefractionColorFromMain) refractCol *= fd.albedo;
+        fd.col.rgb = lerp(refractCol, fd.col.rgb, fd.col.a);
+    }
 #endif
 
 // Main2nd
