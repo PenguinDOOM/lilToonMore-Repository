@@ -1,4 +1,9 @@
 2026/01/30
+Ver. 4.2.2
+Fixed an issue where _RefractionType was reversed between Bilinear and SGMB
+Updated reference links to archived versions
+
+2026/01/30
 Ver. 4.2.1
 SGMB Documentation Enhancement
 - Added note about documentation generation source to SGMB documentation (English and Japanese)
