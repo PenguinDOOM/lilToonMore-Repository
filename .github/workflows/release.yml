@@ -20,6 +20,8 @@ env:
   FAIL_VERIFICATION_FAILED: 1
 jobs:
   verify-commit-signature:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -65,6 +67,8 @@ jobs:
             fi
           fi
   extract-semantic-version:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     defaults:
       run:
