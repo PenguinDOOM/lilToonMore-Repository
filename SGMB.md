@@ -108,50 +108,65 @@ Example at 1080p fullscreen:
 ### Bilinear (4 taps)
 ```
     X       X
-    
-    
+
+
+
     X       X
 ```
-4 diagonal corners with bilinear interpolation  
+4 diagonal corners with bilinear interpolation
 **No Gaussian weighting** - uses simple averaging for maximum performance
 
 ### Low (8 taps)
 ```
-    X   +   X       Ring 1: Diagonal (4)
-    
-+       C       +   Ring 2: Cross (4)
-    
-    X   +   X
+    X   +   X       Center
+
+    +   C   +       Ring 1: Diagonal (4)
+
+    X   +   X       Ring 2: Cross (4)
 ```
 **With Gaussian weighting** - physically accurate blur distribution
 
 ### Mid (13 taps)
 ```
-    X   +   X       Ring 1: Diagonal (4)
-    
-+       C       +   Ring 2: Cross (4)
-    
-    X   +   X       Ring 3: Diagonal (4)
-    
-            +
+        +               Center
+
+    X   +   X           Ring 1: Diagonal (4)
+
++   +   C   +    +      Ring 2: Cross (4)
+
+    X   +   X           Ring 3: Diagonal (4)
+
+        +
 ```
 
 ### High (17 taps)
 ```
-        X           Ring 1: Diagonal (4)
-    X   +   X       Ring 2: Diagonal (4)
-  +     C     +     Ring 3: Cross + Diagonal (8)
-    X   +   X
-        X
+X       +        X      Center
+
+    X   +   X           Ring 1: Diagonal (4)
+
++   +   C   +    +      Ring 2: Cross (4)
+
+    X   +   X           Ring 3: Cross + Diagonal (8)
+
+X       +        X
 ```
 
 ### Ultra (25 taps)
 ```
-            X           Ring 1: Diagonal (4)
-        X   +   X       Ring 2: Cross + Diagonal (8)
-    X   +   C   +   X   Ring 3: Cross + Diagonal (8)
-        X   +   X       Ring 4: Diagonal (4)
-            X
+X                        X
+
+    X       +        X      Center
+
+        X   +   X           Ring 1: Diagonal (4)
+
+    +   +   C   +    +      Ring 2: Cross (4)
+
+        X   +   X           Ring 3: Cross + Diagonal (8)
+
+    X       +        X      Ring 4: Diagonal (4)
+
+X                        X
 ```
 
 **Note**: Ring distances are at offsets of 0.5×, 1.5×, 2.5×, and 3.5× the base blur offset.
