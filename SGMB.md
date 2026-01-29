@@ -47,7 +47,7 @@ Where `LIL_REFRACTION_SAMPNUM = 8`
 | Quality | Taps | Effective Samples | Coverage Area | Speed Multiplier | Gaussian Weighting | Recommended Use |
 |---------|------|------------------|---------------|------------------|--------------------|-----------------|
 | **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Quest lightweight |
-| **Low** | 8 | 32px | 10×7px | 11.8× | ✓ Yes | PC VR recommended |
+| **Low** | 8 | 32px | 10×7px | 6.7× | ✓ Yes | PC VR recommended |
 | **Mid** | 13 | 52px | 16×10px | 4.6× | ✓ Yes | PC Desktop recommended |
 | **High** | 17 | 68px | 16×10px (dense) | 3.7× | ✓ Yes | High-end PC |
 | **Ultra** | 25 | 100px | 21×13px | 2.5× | ✓ Yes | Screenshots |
@@ -64,7 +64,7 @@ Based on theoretical cycle calculations at 1080p:
 ```
 Original: 461 cycles (100%) - Baseline
 Bilinear:  19 cycles (4.1%) - 24× faster
-Low:       39 cycles (8.5%) - 11.8× faster
+Low:       69 cycles (15%)  - 6.7× faster
 Mid:      101 cycles (22%)  - 4.6× faster
 High:     125 cycles (27%)  - 3.7× faster
 Ultra:    181 cycles (39%)  - 2.5× faster
@@ -75,7 +75,7 @@ Ultra:    181 cycles (39%)  - 2.5× faster
 **1080p (1920×1080)**
 - Original: ~0.25ms
 - Bilinear: ~0.01ms
-- Low: ~0.02ms
+- Low: ~0.037ms
 - Mid: ~0.05ms
 - High: ~0.07ms
 - Ultra: ~0.10ms
@@ -83,13 +83,13 @@ Ultra:    181 cycles (39%)  - 2.5× faster
 **Quest 2 (1832×1920 per eye)**
 - Original: ~0.48ms per eye
 - Bilinear: ~0.02ms per eye
-- Low: ~0.04ms per eye
+- Low: ~0.072ms per eye
 - Mid: ~0.10ms per eye
 
 **4K (3840×2160)**
 - Original: ~1.0ms
 - Bilinear: ~0.04ms
-- Low: ~0.08ms
+- Low: ~0.15ms
 - Mid: ~0.20ms
 - High: ~0.27ms
 - Ultra: ~0.40ms
