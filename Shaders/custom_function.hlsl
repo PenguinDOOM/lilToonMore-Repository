@@ -37,15 +37,32 @@ void warp(inout float2 inuv)
     void lilRefractionKawase(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         float2 refractUV = fd.uvScn + (pow(1.0 - fd.nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, fd.N).xy;
-        
+
         #if defined(LIL_REFRACTION_BLUR2)
             #if defined(LIL_BRP)
                 float3 refractCol = 0;
-                
+
                 // 元のぼかし強度計算を完全に流用
                 float baseBlurOffset = fd.perceptualRoughness / sqrt(fd.positionSS.w) * (0.03 / LIL_REFRACTION_SAMPNUM);
-                
-                if(_RefractionType == 1)
+
+                if(_RefractionType == 2)
+                {
+                    // === Bilinear Interpolation：4タップ（バイリニア）===
+                    // GPUのバイリニア補間機能を活用した最速ブラー
+                    float2 blurOffset = float2(
+                        baseBlurOffset * LIL_MATRIX_P._m00 * 0.5,
+                        baseBlurOffset * LIL_MATRIX_P._m11 * 0.5
+                    );
+
+                    // 対角4点をバイリニア補間でサンプリング
+                    refractCol += LIL_GET_GRAB_TEX(refractUV + float2(blurOffset.x, blurOffset.y), 0).rgb;
+                    refractCol += LIL_GET_GRAB_TEX(refractUV + float2(blurOffset.x, -blurOffset.y), 0).rgb;
+                    refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-blurOffset.x, blurOffset.y), 0).rgb;
+                    refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-blurOffset.x, -blurOffset.y), 0).rgb;
+
+                    refractCol /= 4.0;
+                }
+                else if(_RefractionType == 1)
                 {
                     if(_RefractionKawaseQuality == 3)
                     {
@@ -56,17 +73,17 @@ void warp(inout float2 inuv)
                             baseBlurOffset * LIL_MATRIX_P._m00,
                             baseBlurOffset * LIL_MATRIX_P._m11
                         );
-                        
+
                         // ガウス分布パラメータ（元の式と同じ）
                         // sigma^2 = LIL_REFRACTION_SAMPNUM^2 / 2 = 8^2 / 2 = 32
                         float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
-                        
+
                         // 中央
                         float dist0 = 0;
                         float weight0 = exp(-dist0 * dist0 / sigmaSq);
                         refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
                         sum += weight0;
-                        
+
                         // リング1（0.5）- 対角4点
                         float2 offset1 = blurOffset * 0.5;
                         float dist1 = 0.5;
@@ -76,7 +93,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
                         sum += weight1 * 4;
-                        
+
                         // リング2（1.5）- 対角4点 + 十字4点
                         float2 offset2 = blurOffset * 1.5;
                         float dist2 = 1.5;
@@ -90,7 +107,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb * weight2;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb * weight2;
                         sum += weight2 * 8;
-                        
+
                         // リング3（2.5）- 対角4点 + 十字4点
                         float2 offset3 = blurOffset * 2.5;
                         float dist3 = 2.5;
@@ -104,7 +121,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset3.y), 0).rgb * weight3;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset3.y), 0).rgb * weight3;
                         sum += weight3 * 8;
-                        
+
                         // リング4（3.5）- 対角4点
                         float2 offset4 = blurOffset * 3.5;
                         float dist4 = 3.5;
@@ -114,7 +131,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset4.x, offset4.y), 0).rgb * weight4;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset4.x, -offset4.y), 0).rgb * weight4;
                         sum += weight4 * 4;
-                        
+
                         refractCol /= sum;
                     }
                     else if(_RefractionKawaseQuality == 2)
@@ -125,15 +142,15 @@ void warp(inout float2 inuv)
                             baseBlurOffset * LIL_MATRIX_P._m00,
                             baseBlurOffset * LIL_MATRIX_P._m11
                         );
-                        
+
                         float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
-                        
+
                         // 中央
                         float dist0 = 0;
                         float weight0 = exp(-dist0 * dist0 / sigmaSq);
                         refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
                         sum += weight0;
-                        
+
                         // リング1（0.5）- 対角4点
                         float2 offset1 = blurOffset * 0.5;
                         float dist1 = 0.5;
@@ -143,7 +160,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
                         sum += weight1 * 4;
-                        
+
                         // リング2（1.5）- 対角4点
                         float2 offset2 = blurOffset * 1.5;
                         float dist2 = 1.5;
@@ -153,7 +170,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, offset2.y), 0).rgb * weight2;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, -offset2.y), 0).rgb * weight2;
                         sum += weight2 * 4;
-                        
+
                         // リング3（2.5）- 対角4点 + 十字4点
                         float2 offset3 = blurOffset * 2.5;
                         float dist3 = 2.5;
@@ -167,7 +184,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset3.y), 0).rgb * weight3;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset3.y), 0).rgb * weight3;
                         sum += weight3 * 8;
-                        
+
                         refractCol /= sum;
                     }
                     else if(_RefractionKawaseQuality == 1)
@@ -178,15 +195,15 @@ void warp(inout float2 inuv)
                             baseBlurOffset * LIL_MATRIX_P._m00,
                             baseBlurOffset * LIL_MATRIX_P._m11
                         );
-                        
+
                         float sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0;
-                        
+
                         // 中央
                         float dist0 = 0;
                         float weight0 = exp(-dist0 * dist0 / sigmaSq);
                         refractCol += LIL_GET_GRAB_TEX(refractUV, 0).rgb * weight0;
                         sum += weight0;
-                        
+
                         // リング1（0.5）- 対角4点
                         float2 offset1 = blurOffset * 0.5;
                         float dist1 = 0.5;
@@ -196,7 +213,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb * weight1;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb * weight1;
                         sum += weight1 * 4;
-                        
+
                         // リング2（1.5）- 十字4点
                         float2 offset2 = blurOffset * 1.5;
                         float dist2 = 1.5;
@@ -206,7 +223,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb * weight2;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb * weight2;
                         sum += weight2 * 4;
-                        
+
                         // リング3（2.5）- 対角4点
                         float2 offset3 = blurOffset * 2.5;
                         float dist3 = 2.5;
@@ -216,7 +233,7 @@ void warp(inout float2 inuv)
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, offset3.y), 0).rgb * weight3;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset3.x, -offset3.y), 0).rgb * weight3;
                         sum += weight3 * 4;
-                        
+
                         refractCol /= sum;
                     }
                     else
@@ -227,21 +244,21 @@ void warp(inout float2 inuv)
                             baseBlurOffset * LIL_MATRIX_P._m00,
                             baseBlurOffset * LIL_MATRIX_P._m11
                         );
-                        
+
                         // リング1（0.5）- 対角4点
                         float2 offset1 = blurOffset * 0.5;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, offset1.y), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset1.x, -offset1.y), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, offset1.y), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset1.x, -offset1.y), 0).rgb;
-                        
+
                         // リング2（1.5）- 十字4点
                         float2 offset2 = blurOffset * 1.5;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(offset2.x, 0), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(-offset2.x, 0), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, offset2.y), 0).rgb;
                         refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0, -offset2.y), 0).rgb;
-                        
+
                         refractCol /= 8.0;
                     }
                 }
@@ -257,7 +274,7 @@ void warp(inout float2 inuv)
                     }
                     refractCol /= sum;
                 }
-                
+
                 refractCol *= _RefractionColor.rgb;
             #else
                 // URP/HDRP: ミップマップ使用
@@ -268,7 +285,7 @@ void warp(inout float2 inuv)
             // ブラーなし
             float3 refractCol = LIL_GET_BG_TEX(refractUV, 0).rgb * _RefractionColor.rgb;
         #endif
-        
+
         if(_RefractionColorFromMain) refractCol *= fd.albedo;
         fd.col.rgb = lerp(refractCol, fd.col.rgb, fd.col.a);
     }
@@ -311,8 +328,8 @@ void warp(inout float2 inuv)
             if(_AudioLink2Main2nd) color2nd.a *= fd.audioLinkValue;
         #endif
         color2nd.a = lerp(color2nd.a,
-                          color2nd.a * saturate((fd.depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)),
-                          _Main2ndDistanceFade.z);
+                            color2nd.a * saturate((fd.depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)),
+                            _Main2ndDistanceFade.z);
         if(_Main2ndTex_Cull == 1 && fd.facing > 0 || _Main2ndTex_Cull == 2 && fd.facing < 0) color2nd.a = 0;
         #if LIL_RENDER != 0
             if(_Main2ndTexAlphaMode != 0)
@@ -365,8 +382,8 @@ void warp(inout float2 inuv)
             if(_AudioLink2Main3rd) color3rd.a *= fd.audioLinkValue;
         #endif
         color3rd.a = lerp(color3rd.a,
-                          color3rd.a * saturate((fd.depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)),
-                          _Main3rdDistanceFade.z);
+                            color3rd.a * saturate((fd.depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)),
+                            _Main3rdDistanceFade.z);
         if(_Main3rdTex_Cull == 1 && fd.facing > 0 || _Main3rdTex_Cull == 2 && fd.facing < 0) color3rd.a = 0;
         #if LIL_RENDER != 0
             if(_Main3rdTexAlphaMode != 0)
@@ -404,8 +421,8 @@ void lilGetMain4th(inout lilFragData fd, inout float4 color4th LIL_SAMP_IN_FUNC(
     color4th.a *= LIL_SAMPLE_2D(_Main4thBlendMask, samp, uvBM).r;
     if(_AudioLink2Main4th) color4th.a *= fd.audioLinkValue;
     color4th.a = lerp(color4th.a,
-                      color4th.a * saturate((fd.depth - _Main4thDistanceFade.x) / (_Main4thDistanceFade.y - _Main4thDistanceFade.x)),
-                      _Main4thDistanceFade.z);
+                        color4th.a * saturate((fd.depth - _Main4thDistanceFade.x) / (_Main4thDistanceFade.y - _Main4thDistanceFade.x)),
+                        _Main4thDistanceFade.z);
     if(_Main4thTex_Cull == 1 && fd.facing > 0 || _Main4thTex_Cull == 2 && fd.facing < 0) color4th.a = 0;
 
     #if LIL_RENDER != 0
@@ -444,8 +461,8 @@ void lilGetMain5th(inout lilFragData fd, inout float4 color5th LIL_SAMP_IN_FUNC(
     color5th.a *= LIL_SAMPLE_2D(_Main5thBlendMask, samp, uvBM).r;
     if(_AudioLink2Main5th) color5th.a *= fd.audioLinkValue;
     color5th.a = lerp(color5th.a,
-                      color5th.a * saturate((fd.depth - _Main5thDistanceFade.x) / (_Main5thDistanceFade.y - _Main5thDistanceFade.x)),
-                      _Main5thDistanceFade.z);
+                        color5th.a * saturate((fd.depth - _Main5thDistanceFade.x) / (_Main5thDistanceFade.y - _Main5thDistanceFade.x)),
+                        _Main5thDistanceFade.z);
     if(_Main5thTex_Cull == 1 && fd.facing > 0 || _Main5thTex_Cull == 2 && fd.facing < 0) color5th.a = 0;
 
     #if LIL_RENDER != 0
@@ -484,8 +501,8 @@ void lilGetMain6th(inout lilFragData fd, inout float4 color6th LIL_SAMP_IN_FUNC(
     color6th.a *= LIL_SAMPLE_2D(_Main6thBlendMask, samp, uvBM).r;
     if(_AudioLink2Main6th) color6th.a *= fd.audioLinkValue;
     color6th.a = lerp(color6th.a,
-                      color6th.a * saturate((fd.depth - _Main6thDistanceFade.x) / (_Main6thDistanceFade.y - _Main6thDistanceFade.x)),
-                      _Main6thDistanceFade.z);
+                        color6th.a * saturate((fd.depth - _Main6thDistanceFade.x) / (_Main6thDistanceFade.y - _Main6thDistanceFade.x)),
+                        _Main6thDistanceFade.z);
     if(_Main6thTex_Cull == 1 && fd.facing > 0 || _Main6thTex_Cull == 2 && fd.facing < 0) color6th.a = 0;
 
     #if LIL_RENDER != 0
@@ -538,10 +555,10 @@ void lilGetMatCap3rd(inout lilFragData fd, in float3 matcap3rdN LIL_SAMP_IN_FUNC
 
     // --- Blend ---
     matCap3rdColor.rgb = lerp(matCap3rdColor.rgb, matCap3rdColor.rgb * fd.albedo,
-                              _MatCap3rdMainStrength);
+                                _MatCap3rdMainStrength);
     fd.col.rgb = lilBlendColor(fd.col.rgb, matCap3rdColor.rgb,
-                               _MatCap3rdBlend * matCap3rdColor.a * matCapMask,
-                               _MatCap3rdBlendMode);
+                                _MatCap3rdBlend * matCap3rdColor.a * matCapMask,
+                                _MatCap3rdBlendMode);
 }
 
 // MatCap4th
@@ -580,10 +597,10 @@ void lilGetMatCap4th(inout lilFragData fd, in float3 matcap4thN LIL_SAMP_IN_FUNC
 
     // --- Blend ---
     matCap4thColor.rgb = lerp(matCap4thColor.rgb, matCap4thColor.rgb * fd.albedo,
-                              _MatCap4thMainStrength);
+                                _MatCap4thMainStrength);
     fd.col.rgb = lilBlendColor(fd.col.rgb, matCap4thColor.rgb,
-                               _MatCap4thBlend * matCap4thColor.a * matCapMask,
-                               _MatCap4thBlendMode);
+                                _MatCap4thBlend * matCap4thColor.a * matCapMask,
+                                _MatCap4thBlendMode);
 }
 
 // Glitter2nd
@@ -609,12 +626,12 @@ void lilGlitter2nd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
 
     float2 glitter2ndPos   = _Glitter2ndUVMode ? fd.uv1 : fd.uv0;
     glitter2ndColor.rgb *= lilCalcGlitter(glitter2ndPos, N, glitter2ndViewDirection, glitter2ndCameraDirection, fd.L,
-                                          _Glitter2ndParams1, _Glitter2ndParams2, _Glitter2ndPostContrast, _Glitter2ndSensitivity,
-                                          _Glitter2ndScaleRandomize, _Glitter2ndAngleRandomize, _Glitter2ndApplyShape,
-                                          _Glitter2ndShapeTex, _Glitter2ndShapeTex_ST, _Glitter2ndAtras);
+                                            _Glitter2ndParams1, _Glitter2ndParams2, _Glitter2ndPostContrast, _Glitter2ndSensitivity,
+                                            _Glitter2ndScaleRandomize, _Glitter2ndAngleRandomize, _Glitter2ndApplyShape,
+                                            _Glitter2ndShapeTex, _Glitter2ndShapeTex_ST, _Glitter2ndAtras);
     glitter2ndColor.rgb *= lilCalcGlitter(glitter2ndPos, N, glitter2ndViewDirection, glitter2ndCameraDirection, fd.L,
-                                          _Glitter2ndParams1, _Glitter2ndParams2, _Glitter2ndPostContrast, _Glitter2ndSensitivity,
-                                          _Glitter2ndScaleRandomize, 0, false, _Glitter2ndShapeTex, float4(0, 0, 0, 0), float4(1, 1, 0, 0));
+                                            _Glitter2ndParams1, _Glitter2ndParams2, _Glitter2ndPostContrast, _Glitter2ndSensitivity,
+                                            _Glitter2ndScaleRandomize, 0, false, _Glitter2ndShapeTex, float4(0, 0, 0, 0), float4(1, 1, 0, 0));
     glitter2ndColor.rgb = lerp(glitter2ndColor.rgb, glitter2ndColor.rgb * fd.albedo, _Glitter2ndMainStrength);
 
     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
@@ -748,7 +765,7 @@ float sdHeart(float2 p)
 
     return sqrt(opUnion(dot2(p - float2(0.00, 1.00)),
                         dot2(p - 0.5 * opIntersection(p.x + p.y, 0.0)))) *
-           sign(p.x - p.y);
+                        sign(p.x - p.y);
 }
 
 // 2. Star
@@ -807,7 +824,7 @@ float sdRoundedBox(float2 p, float2 b, float r)
     float2 q = abs(p) - b + r;
 
     return opUnion(opIntersection(q.x, q.y), 0.0) +
-           length(max(q, 0.0)) - r;
+                    length(max(q, 0.0)) - r;
 }
 
 // 7. Moon
@@ -981,25 +998,25 @@ void lilMoleDrower(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     float d          = 1e6;
 
     if(_UseMole1st)  d = min(d, MoleCalc_WithBlur(uv, _Mole1stPos,  _Mole1stRadius * _Mole1stRadiusMultiplier,
-                                                  _Mole1stBlur,  _Mole1stRotation,  _Mole1stShape));
+                                                    _Mole1stBlur,  _Mole1stRotation,  _Mole1stShape));
     if(_UseMole2nd)  d = min(d, MoleCalc_WithBlur(uv, _Mole2ndPos,  _Mole2ndRadius * _Mole2ndRadiusMultiplier,
-                                                  _Mole2ndBlur,  _Mole2ndRotation,  _Mole2ndShape));
+                                                    _Mole2ndBlur,  _Mole2ndRotation,  _Mole2ndShape));
     if(_UseMole3rd)  d = min(d, MoleCalc_WithBlur(uv, _Mole3rdPos,  _Mole3rdRadius * _Mole3rdRadiusMultiplier,
-                                                  _Mole3rdBlur,  _Mole3rdRotation,  _Mole3rdShape));
+                                                    _Mole3rdBlur,  _Mole3rdRotation,  _Mole3rdShape));
     if(_UseMole4th)  d = min(d, MoleCalc_WithBlur(uv, _Mole4thPos,  _Mole4thRadius * _Mole4thRadiusMultiplier,
-                                                  _Mole4thBlur,  _Mole4thRotation,  _Mole4thShape));
+                                                    _Mole4thBlur,  _Mole4thRotation,  _Mole4thShape));
     if(_UseMole5th)  d = min(d, MoleCalc_WithBlur(uv, _Mole5thPos,  _Mole5thRadius * _Mole5thRadiusMultiplier,
-                                                  _Mole5thBlur,  _Mole5thRotation,  _Mole5thShape));
+                                                    _Mole5thBlur,  _Mole5thRotation,  _Mole5thShape));
     if(_UseMole6th)  d = min(d, MoleCalc_WithBlur(uv, _Mole6thPos,  _Mole6thRadius * _Mole6thRadiusMultiplier,
-                                                  _Mole6thBlur,  _Mole6thRotation,  _Mole6thShape));
+                                                    _Mole6thBlur,  _Mole6thRotation,  _Mole6thShape));
     if(_UseMole7th)  d = min(d, MoleCalc_WithBlur(uv, _Mole7thPos,  _Mole7thRadius * _Mole7thRadiusMultiplier,
-                                                  _Mole7thBlur,  _Mole7thRotation,  _Mole7thShape));
+                                                    _Mole7thBlur,  _Mole7thRotation,  _Mole7thShape));
     if(_UseMole8th)  d = min(d, MoleCalc_WithBlur(uv, _Mole8thPos,  _Mole8thRadius * _Mole8thRadiusMultiplier,
-                                                  _Mole8thBlur,  _Mole8thRotation,  _Mole8thShape));
+                                                    _Mole8thBlur,  _Mole8thRotation,  _Mole8thShape));
     if(_UseMole9th)  d = min(d, MoleCalc_WithBlur(uv, _Mole9thPos,  _Mole9thRadius * _Mole9thRadiusMultiplier,
-                                                  _Mole9thBlur,  _Mole9thRotation,  _Mole9thShape));
+                                                    _Mole9thBlur,  _Mole9thRotation,  _Mole9thShape));
     if(_UseMole10th) d = min(d, MoleCalc_WithBlur(uv, _Mole10thPos, _Mole10thRadius * _Mole10thRadiusMultiplier,
-                                                  _Mole10thBlur, _Mole10thRotation, _Mole10thShape));
+                                                    _Mole10thBlur, _Mole10thRotation, _Mole10thShape));
 
     // --- SDF Distance → Mask ---
     float mole = smoothstep(1.0, 0.0, d);
@@ -1038,7 +1055,7 @@ void lilLightBasedAlpha(inout lilFragData fd, uint _LightBasedAlphaLoadType, flo
         bool    isOff               = lightBasedAlphaMask.a < 0.25;
         bool    isOn                = lightBasedAlphaMask.a > 0.75;
         bool    isInvert            = (!isOff && !isOn) ^ _LightBasedAlphaInvert;
-        
+
         if(isOff) return;
 
         if(_LightBasedAlphaLoadType == 0 && _UseAlphaMaskStyle)

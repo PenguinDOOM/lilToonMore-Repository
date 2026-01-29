@@ -304,6 +304,6 @@
         
         //----------------------------------------------------------------------------------------------------------------------
         // Refraction
-        [lilEnum]          _RefractionType                         ("Refraction Type|Default|Kawase", Int)                    = 0
+        [lilEnum]          _RefractionType                         ("Refraction Type|Default|Bilinear|Kawase", Int)                    = 0
         [lilEnum]          _RefractionKawaseQuality                ("Kawase Quality|Low|Medium|High|Ultra", Int)              = 0
         
