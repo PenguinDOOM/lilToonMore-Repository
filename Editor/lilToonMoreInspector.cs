@@ -322,7 +322,7 @@ namespace lilToon
         readonly string[] refractionCategory = new string[]
         {
             "_RefractionType",
-            "_RefractionKawaseQuality",
+            "_RefractionSGMBQuality",
         };
 
         // Material Properties
@@ -604,7 +604,7 @@ namespace lilToon
         private MaterialProperty lightBasedAlphaPrePost;
 
         private MaterialProperty refractionType;
-        private MaterialProperty refractionKawaseQuality;
+        private MaterialProperty refractionSGMBQuality;
 
         private MaterialProperty useBump2ndMap;
         private MaterialProperty useGlitter;
@@ -1146,7 +1146,7 @@ namespace lilToon
             lightBasedAlphaPrePost = FindProperty("_LightBasedAlphaPrePost", props);
 
             refractionType = FindProperty("_RefractionType", props);
-            refractionKawaseQuality = FindProperty("_RefractionKawaseQuality", props);
+            refractionSGMBQuality = FindProperty("_RefractionSGMBQuality", props);
 
             useBump2ndMap = FindProperty("_UseBump2ndMap", props);
             useGlitter = FindProperty("_UseGlitter", props);
@@ -2600,7 +2600,7 @@ namespace lilToon
             {
                 EditorGUILayout.BeginVertical(boxOuter);
                 lilEditorGUI.LocalizedProperty(m_MaterialEditor, refractionType);
-                lilEditorGUI.LocalizedProperty(m_MaterialEditor, refractionKawaseQuality);
+                lilEditorGUI.LocalizedProperty(m_MaterialEditor, refractionSGMBQuality);
                 lilEditorGUI.DrawLine();
                 if (GUILayout.Button("Copy Refraction Setting"))
                 {

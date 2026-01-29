@@ -287,7 +287,7 @@
     bool    _LightBasedAlphaInvert; \
     bool    _LightBasedAlphaPrePost; \
     uint    _RefractionType; \
-    uint    _RefractionKawaseQuality;
+    uint    _RefractionSGMBQuality;
 
 
 
@@ -313,8 +313,8 @@
     Texture2D _Emission3rdMap; \
     Texture2D _Emission3rdBlendMask; \
     SamplerState sampler_Emission3rdMap;
-    
-    
+
+
 
 
 // Add vertex shader input

@@ -33,8 +33,14 @@ void warp(inout float2 inuv)
         fd.col.rgb = lerp(warpedBG, fd.col.rgb, fd.col.a);
     }
 
-    // Refraction - Kawase Blur版（低中高最高品質）
-    void lilRefractionKawase(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
+//--------------------------------------------------------------
+// Refraction Blur - SGMB Implementation
+// (Single-pass Gaussian-weighted Multi-ring Blur)
+//
+// Inspired by Kawase Blur's diagonal sampling approach,
+// adapted for single-pass rendering (Mainly VRChat)
+//--------------------------------------------------------------
+    void lilRefractionSGMB(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         float2 refractUV = fd.uvScn + (pow(1.0 - fd.nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, fd.N).xy;
 
@@ -64,7 +70,7 @@ void warp(inout float2 inuv)
                 }
                 else if(_RefractionType == 1)
                 {
-                    if(_RefractionKawaseQuality == 3)
+                    if(_RefractionSGMBQuality == 3)
                     {
                         // === Ultra：25タップ（ガウス重み付き）===
                         float sum = 0;
@@ -134,7 +140,7 @@ void warp(inout float2 inuv)
 
                         refractCol /= sum;
                     }
-                    else if(_RefractionKawaseQuality == 2)
+                    else if(_RefractionSGMBQuality == 2)
                     {
                         // === High：17タップ（ガウス重み付き）===
                         float sum = 0;
@@ -187,7 +193,7 @@ void warp(inout float2 inuv)
 
                         refractCol /= sum;
                     }
-                    else if(_RefractionKawaseQuality == 1)
+                    else if(_RefractionSGMBQuality == 1)
                     {
                         // === Mid：13タップ（ガウス重み付き）===
                         float sum = 0;

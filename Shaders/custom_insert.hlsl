@@ -187,7 +187,7 @@
     if(_UseWarp && _WarpReplaceRefract) \
         lilBGWarp(fd LIL_SAMP_IN(sampler_MainTex)); \
     else \
-        lilRefractionKawase(fd LIL_SAMP_IN(sampler_MainTex));
+        lilRefractionSGMB(fd LIL_SAMP_IN(sampler_MainTex));
 
 #if !defined(BEFORE_RIMLIGHT)
     #if LIL_RENDER != 0
