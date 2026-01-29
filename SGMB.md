@@ -9,7 +9,7 @@
 - **Inspired by Kawase Blur**: Adopts the diagonal sampling approach from Kawase Blur (Masaki Kawase, 2003)
 - **VRChat-Optimized**: Specifically designed for single-pass rendering to work within VRChat's GrabPass limitations
 - **Multiple Quality Levels**: From ultra-lightweight Bilinear mode to high-quality Ultra mode
-- **Physically Accurate**: Uses Gaussian weighting for physically correct blur distribution
+- **Physically Accurate**: Uses Gaussian weighting from lilToon's original implementation for physically correct blur distribution
 
 ## Technical Background
 
@@ -33,7 +33,7 @@ Each `tex2D` call leverages GPU's bilinear interpolation, effectively sampling 4
 
 ### Gaussian Weighting
 
-Physical blur distribution using Gaussian function:
+Physical blur distribution using Gaussian function (formula borrowed from lilToon's original implementation):
 
 ```hlsl
 sigmaSq = (LIL_REFRACTION_SAMPNUM * LIL_REFRACTION_SAMPNUM) / 2.0
@@ -219,6 +219,8 @@ This means:
 - **8 taps** = 32 effective samples
 
 ### Gaussian Weight Calculation
+
+The Gaussian weighting formula is borrowed from lilToon's original refraction blur implementation:
 
 ```hlsl
 // Sigma squared calculation
