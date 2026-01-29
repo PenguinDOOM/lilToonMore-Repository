@@ -46,7 +46,7 @@ weight = exp(-distance * distance / sigmaSq)
 
 | 品質 | タップ数 | 実質サンプル | カバー範囲 | 速度倍率 | ガウス重み付け | 推奨用途 |
 |------|---------|------------|-----------|---------|----------------|----------|
-| **Bilinear** | 4 | 16px | 4×4px | 24倍 | ❌ なし | Quest最軽量 |
+| **Bilinear** | 4 | 16px | 4×4px | 24倍 | ❌ なし | モバイル/軽量 |
 | **Low** | 8 | 32px | 10×7px | 6.7倍 | ✓ あり | PC VR推奨 |
 | **Mid** | 13 | 52px | 16×10px | 4.6倍 | ✓ あり | PC Desktop推奨 |
 | **High** | 17 | 68px | 16×10px（密） | 3.7倍 | ✓ あり | 高性能PC |
@@ -195,7 +195,7 @@ else
 ```
 PC Desktop:     Mid (13タップ)     - 品質とパフォーマンスの最良バランス
 PC VR:          Low (8タップ)      - VRパフォーマンス最適化
-Quest:          N/A                - カスタムシェーダー非対応
+Quest:          N/A                - カスタムシェーダー非対応（VRChat制限）
 モバイル:       Bilinear (4タップ) - 最大パフォーマンス
 ```
 
@@ -203,7 +203,7 @@ Quest:          N/A                - カスタムシェーダー非対応
 
 - **VRChat PC**: アバター複雑度に応じてMidまたはLow推奨
 - **VRChat VR**: 安定した90fps維持のためLow推奨
-- **Quest**: カスタムシェーダー制約によりSGMB利用不可
+- **VRChat Quest**: SGMB利用不可 - VRChat QuestはVRChat提供のシェーダーのみ対応、カスタムシェーダーは使用不可
 
 ## 技術詳細
 
@@ -250,7 +250,7 @@ float weight = exp(-distance * distance / sigmaSq);
 - シンプルな平均を使用: `refractCol / 4.0`
 - 全てのサンプルが等しく重み付け
 - 最速のパフォーマンス（Originalより24倍高速）
-- 最適用途: Quest、モバイル、またはパフォーマンス重視のシナリオ
+- 最適用途: モバイル、またはパフォーマンス重視のシナリオ
 
 **Low/Mid/High/Ultraモード（ガウス重み付きあり）**
 - 重み付き平均を使用: `refractCol / sum` (sumは全ての重みの合計)
@@ -289,14 +289,14 @@ float weight = exp(-distance * distance / sigmaSq);
 - **スクリーンショット/動画**: Ultra
 - **デスクトップPC（60fps）**: Mid
 - **VR（90fps目標）**: Low
-- **モバイル/Quest単体**: Bilinear
+- **モバイル**: Bilinear
 - **パフォーマンス重視**: Bilinear
 
 Midから始めて、パフォーマンス要件に基づいて調整してください。
 
 ### Q: Questで使えますか？
 
-**A:** いいえ。VRChat Questはカスタムシェーダーに対応していません。SGMBはPCプラットフォーム（デスクトップおよびPCVR）でのみ利用可能です。
+**A:** いいえ。VRChat QuestはVRChat提供のシェーダーのみに対応しており、SGMBのようなカスタムシェーダーは使用できません。SGMBはPCプラットフォーム（デスクトップおよびPCVR）でのみ利用可能です。
 
 ### Q: パフォーマンスへの影響は？
 

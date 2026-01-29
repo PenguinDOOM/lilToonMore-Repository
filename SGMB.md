@@ -46,7 +46,7 @@ Where `LIL_REFRACTION_SAMPNUM = 8`
 
 | Quality | Taps | Effective Samples | Coverage Area | Speed Multiplier | Gaussian Weighting | Recommended Use |
 |---------|------|------------------|---------------|------------------|--------------------|-----------------|
-| **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Quest lightweight |
+| **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Mobile/lightweight |
 | **Low** | 8 | 32px | 10×7px | 6.7× | ✓ Yes | PC VR recommended |
 | **Mid** | 13 | 52px | 16×10px | 4.6× | ✓ Yes | PC Desktop recommended |
 | **High** | 17 | 68px | 16×10px (dense) | 3.7× | ✓ Yes | High-end PC |
@@ -195,7 +195,7 @@ else
 ```
 PC Desktop:     Mid (13 tap)     - Best balance of quality and performance
 PC VR:          Low (8 tap)      - VR performance optimization
-Quest:          N/A              - Custom shaders not supported
+Quest:          N/A              - Custom shaders not supported (VRChat limitation)
 Mobile:         Bilinear (4 tap) - Maximum performance
 ```
 
@@ -203,7 +203,7 @@ Mobile:         Bilinear (4 tap) - Maximum performance
 
 - **VRChat PC**: Mid or Low recommended depending on avatar complexity
 - **VRChat VR**: Low recommended for stable 90fps
-- **Quest**: SGMB unavailable due to custom shader restrictions
+- **VRChat Quest**: SGMB unavailable - VRChat Quest only supports VRChat-provided shaders, custom shaders cannot be used
 
 ## Technical Details
 
@@ -250,7 +250,7 @@ float weight = exp(-distance * distance / sigmaSq);
 - Uses simple averaging: `refractCol / 4.0`
 - All samples weighted equally
 - Fastest performance (24× faster than Original)
-- Best for: Quest, mobile, or performance-critical scenarios
+- Best for: Mobile or performance-critical scenarios
 
 **Low/Mid/High/Ultra Modes (With Gaussian Weighting)**
 - Uses weighted averaging: `refractCol / sum` where sum is total of all weights
@@ -289,14 +289,14 @@ Calling it "Kawase Blur" would be misleading about its actual implementation.
 - **Screenshots/Videos**: Ultra
 - **Desktop PC (60fps)**: Mid
 - **VR (90fps target)**: Low
-- **Mobile/Quest standalone**: Bilinear
+- **Mobile**: Bilinear
 - **Performance-critical**: Bilinear
 
 Start with Mid and adjust based on your performance requirements.
 
 ### Q: Can I use this on Quest?
 
-**A:** No. VRChat Quest does not support custom shaders. SGMB is only available on PC platforms (Desktop and PCVR).
+**A:** No. VRChat Quest only supports VRChat-provided shaders and does not allow custom shaders like SGMB. SGMB is only available on PC platforms (Desktop and PCVR).
 
 ### Q: What's the performance impact?
 
