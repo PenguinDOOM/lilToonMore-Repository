@@ -51,7 +51,7 @@ void warp(inout float2 inuv)
                 // 元のぼかし強度計算を完全に流用
                 float baseBlurOffset = fd.perceptualRoughness / sqrt(fd.positionSS.w) * (0.03 / LIL_REFRACTION_SAMPNUM);
 
-                if(_RefractionType == 2)
+                if(_RefractionType == 1)
                 {
                     // === Bilinear Interpolation：4タップ（バイリニア）===
                     // GPUのバイリニア補間機能を活用した最速ブラー
@@ -68,7 +68,7 @@ void warp(inout float2 inuv)
 
                     refractCol /= 4.0;
                 }
-                else if(_RefractionType == 1)
+                else if(_RefractionType == 2)
                 {
                     if(_RefractionSGMBQuality == 3)
                     {
