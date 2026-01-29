@@ -57,6 +57,10 @@ Where `LIL_REFRACTION_SAMPNUM = 8`
 
 ## Performance Comparison
 
+**Important**: SGMB uses GrabPass to capture the screen, which has an inherent performance cost regardless of blur quality. GrabPass creates a copy of the framebuffer, which impacts performance even before any blur processing. The performance comparisons below show the *additional* cost of each blur quality level on top of the base GrabPass overhead.
+
+**Note**: Performance improvements are estimates based on theoretical calculations. Actual performance may vary depending on GPU architecture, driver implementation, scene complexity, material settings, and other rendering conditions. The multipliers shown are relative comparisons under controlled test conditions and should be used as general guidance rather than guaranteed results.
+
 ### GPU Load (Relative Values)
 
 Based on theoretical cycle calculations at 1080p:
@@ -315,10 +319,18 @@ Start with Mid and adjust based on your performance requirements.
 
 ### Q: What's the performance impact?
 
-**A:** At 1080p with Mid quality:
-- GPU: ~0.05ms (~0.3% of 16.67ms frame budget)
-- Memory bandwidth: ~100 MB/frame
-- Generally negligible on modern GPUs
+**A:** SGMB has two performance components:
+
+1. **GrabPass overhead** (unavoidable base cost):
+   - Screen capture: ~0.1-0.5ms depending on resolution
+   - This occurs before any blur processing
+
+2. **Blur processing** (varies by quality):
+   - At 1080p with Mid quality: ~0.05ms (~0.3% of 16.67ms frame budget)
+   - Memory bandwidth: ~100 MB/frame
+   - Generally negligible on modern GPUs compared to GrabPass
+
+**Important**: These are theoretical estimates. Actual performance varies based on GPU model, driver version, scene complexity, number of refractive materials, and overall rendering load. Always profile on your target hardware.
 
 ### Q: Is it better than the Original blur?
 
