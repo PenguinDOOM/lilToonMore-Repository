@@ -379,6 +379,6 @@ SOFTWARE.
 
 ## 参考文献
 
-- [Kawase Blur - "Frame Buffer Postprocessing Effects in DOUBLE-S.T.E.A.L" (GDC 2003)](http://www.daionet.gr.jp/~masa/archives/GDC2003_DSTEAL.ppt)
+- [Kawase Blur - "Frame Buffer Postprocessing Effects in DOUBLE-S.T.E.A.L" (GDC 2003)](https://web.archive.org/web/20060909063116/http://www.daionet.gr.jp/~masa/archives/GDC2003_DSTEAL.ppt)
 - [lilToon ドキュメント](https://lilxyzw.github.io/lilToon/)
 - [VRChat シェーダー最適化](https://creators.vrchat.com/avatars/avatar-performance-ranking-system/)
