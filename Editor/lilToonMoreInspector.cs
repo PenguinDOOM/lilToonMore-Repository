@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace lilToon
 {
+    /// <summary>
+    /// lilToon More Inspector
+    /// </summary>
     public class lilToonMoreInspector : lilToonInspector
     {
         // Custom properties
@@ -322,6 +325,7 @@ namespace lilToon
             "_RefractionKawaseQuality",
         };
 
+        // Material Properties
         private MaterialProperty useMain4thTex;
         private MaterialProperty color4th;
         private MaterialProperty main4thTex;
@@ -612,12 +616,22 @@ namespace lilToon
         private MaterialProperty parallaxMap;
         private MaterialProperty cutoff;
 
-        // ▼ コピー／ペースト用バッファ
-        Dictionary<string, object> copyBuffer = new Dictionary<string, object>();
+        // Copy-Paste Buffer
+        static Dictionary<string, object> copyBuffer = new Dictionary<string, object>();
+        static string copySourceMaterialName = "";
+        static string copySourceShaderName = "";
 
+        /// <summary>
+        /// Copy Category
+        /// </summary>
+        /// <param name="props"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
         void CopyCategory(string[] props, Material material)
         {
             copyBuffer.Clear();
+            copySourceMaterialName = material.name;
+            copySourceShaderName = material.shader.name;
 
             foreach (var prop in props)
             {
@@ -654,9 +668,21 @@ namespace lilToon
                 }
             }
 
-            EditorUtility.DisplayDialog("Copy Custom Property", "Properties copied.", "OK");
+            EditorUtility.DisplayDialog(
+                "Copy Custom Property",
+                $"Copied {copyBuffer.Count} properties\n"
+                    + $"From: {copySourceMaterialName}\n"
+                    + $"Shader: {copySourceShaderName}",
+                "OK"
+            );
         }
 
+        /// <summary>
+        /// Texture Pack
+        /// </summary>
+        /// <remarks>
+        /// Used for copying texture along with offset and scale
+        /// </remarks>
         class TexturePack
         {
             public Texture tex;
@@ -671,6 +697,12 @@ namespace lilToon
             }
         }
 
+        /// <summary>
+        /// Paste Category
+        /// </summary>
+        /// <param name="props"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
         void PasteCategory(string[] props, Material material)
         {
             if (copyBuffer.Count == 0)
@@ -679,10 +711,22 @@ namespace lilToon
                 return;
             }
 
+            bool differentShader = material.shader.name != copySourceShaderName;
+            string warningMsg = differentShader
+                ? $"⚠️ Warning: Different shader!\n"
+                    + $"Source: {copySourceShaderName}\n"
+                    + $"Target: {material.shader.name}\n\n"
+                    + $"Some properties may not be compatible.\n\n"
+                : "";
+
             if (
                 !EditorUtility.DisplayDialog(
                     "Paste Confirmation",
-                    "Overwrite with the copied content.\n\nよろしいですか？",
+                    $"{warningMsg}"
+                        + $"Paste {copyBuffer.Count} properties\n"
+                        + $"From: {copySourceMaterialName}\n"
+                        + $"To: {material.name}\n\n"
+                        + $"よろしいですか？",
                     "Paste",
                     "Cancel"
                 )
@@ -693,12 +737,20 @@ namespace lilToon
 
             Undo.RecordObject(material, "Paste Custom Property");
 
+            int pastedCount = 0;
+            int skippedCount = 0;
+
             foreach (var prop in props)
             {
                 if (!material.HasProperty(prop))
+                {
+                    skippedCount++;
                     continue;
+                }
                 if (!copyBuffer.ContainsKey(prop))
+                {
                     continue;
+                }
 
                 var value = copyBuffer[prop];
 
@@ -714,17 +766,44 @@ namespace lilToon
                     material.SetTextureOffset(prop, pack.offset);
                     material.SetTextureScale(prop, pack.scale);
                 }
+
+                pastedCount++;
             }
 
             EditorUtility.SetDirty(material);
+
+            if (skippedCount > 0)
+            {
+                EditorUtility.DisplayDialog(
+                    "Paste Result",
+                    $"Pasted: {pastedCount}\nSkipped: {skippedCount} (property not found)",
+                    "OK"
+                );
+            }
         }
 
+        /// <summary>
+        /// Reset Category
+        /// </summary>
+        /// <param name="props"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
         void ResetCategory(string[] props, Material material)
         {
-            // Undo 対応
+            if (
+                !EditorUtility.DisplayDialog(
+                    "Reset Confirmation",
+                    $"Reset properties to default values for:\n{material.name}\n\nよろしいですか？",
+                    "Reset",
+                    "Cancel"
+                )
+            )
+            {
+                return;
+            }
+
             Undo.RecordObject(material, "Reset Custom Property");
 
-            // Shader デフォルト値を取得
             Material defaultMat = material.shader != null ? new Material(material.shader) : null;
 
             if (defaultMat == null)
@@ -763,11 +842,16 @@ namespace lilToon
                 }
             }
 
-            // Editor の Inspector を更新させる
             EditorUtility.SetDirty(material);
             UnityEngine.Object.DestroyImmediate(defaultMat);
         }
 
+        /// <summary>
+        /// Load Custom Properties
+        /// </summary>
+        /// <param name="props"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
             isCustomShader = true;
@@ -1075,6 +1159,11 @@ namespace lilToon
             cutoff = FindProperty("_Cutoff", props);
         }
 
+        /// <summary>
+        /// Draw Custom Properties
+        /// </summary>
+        /// <param name="material"></param>
+        /// <returns></returns>
         protected override void DrawCustomProperties(Material material)
         {
             // GUIStyles Name   Description
@@ -2541,6 +2630,9 @@ namespace lilToon
             }
         }
 
+        /// <summary>
+        /// Replace to Custom Shaders
+        /// </summary>
         protected override void ReplaceToCustomShaders()
         {
             lts = Shader.Find(shaderName + "/lilToon");
@@ -2610,6 +2702,9 @@ namespace lilToon
             ltsmgem = Shader.Find("Hidden/" + shaderName + "/MultiGem");
         }
 
+        /// <summary>
+        /// Editor Settings Singleton
+        /// </summary>
         internal class lilToonMoreEditorSetting : ScriptableSingleton<lilToonMoreEditorSetting>
         {
             internal bool isShowBump3rdMap = false;
