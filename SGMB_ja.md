@@ -1,5 +1,7 @@
 # SGMB (Single-pass Gaussian-weighted Multi-ring Blur)
 
+## このドキュメントに書かれている内容はCopilotによって生成されたものです<br>だいぶ適当なことが書かれているので鵜呑みにしないでください
+
 ## 概要
 
 **SGMB**は、VRChatのレンダリング制約に最適化された特殊なブラー実装です。**Single-pass Gaussian-weighted Multi-ring Blur（シングルパス・ガウス重み付き・マルチリングブラー）**の略称です。
