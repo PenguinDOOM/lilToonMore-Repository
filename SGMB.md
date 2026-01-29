@@ -44,14 +44,16 @@ Where `LIL_REFRACTION_SAMPNUM = 8`
 
 ## Quality Levels
 
-| Quality | Taps | Effective Samples | Coverage Area | Speed Multiplier | Recommended Use |
-|---------|------|------------------|---------------|------------------|-----------------|
-| **Bilinear** | 4 | 16px | 4×4px | 24× | Quest lightweight |
-| **Low** | 8 | 32px | 10×7px | 11.8× | PC VR recommended |
-| **Mid** | 13 | 52px | 16×10px | 4.6× | PC Desktop recommended |
-| **High** | 17 | 68px | 16×10px (dense) | 3.7× | High-end PC |
-| **Ultra** | 25 | 100px | 21×13px | 2.5× | Screenshots |
-| **Original** | 33 | 132px | 2×50px (vertical only) | 1.0× (baseline) | Compatibility |
+| Quality | Taps | Effective Samples | Coverage Area | Speed Multiplier | Gaussian Weighting | Recommended Use |
+|---------|------|------------------|---------------|------------------|--------------------|-----------------|
+| **Bilinear** | 4 | 16px | 4×4px | 24× | ❌ No | Quest lightweight |
+| **Low** | 8 | 32px | 10×7px | 11.8× | ✓ Yes | PC VR recommended |
+| **Mid** | 13 | 52px | 16×10px | 4.6× | ✓ Yes | PC Desktop recommended |
+| **High** | 17 | 68px | 16×10px (dense) | 3.7× | ✓ Yes | High-end PC |
+| **Ultra** | 25 | 100px | 21×13px | 2.5× | ✓ Yes | Screenshots |
+| **Original** | 33 | 132px | 2×50px (vertical only) | 1.0× (baseline) | ✓ Yes | Compatibility |
+
+**Note**: Bilinear mode uses simple averaging without Gaussian weighting for maximum performance. All other quality levels (Low through Original) use Gaussian-weighted sampling for physically accurate blur distribution.
 
 ## Performance Comparison
 
@@ -110,7 +112,8 @@ Example at 1080p fullscreen:
     
     X       X
 ```
-4 diagonal corners with bilinear interpolation
+4 diagonal corners with bilinear interpolation  
+**No Gaussian weighting** - uses simple averaging for maximum performance
 
 ### Low (8 taps)
 ```
@@ -120,6 +123,7 @@ Example at 1080p fullscreen:
     
     X   +   X
 ```
+**With Gaussian weighting** - physically accurate blur distribution
 
 ### Mid (13 taps)
 ```
@@ -237,6 +241,22 @@ float weight = exp(-distance * distance / sigmaSq);
 // distance 2.5 → weight ≈ 0.726
 // distance 3.5 → weight ≈ 0.467
 ```
+
+**Note**: Gaussian weighting is used in Low, Mid, High, Ultra, and Original quality modes. Bilinear mode does not use Gaussian weighting and instead uses simple averaging (dividing by tap count) for maximum performance.
+
+### Bilinear vs Gaussian-Weighted Modes
+
+**Bilinear Mode (No Gaussian Weighting)**
+- Uses simple averaging: `refractCol / 4.0`
+- All samples weighted equally
+- Fastest performance (24× faster than Original)
+- Best for: Quest, mobile, or performance-critical scenarios
+
+**Low/Mid/High/Ultra Modes (With Gaussian Weighting)**
+- Uses weighted averaging: `refractCol / sum` where sum is total of all weights
+- Samples closer to center have higher weight
+- Physically accurate blur distribution
+- Best for: PC Desktop and VR where quality matters
 
 ### Original vs SGMB Comparison
 
