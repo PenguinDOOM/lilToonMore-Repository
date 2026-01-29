@@ -330,7 +330,7 @@ Start with Mid and adjust based on your performance requirements.
 
 ### Q: Does it work with all materials?
 
-**A:** SGMB works with any material that uses lilToon's refraction feature. It's specifically designed for refraction blur in transparent/refractive materials.
+**A:** SGMB works with any material that uses lilToonMore's refraction blur feature. It's specifically designed for refraction blur in refractive materials.
 
 ## Credits
 
