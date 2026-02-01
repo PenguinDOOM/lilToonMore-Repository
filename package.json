@@ -1,7 +1,7 @@
 {
   "name": "jp.penguin.liltoonmore",
   "displayName": "lilToonMore",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "author": {
     "name": "Penguin"
   },
@@ -10,15 +10,15 @@
   "vpmDependencies": {
     "jp.lilxyzw.liltoon": "2.3.2"
   },
-  "changelogUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/70efbcc928019471730e2121beb278b5b618b1d9/CHANGELOG.txt",
-  "licensesUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/70efbcc928019471730e2121beb278b5b618b1d9/LICENSE",
+  "changelogUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/073767e1ea4c4578b1856b7f83e357629698f06f/CHANGELOG.txt",
+  "licensesUrl": "https://github.com/PenguinDOOM/lilToonMore-Repository/blob/073767e1ea4c4578b1856b7f83e357629698f06f/LICENSE",
   "license": "MIT",
   "keywords": [
     "Toon",
     "Shader",
     "Material"
   ],
-  "url": "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.2.1/jp.penguin.liltoonmore-4.2.1.zip?",
+  "url": "https://github.com/PenguinDOOM/lilToonMore-Repository/releases/download/4.2.2/jp.penguin.liltoonmore-4.2.2.zip?",
   "legacyFolders": {
     "Assets\\lilToonMore": ""
   }
