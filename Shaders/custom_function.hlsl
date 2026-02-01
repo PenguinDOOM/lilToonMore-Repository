@@ -1,25 +1,22 @@
-float fastsin3(float x)
-{
-    x = fmod(x + LIL_PI, 2.0 * LIL_PI) - LIL_PI;
-    return x * (1.27323954 - 0.405284735 * abs(x));
-}
+#include "include/Fast_Math_Library.hlsl"
 
-void warp(inout float2 inuv)
+float2 warp(float2 inuv)
 {
     float2 uv  = inuv;
     float time = LIL_TIME * _WarpAnimSpeed;
     float x    = uv.x;
     float y    = uv.y;
 
-    x += fastsin3(y * _WarpBigFreqY + time * _WarpBigSpeedX) * _WarpBigAmp;
-    y += fastsin3(x * _WarpBigFreqX + time * _WarpBigSpeedY) * _WarpBigAmp;
-    x += fastsin3(y * _WarpSmallFreqY + time * _WarpSmallSpeedX) * _WarpSmallAmp;
-    y += fastsin3(x * _WarpSmallFreqX + time * _WarpSmallSpeedY) * _WarpSmallAmp;
+    // Normalize each sin() phase argument to 0-2π to prevent discontinuities
+    x += SIN_NORMALIZED(y * _WarpBigFreqY + time * _WarpBigSpeedX) * _WarpBigAmp;
+    y += SIN_NORMALIZED(x * _WarpBigFreqX + time * _WarpBigSpeedY) * _WarpBigAmp;
+    x += SIN_NORMALIZED(y * _WarpSmallFreqY + time * _WarpSmallSpeedX) * _WarpSmallAmp;
+    y += SIN_NORMALIZED(x * _WarpSmallFreqX + time * _WarpSmallSpeedY) * _WarpSmallAmp;
 
     uv.x = x;
     uv.y = y;
 
-    inuv = inuv + (uv - inuv) * _WarpIntensity;
+    return inuv + (uv - inuv) * _WarpIntensity;
 }
 
 // Background Warping
@@ -27,7 +24,7 @@ void warp(inout float2 inuv)
     void lilBGWarp(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         float2 warpUV = fd.uvScn;
-        warp(warpUV);
+        warpUV = warp(warpUV);
         float3 warpedBG = LIL_GET_BG_TEX(warpUV, 0).rgb;
 
         fd.col.rgb = lerp(warpedBG, fd.col.rgb, fd.col.a);
@@ -305,6 +302,7 @@ void warp(inout float2 inuv)
     }
 #endif
 
+
 // Main2nd
 #if defined(LIL_FEATURE_MAIN2ND) && !defined(LIL_LITE)
     void lilGetMain2ndMore(inout lilFragData fd, inout float4 color2nd, inout float main2ndDissolveAlpha LIL_SAMP_IN_FUNC(samp))
@@ -323,20 +321,18 @@ void warp(inout float2 inuv)
         #endif
         color2nd = _Color2nd;
         if(!_UseMain2ndTex) return;
-
         float2 uv2nd = fd.uv0;
         if(_Main2ndTex_UVMode == 1) uv2nd = fd.uv1;
         if(_Main2ndTex_UVMode == 2) uv2nd = fd.uv2;
         if(_Main2ndTex_UVMode == 3) uv2nd = fd.uv3;
         if(_Main2ndTex_UVMode == 4) uv2nd = fd.uvMat;
-        if(_UseWarp && _UseWarpMain2nd) warp(uv2nd);
+        if(_UseWarp && _UseWarpMain2nd) uv2nd = warp(uv2nd);
         #if defined(LIL_FEATURE_Main2ndTex)
             color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv2nd);
         #endif
         #if defined(LIL_FEATURE_Main2ndBlendMask)
-            float2 uvBM = fd.uvMain;
-            if(_UseWarp && _UseWarpMain2nd) warp(uvBM);
-            color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, uvBM).r;
+            if(_UseWarp && _UseWarpMain2nd) fd.uvMain = warp(fd.uvMain);
+            color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain).r;
         #endif
         #if defined(LIL_FEATURE_AUDIOLINK)
             if(_AudioLink2Main2nd) color2nd.a *= fd.audioLinkValue;
@@ -383,14 +379,13 @@ void warp(inout float2 inuv)
         if(_Main3rdTex_UVMode == 2) uv3rd = fd.uv2;
         if(_Main3rdTex_UVMode == 3) uv3rd = fd.uv3;
         if(_Main3rdTex_UVMode == 4) uv3rd = fd.uvMat;
-        if(_UseWarp && _UseWarpMain3rd) warp(uv3rd);
+        if(_UseWarp && _UseWarpMain3rd) uv3rd = warp(uv3rd);
         #if defined(LIL_FEATURE_Main3rdTex)
             color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv3rd);
         #endif
         #if defined(LIL_FEATURE_Main3rdBlendMask)
-            float2 uvBM = fd.uvMain;
-            if(_UseWarp && _UseWarpMain3rd) warp(uvBM);
-            color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, uvBM).r;
+            if(_UseWarp && _UseWarpMain3rd) fd.uvMain = warp(fd.uvMain);
+            color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain).r;
         #endif
         #if defined(LIL_FEATURE_AUDIOLINK)
             if(_AudioLink2Main3rd) color3rd.a *= fd.audioLinkValue;
@@ -420,19 +415,18 @@ void lilGetMain4th(inout lilFragData fd, inout float4 color4th LIL_SAMP_IN_FUNC(
     if(!_UseMain4thTex) return;
 
     float2 uv4th  = fd.uv0;
-    float2 uvBM   = fd.uvMain;
     if(_Main4thTex_UVMode == 1) uv4th = fd.uv1;
     if(_Main4thTex_UVMode == 2) uv4th = fd.uv2;
     if(_Main4thTex_UVMode == 3) uv4th = fd.uv3;
     if(_Main4thTex_UVMode == 4) uv4th = fd.uvMat;
     if(_UseWarp && _UseWarpMain4th)
     {
-        warp(uv4th);
-        warp(uvBM);
+        uv4th = warp(uv4th);
+        fd.uvMain = warp(fd.uvMain);
     }
 
     color4th *= LIL_GET_SUBTEX(_Main4thTex, uv4th);
-    color4th.a *= LIL_SAMPLE_2D(_Main4thBlendMask, samp, uvBM).r;
+    color4th.a *= LIL_SAMPLE_2D(_Main4thBlendMask, samp, fd.uvMain).r;
     if(_AudioLink2Main4th) color4th.a *= fd.audioLinkValue;
     color4th.a = lerp(color4th.a,
                         color4th.a * saturate((fd.depth - _Main4thDistanceFade.x) / (_Main4thDistanceFade.y - _Main4thDistanceFade.x)),
@@ -460,19 +454,18 @@ void lilGetMain5th(inout lilFragData fd, inout float4 color5th LIL_SAMP_IN_FUNC(
     if(!_UseMain5thTex) return;
 
     float2 uv5th  = fd.uv0;
-    float2 uvBM   = fd.uvMain;
     if(_Main5thTex_UVMode == 1) uv5th = fd.uv1;
     if(_Main5thTex_UVMode == 2) uv5th = fd.uv2;
     if(_Main5thTex_UVMode == 3) uv5th = fd.uv3;
     if(_Main5thTex_UVMode == 4) uv5th = fd.uvMat;
     if(_UseWarp && _UseWarpMain5th)
     {
-        warp(uv5th);
-        warp(uvBM);
+        uv5th = warp(uv5th);
+        fd.uvMain = warp(fd.uvMain);
     }
 
     color5th *= LIL_GET_SUBTEX(_Main5thTex, uv5th);
-    color5th.a *= LIL_SAMPLE_2D(_Main5thBlendMask, samp, uvBM).r;
+    color5th.a *= LIL_SAMPLE_2D(_Main5thBlendMask, samp, fd.uvMain).r;
     if(_AudioLink2Main5th) color5th.a *= fd.audioLinkValue;
     color5th.a = lerp(color5th.a,
                         color5th.a * saturate((fd.depth - _Main5thDistanceFade.x) / (_Main5thDistanceFade.y - _Main5thDistanceFade.x)),
@@ -500,19 +493,18 @@ void lilGetMain6th(inout lilFragData fd, inout float4 color6th LIL_SAMP_IN_FUNC(
     if(!_UseMain6thTex) return;
 
     float2 uv6th  = fd.uv0;
-    float2 uvBM   = fd.uvMain;
     if(_Main6thTex_UVMode == 1) uv6th = fd.uv1;
     if(_Main6thTex_UVMode == 2) uv6th = fd.uv2;
     if(_Main6thTex_UVMode == 3) uv6th = fd.uv3;
     if(_Main6thTex_UVMode == 4) uv6th = fd.uvMat;
     if(_UseWarp && _UseWarpMain6th)
     {
-        warp(uv6th);
-        warp(uvBM);
+        uv6th = warp(uv6th);
+        fd.uvMain = warp(fd.uvMain);
     }
 
     color6th *= LIL_GET_SUBTEX(_Main6thTex, uv6th);
-    color6th.a *= LIL_SAMPLE_2D(_Main6thBlendMask, samp, uvBM).r;
+    color6th.a *= LIL_SAMPLE_2D(_Main6thBlendMask, samp, fd.uvMain).r;
     if(_AudioLink2Main6th) color6th.a *= fd.audioLinkValue;
     color6th.a = lerp(color6th.a,
                         color6th.a * saturate((fd.depth - _Main6thDistanceFade.x) / (_Main6thDistanceFade.y - _Main6thDistanceFade.x)),

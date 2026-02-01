@@ -1,22 +1,20 @@
 #include "custom_function.hlsl"
 
 #define BEFORE_PARALLAX \
-    if(_UseWarp && _UseWarpUVMain) warp(fd.uvMain); \
-    if(_UseWarp && _UseWarpUV0) warp(fd.uv0); \
-    if(_UseWarp && _UseWarpUV1) warp(fd.uv1); \
-    if(_UseWarp && _UseWarpUV2) warp(fd.uv2); \
-    if(_UseWarp && _UseWarpUV3) warp(fd.uv3); \
-    if(_UseWarp && _UseWarpUVMat) warp(fd.uvMat); \
-    if(_UseWarp && _UseWarpUVRim) warp(fd.uvRim);
+    if(_UseWarp && _UseWarpUVMain) fd.uvMain = warp(fd.uvMain); \
+    if(_UseWarp && _UseWarpUV0) fd.uv0 = warp(fd.uv0); \
+    if(_UseWarp && _UseWarpUV1) fd.uv1 = warp(fd.uv1); \
+    if(_UseWarp && _UseWarpUV2) fd.uv2 = warp(fd.uv2); \
+    if(_UseWarp && _UseWarpUV3) fd.uv3 = warp(fd.uv3); \
+    if(_UseWarp && _UseWarpUVMat) fd.uvMat = warp(fd.uvMat); \
+    if(_UseWarp && _UseWarpUVRim) fd.uvRim = warp(fd.uvRim);
 
 #if !defined(OVERRIDE_MAIN)
     #define OVERRIDE_MAIN \
-        float2 bkuvMain = fd.uvMain; \
-        if(_UseWarp && _UseWarpMain1st) warp(fd.uvMain); \
+        if(_UseWarp && _UseWarpMain1st)  fd.uvMain = warp(fd.uvMain); \
         LIL_GET_MAIN_TEX \
         LIL_APPLY_MAIN_TONECORRECTION \
-        fd.col    *=  _Color; \
-        fd.uvMain =   bkuvMain;
+        fd.col    *=  _Color;
 #endif
 
 #if !defined(OVERRIDE_NORMAL_2ND)
@@ -136,7 +134,7 @@
     #else
         #define LIL_SAMPLE_AnisotropyScaleMask
     #endif
-    
+
     #define OVERRIDE_ANISOTROPY \
         if(_UseAnisotropy) \
         { \
